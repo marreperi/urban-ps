@@ -1,0 +1,12 @@
+{
+    "name": "urban-ps",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "git@github.com:marreperi/urban-ps.git",
+    "author": "Marcel Reperich",
+    "license": "MIT",
+    "scripts": {
+      "dev": "shopify theme dev --store=shop-urban-ps.myshopify.com"
+    }
+}
+  

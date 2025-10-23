@@ -1,0 +1,7 @@
+resources/*
+node_modules/*
+
+mix-manifest.json
+yarn.lock
+package.json
+webpack.mix.js

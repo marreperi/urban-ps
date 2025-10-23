@@ -1,0 +1,129 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "t:sections.footer-group.name",
+  "sections": {
+    "footer-promotions": {
+      "type": "footer-promotions",
+      "blocks": {
+        "footer-promotions-0": {
+          "type": "promotion",
+          "settings": {
+            "enable_image": true,
+            "image_mask": "none",
+            "title": "Site-wide promotion",
+            "text": "<p>Use this section to promote content throughout every page of your site. Add images for further impact.</p>",
+            "button_label": "Optional button",
+            "button_link": ""
+          }
+        },
+        "footer-promotions-1": {
+          "type": "promotion",
+          "settings": {
+            "enable_image": true,
+            "image_mask": "none",
+            "title": "Site-wide promotion",
+            "text": "<p>Use this section to promote content throughout every page of your site. Add images for further impact.</p>",
+            "button_label": "Optional button",
+            "button_link": ""
+          }
+        },
+        "footer-promotions-2": {
+          "type": "promotion",
+          "settings": {
+            "enable_image": true,
+            "image_mask": "none",
+            "title": "Site-wide promotion",
+            "text": "<p>Use this section to promote content throughout every page of your site. Add images for further impact.</p>",
+            "button_label": "Optional button",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "footer-promotions-0",
+        "footer-promotions-1",
+        "footer-promotions-2"
+      ],
+      "disabled": true,
+      "settings": {
+        "hide_homepage": false
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "custom_xi7eid": {
+          "type": "custom",
+          "disabled": true,
+          "settings": {
+            "show_footer_title": true,
+            "title": "test",
+            "text": "<p>Add your own custom text here.</p>",
+            "container_width": 15
+          }
+        },
+        "footer-0": {
+          "type": "logo_social",
+          "settings": {
+            "logo": "shopify://shop_images/Urban_PS_2c.svg",
+            "desktop_logo_height": 50,
+            "container_width": 95
+          }
+        },
+        "footer-1": {
+          "type": "menu",
+          "settings": {
+            "show_footer_title": false,
+            "menu": "footer",
+            "container_width": 25
+          }
+        },
+        "menu_DY8JCj": {
+          "type": "menu",
+          "settings": {
+            "show_footer_title": false,
+            "menu": "n-tzliches",
+            "container_width": 16
+          }
+        },
+        "footer2": {
+          "type": "newsletter",
+          "settings": {
+            "show_footer_title": true,
+            "title": "Du willst vorne mitspielen? Dann lies, was wir schreiben!",
+            "text": "<p>Unser Newsletter ist das einzige Update, das dein Postfach verdient – alles andere kannst du löschen</p>",
+            "container_width": 33
+          }
+        }
+      },
+      "block_order": [
+        "custom_xi7eid",
+        "footer-0",
+        "footer-1",
+        "menu_DY8JCj",
+        "footer2"
+      ],
+      "settings": {
+        "show_locale_selector": true,
+        "show_currency_selector": true,
+        "show_currency_flags": true,
+        "show_payment_icons": true,
+        "show_copyright": true,
+        "copyright_text": "II Urban-PS GmbH"
+      }
+    }
+  },
+  "order": [
+    "footer-promotions",
+    "footer"
+  ]
+}

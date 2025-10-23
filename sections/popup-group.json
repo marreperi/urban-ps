@@ -1,0 +1,61 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "custom.popups",
+  "name": "t:sections.popup-group.name",
+  "sections": {
+    "newsletter-popup": {
+      "type": "newsletter-popup",
+      "blocks": {
+        "reminder-block": {
+          "type": "header",
+          "disabled": true,
+          "settings": {
+            "reminder_label": "Get 10% off"
+          }
+        }
+      },
+      "block_order": [
+        "reminder-block"
+      ],
+      "settings": {
+        "disable_for_account_holders": true,
+        "popup_seconds": 5,
+        "popup_days": 30,
+        "popup_title": "Hol dir dein persönliches Konfi-Ergebnis per Mail.",
+        "popup_text": "<p>Wir stellen dir dein individuelles Konferenzraum-Bundle zusammen – abgestimmt auf deinen Raum, dein Team, dein Budget.<br/>Trag dich ein und erhalte dein Ergebnis + Insider-Tipps zum Thema smarte AV-Lösungen direkt in dein Postfach.</p>",
+        "image_position": "left",
+        "show_social_icons": false,
+        "enable_newsletter": true,
+        "button_label": "",
+        "button_link": ""
+      }
+    },
+    "age-verification-popup": {
+      "type": "age-verification-popup",
+      "disabled": true,
+      "settings": {
+        "enable_test_mode": false,
+        "blur_image": false,
+        "heading": "Confirm your age",
+        "text": "<p>Are you 18 years old or older?</p>",
+        "decline_button_label": "No I'm not",
+        "approve_button_label": "Yes I am",
+        "decline_heading": "Come back when you're older",
+        "decline_text": "<p>Sorry, the content of this store can't be seen by a younger audience. Come back when you're older.</p>",
+        "return_button_label": "Oops, I entered incorrectly"
+      }
+    }
+  },
+  "order": [
+    "newsletter-popup",
+    "age-verification-popup"
+  ]
+}
