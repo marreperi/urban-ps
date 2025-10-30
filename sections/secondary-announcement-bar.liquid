@@ -1,0 +1,146 @@
+{% capture cfg_json -%}
+{
+  "price_selectors": {{ section.settings.price_selectors | json }},
+  "gross_suffix_text": {{ section.settings.gross_suffix_text | json }},
+  "net_suffix_text": {{ section.settings.net_suffix_text | json }},
+  "vat_rate_percent": {{ section.settings.vat_rate_percent | json }},
+  "rounding_mode": {{ section.settings.rounding_mode | json }},
+  "currency_prefix": {{ section.settings.currency_prefix | json }},
+  "decimal_separator": {{ section.settings.decimal_separator | json }},
+  "thousands_separator": {{ section.settings.thousands_separator | json }},
+  "decimals": {{ section.settings.decimals | json }},
+  "persist_key": {{ section.settings.persist_key | json }}
+}
+{%- endcapture %}
+
+
+<style>
+  .secondary-announcement-bar {
+    background: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    padding: {{ section.settings.padding_y }} {{ section.settings.padding_x }};
+    font-size: {{ section.settings.font_size }};
+    line-height: {{ section.settings.line_height }};
+    --toggle-primary: {{ section.settings.toggle_primary_color }};
+    --toggle-border: {{ section.settings.toggle_border_color }};
+    --icon-color: {{ section.settings.icon_color }};
+  }
+
+  @media (max-width: {{ section.settings.desktop_min_width | default: 1024 }}px) {
+    .secondary-announcement-bar { display: none; }
+  }
+
+  .secondary-announcement-bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .secondary-announcement-bar__left { display: inline-flex; align-items: center; gap: .5rem; }
+  .secondary-announcement-bar__right { display: inline-flex; align-items: center; gap: .75rem; }
+  .secondary-announcement-bar__spacer { opacity: .6; }
+  .secondary-announcement-bar a { color: inherit; }
+  .secondary-announcement-bar__icon { width: 16px; height: 16px; display: inline-block; }
+</style>
+
+<div class="secondary-announcement-bar" data-price-toggle-config="{{ cfg_json | strip_newlines | escape }}">
+  <div class="page-width">
+    <div class="secondary-announcement-bar__inner">
+      <div class="secondary-announcement-bar__left">
+        {%- if section.settings.icon_image != blank -%}
+          <span class="secondary-announcement-bar__icon" aria-hidden="true">
+            <img src="{{ section.settings.icon_image | image_url: width: 16, height: 16 }}" width="16" height="16" alt="{{ section.settings.icon_alt | escape }}">
+          </span>
+        {%- endif -%}
+        <div class="secondary-announcement-bar__text">{{ section.settings.richtext }}</div>
+      </div>
+
+      <div class="secondary-announcement-bar__right">
+        {%- if section.settings.show_price_toggle -%}
+          {%- render 'price-toggle',
+            toggle_label_on: section.settings.toggle_label_on,
+            toggle_label_off: section.settings.toggle_label_off,
+            toggle_text_prefix: section.settings.toggle_text_prefix,
+            toggle_primary_color: section.settings.toggle_primary_color,
+            toggle_border_color: section.settings.toggle_border_color
+          -%}
+        {%- endif -%}
+
+        <span class="secondary-announcement-bar__spacer" aria-hidden="true">{{ section.settings.spacer_symbol }}</span>
+
+        {%- if section.settings.show_social -%}
+          {%- render 'social-icons', additional_classes: 'inline-list' -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ 'price-toggle.js' | asset_url }}" defer="defer"></script>
+  {%- comment -%}
+    Optional stylesheet `assets/secondary-announcement-bar.css` can be included here:
+    {{ 'secondary-announcement-bar.css' | asset_url | stylesheet_tag }}
+  {%- endcomment -%}
+</div>
+
+{% schema %}
+{
+  "name": "Secondary announce bar",
+  "settings": [
+    { "type": "richtext", "id": "richtext", "label": "Announcement text" },
+    { "type": "image_picker", "id": "icon_image", "label": "Leading icon (16×16)" },
+    { "type": "text", "id": "icon_alt", "label": "Icon alt text" },
+
+    { "type": "checkbox", "id": "show_price_toggle", "label": "Show price toggle", "default": true },
+    { "type": "checkbox", "id": "show_social", "label": "Show social icons", "default": true },
+    { "type": "text", "id": "spacer_symbol", "label": "Spacer symbol", "default": "|" },
+
+    { "type": "number", "id": "desktop_min_width", "label": "Desktop min width (px)", "default": 1024 },
+
+    { "type": "text", "id": "price_selectors", "label": "Price selectors (comma-separated)", "default": ".price,.product-card__price,[data-price]" },
+    { "type": "text", "id": "gross_suffix_text", "label": "Gross suffix text", "default": "inkl. MwSt." },
+    { "type": "text", "id": "net_suffix_text", "label": "Net suffix text", "default": "zzgl. MwSt." },
+    { "type": "number", "id": "vat_rate_percent", "label": "VAT rate percent", "default": 19 },
+    { "type": "select", "id": "rounding_mode", "label": "Rounding mode", "default": "half-up", "options": [
+      {"value":"bankers","label":"Bankers"},
+      {"value":"half-up","label":"Half-up"},
+      {"value":"floor","label":"Floor"},
+      {"value":"ceil","label":"Ceil"}
+    ] },
+    { "type": "text", "id": "currency_prefix", "label": "Currency prefix", "default": "€" },
+    { "type": "select", "id": "decimal_separator", "label": "Decimal separator", "default": ",", "options": [
+      {"value":".","label":"."},
+      {"value":",","label":","}
+    ] },
+    { "type": "select", "id": "thousands_separator", "label": "Thousands separator", "default": ".", "options": [
+      {"value":",","label":","},
+      {"value":".","label":"."},
+      {"value":"space","label":"space"},
+      {"value":"none","label":"none"}
+    ] },
+    { "type": "number", "id": "decimals", "label": "Decimals", "default": 2 },
+    { "type": "text", "id": "persist_key", "label": "Persist key", "default": "urbanps_price_mode" },
+
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#222222" },
+    { "type": "color", "id": "icon_color", "label": "Icon color", "default": "#222222" },
+    { "type": "color", "id": "toggle_primary_color", "label": "Toggle primary color", "default": "#222222" },
+    { "type": "color", "id": "toggle_border_color", "label": "Toggle border color", "default": "#d9d9d9" },
+    { "type": "text", "id": "font_size", "label": "Font size", "default": "14px" },
+    { "type": "text", "id": "line_height", "label": "Line height", "default": "1.4" },
+    { "type": "text", "id": "padding_y", "label": "Padding Y", "default": "8px" },
+    { "type": "text", "id": "padding_x", "label": "Padding X", "default": "16px" },
+
+    { "type": "text", "id": "toggle_label_on", "label": "Toggle label ON", "default": "Ja" },
+    { "type": "text", "id": "toggle_label_off", "label": "Toggle label OFF", "default": "Nein" },
+    { "type": "text", "id": "toggle_text_prefix", "label": "Toggle text prefix", "default": "Preise inkl. MwSt." }
+  ],
+  "presets": [
+    { "name": "Secondary announce bar" }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "custom.popups"]
+  }
+}
+{% endschema %}
+
+

@@ -1,0 +1,51 @@
+{%- liquid
+  assign unique_id = 'pt-' | append: section.id | append: '-' | append: forloop.index0
+  assign on_label = toggle_label_on | default: 'Ja'
+  assign off_label = toggle_label_off | default: 'Nein'
+  assign prefix_text = toggle_text_prefix | default: 'Preise inkl. MwSt.'
+  assign primary = toggle_primary_color | default: '#222222'
+  assign border = toggle_border_color | default: '#d9d9d9'
+-%}
+
+<div class="gross-net-switch" data-price-toggle role="group" aria-label="Preisumschalter" style="--toggle-primary: {{ primary }}; --toggle-border: {{ border }}; font-size: .75rem;">
+  <span class="gross-net-switch__prefix">{{ prefix_text }}</span>
+  <input id="price-toggle-{{ unique_id }}" type="checkbox" class="gross-net-switch__input" data-price-toggle-input role="switch" aria-checked="true" />
+  <label for="price-toggle-{{ unique_id }}" class="gross-net-switch__label" data-on-label="{{ on_label }}" data-off-label="{{ off_label }}"></label>
+</div>
+
+<style>
+  .gross-net-switch { display: inline-flex; align-items: center; gap: .5rem; }
+  .gross-net-switch__prefix { opacity: .9; }
+  .gross-net-switch__input[role="switch"] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; clip-path: inset(50%); }
+  .gross-net-switch__label {
+    position: relative;
+    display: inline-block;
+    min-width: 64px;
+    height: 28px;
+    border: 1px solid var(--toggle-border);
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--toggle-primary);
+    line-height: 26px;
+    padding: 0 36px 0 12px;
+    user-select: none;
+  }
+  .gross-net-switch__label::before {
+    content: attr(data-off-label);
+    position: absolute; left: 12px; top: 0; bottom: 0;
+    display: flex; align-items: center; font-size: 12px;
+  }
+  .gross-net-switch__label::after {
+    content: '';
+    position: absolute; top: 3px; left: 3px; width: 22px; height: 22px;
+    background: var(--toggle-primary);
+    border-radius: 50%; transition: transform .18s ease;
+  }
+  .gross-net-switch.animate .gross-net-switch__label::after { transition: transform .18s ease; }
+  .gross-net-switch[aria-checked="true"] .gross-net-switch__label::before { content: attr(data-on-label); }
+  .gross-net-switch[aria-checked="true"] .gross-net-switch__label { padding: 0 12px 0 36px; }
+  .gross-net-switch[aria-checked="true"] .gross-net-switch__label::after { transform: translateX(36px); }
+  .gross-net-switch__label:focus-visible { outline: 2px solid var(--toggle-primary); outline-offset: 2px; }
+</style>
+
+
