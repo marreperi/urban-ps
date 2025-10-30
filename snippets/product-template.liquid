@@ -74,7 +74,50 @@
   {%- render 'product-template-variables', product: product, current_variant: current_variant -%}
 
   <div class="page-content page-content--product">
+    {{ 'product-header-bar.css' | asset_url | stylesheet_tag }}
     <div class="page-width">
+
+      <div class="product-header-bar only-desktop">
+        <div class="product-header-bar__breadcrumbs">
+          {%- render 'breadcrumbs-extended' -%}
+        </div>
+        <div class="product-header-bar__content">
+          <div class="product-header-bar__left">
+            <h1 class="product-title">
+              {%- unless product.empty? -%}
+                {{ product.title }}
+              {%- else -%}
+                {{ 'home_page.onboarding.product_title' | t }}
+              {%- endunless -%}
+            </h1>
+            {%- if product.selected_or_first_available_variant.sku != blank -%}
+              <p class="product-sku">Artikel-Nr.: {{ product.selected_or_first_available_variant.sku }}</p>
+            {%- endif -%}
+          </div>
+          {%- assign brand = product.metafields.custom.hersteller.value -%}
+          {%- if brand -%}
+            <div class="product-header-bar__brand">
+              {%- assign vendor_handle = product.vendor | handleize -%}
+              {%- assign brand_link = nil -%}
+              {%- if brand.hersteller_kategorie and brand.hersteller_kategorie.url != blank -%}
+                {%- assign brand_link = brand.hersteller_kategorie.url -%}
+              {%- elsif brand.hersteller_kategorie and brand.hersteller_kategorie != blank -%}
+                {%- assign brand_kategorie = brand.hersteller_kategorie -%}
+                <a href="{{ brand_kategorie.url }}">
+                  {%- if brand.logo -%}
+                    <img src="{{ brand.logo | img_url: '200x' }}" alt="{{ brand.logo.alt | default: product.vendor | escape }}" style="height:50px;width:auto;" />
+                  {%- endif -%}
+                </a>
+              {%- else -%}
+                {%- if brand.logo -%}
+                  <img src="{{ brand.logo | img_url: '200x' }}" alt="{{ brand.logo.alt | default: product.vendor | escape }}" style="height:50px;width:auto;" />
+                {%- endif -%}
+                <small class="brand-debug">No brand link. hersteller_kategorie may be a GID (cannot link): {{ brand.hersteller_kategorie | json }}. Fallbacks tried: .url, string, vendor collection. brand: {{ brand | json }}</small>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
 
       <div class="grid{% unless image_position == 'left' %} grid--product-images-right{% endunless %}{% if mobile_layout == 'partial' %} grid--product-images--partial{% endif %}">
         {%- if image_position == 'left' -%}
@@ -104,24 +147,8 @@
         <div class="grid__item {{ product_description_width }}">
 
           <div class="product-single__meta">
-            <div class="product-block product-block--header">
-              {%- if settings.show_breadcrumbs and isModal != true -%}
-                {%- render 'breadcrumbs' -%}
-              {%- endif -%}
 
-              {%- if settings.vendor_enable -%}
-                <div class="product-single__vendor">
-                  {%- assign vendor_handle = product.vendor | handleize -%}
-                  {%- if collections[vendor_handle] != empty -%}
-                    <a href="{{ routes.collections_url }}/{{ collections[vendor_handle].handle }}">
-                      {{ collections[vendor_handle].title }}
-                    </a>
-                  {%- else -%}
-                    {{ product.vendor | link_to_vendor }}
-                  {%- endif -%}
-                </div>
-              {%- endif -%}
-
+            <div class="product-block product-block--header only-mobile">
               {%- if isModal -%}
                 <p class="h2 product-single__title">
                   {{ product.title }}
@@ -135,7 +162,6 @@
                   {%- endunless -%}
                 </h1>
               {%- endif -%}
-
               {%- if sku_enable -%}
                 <p data-sku class="product-single__sku">
                   {%- if current_variant.sku -%}

@@ -1,0 +1,190 @@
+{%- assign SEP = '|' -%}
+{%- assign main_menu = linklists.main-menu -%}
+
+{%- comment -%}
+  Helpers
+{%- endcomment -%}
+{%- assign crumbs = '' -%}
+{%- assign home_title = 'general.breadcrumbs.home' | t -%}
+{%- assign home_url = routes.root_url -%}
+{%- assign crumbs = home_title | append: '::' | append: home_url -%}
+
+{%- assign target_collection = nil -%}
+{%- if template.name == 'collection' and collection -%}
+  {%- assign target_collection = collection -%}
+{%- elsif template.name == 'product' and product -%}
+  {%- if collection -%}
+    {%- assign target_collection = collection -%}
+  {%- elsif product.collections.size > 0 -%}
+    {%- assign target_collection = product.collections.first -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- comment -%}
+  Depth-first search up to 4 levels (extend if needed).
+  We match by collection link object handle when possible, else by URL equality.
+{%- endcomment -%}
+{%- assign path = '' -%}
+{%- assign found = false -%}
+
+{%- if main_menu and main_menu.links.size > 0 -%}
+  {%- for l1 in main_menu.links -%}
+    {%- if target_collection and l1.type == 'collection_link' and l1.object and l1.object.handle == target_collection.handle -%}
+      {%- assign path = l1.title | append: '::' | append: l1.url -%}
+      {%- assign found = true -%}{%- break -%}
+    {%- endif -%}
+
+    {%- if l1.links.size > 0 -%}
+      {%- for l2 in l1.links -%}
+        {%- if target_collection and l2.type == 'collection_link' and l2.object and l2.object.handle == target_collection.handle -%}
+          {%- assign path = l1.title | append: '::' | append: l1.url | append: '||' | append: l2.title | append: '::' | append: l2.url -%}
+          {%- assign found = true -%}{%- break -%}
+        {%- endif -%}
+
+        {%- if l2.links.size > 0 -%}
+          {%- for l3 in l2.links -%}
+            {%- if target_collection and l3.type == 'collection_link' and l3.object and l3.object.handle == target_collection.handle -%}
+              {%- assign path = l1.title | append: '::' | append: l1.url
+                | append: '||' | append: l2.title | append: '::' | append: l2.url
+                | append: '||' | append: l3.title | append: '::' | append: l3.url -%}
+              {%- assign found = true -%}{%- break -%}
+            {%- endif -%}
+
+            {%- if l3.links.size > 0 -%}
+              {%- for l4 in l3.links -%}
+                {%- if target_collection and l4.type == 'collection_link' and l4.object and l4.object.handle == target_collection.handle -%}
+                  {%- assign path = l1.title | append: '::' | append: l1.url
+                    | append: '||' | append: l2.title | append: '::' | append: l2.url
+                    | append: '||' | append: l3.title | append: '::' | append: l3.url
+                    | append: '||' | append: l4.title | append: '::' | append: l4.url -%}
+                  {%- assign found = true -%}{%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if found -%}{%- break -%}{%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if found -%}{%- break -%}{%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if found -%}{%- break -%}{%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- if found and path != '' -%}
+  {%- assign parts = path | split: '||' -%}
+  {%- for p in parts -%}
+    {%- assign pair = p | split: '::' -%}
+    {%- assign t = pair[0] -%}
+    {%- assign u = pair[1] -%}
+    {%- assign crumbs = crumbs | append: '||' | append: t | append: '::' | append: u -%}
+  {%- endfor -%}
+{%- else -%}
+  {%- if template.name == 'product' -%}
+    {%- assign all_title = 'collections.general.all_products' | t -%}
+    {%- assign _all_title_check = all_title | downcase -%}
+    {%- if _all_title_check contains 'translation missing' -%}
+      {%- assign all_title = 'Alle Produkte' -%}
+    {%- endif -%}
+    {%- assign crumbs = crumbs | append: '||' | append: all_title | append: '::' | append: routes.all_products_collection_url -%}
+  {%- elsif template.name == 'collection' and collection -%}
+    {%- comment -%}If no menu path found, still link the collection itself as an ancestor before current{%- endcomment -%}
+    {%- assign crumbs = crumbs | append: '||' | append: collection.title | append: '::' | append: collection.url -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- comment -%}
+  Determine current page name/url for the final (non-linked) crumb
+{%- endcomment -%}
+{%- if template.name == 'collection' and collection -%}
+  {%- assign current_name = collection.title -%}
+  {%- assign current_url  = collection.url -%}
+{%- elsif template.name == 'product' and product -%}
+  {%- assign current_name = product.title -%}
+  {%- assign current_url  = product.url -%}
+{%- else -%}
+  {%- assign current_name = page_title | default: request.page_type -%}
+  {%- assign current_url  = request.path -%}
+{%- endif -%}
+
+{%- comment -%}
+  Avoid duplicate current link when already last in crumbs
+{%- endcomment -%}
+{%- assign crumb_items = crumbs | split: '||' -%}
+{%- assign last_pair = crumb_items | last | split: '::' -%}
+{%- assign last_url = last_pair[1] -%}
+{%- assign render_current = true -%}
+{%- if last_url == current_url -%}
+  {%- assign render_current = false -%}
+{%- endif -%}
+
+{%- comment -%}
+  Render visual breadcrumbs
+{%- endcomment -%}
+<nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+  {%- for c in crumb_items -%}
+    {%- assign pair = c | split: '::' -%}
+    {%- assign t = pair[0] -%}
+    {%- assign u = pair[1] -%}
+    <a class="breadcrumbs__item" href="{{ u | escape }}" title="{{ t | escape }}">{{ t | escape }}</a>
+    {%- unless forloop.last and render_current == false -%}
+      <span class="breadcrumbs__separator" aria-hidden="true">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3.4375 1.875L6.5625 5L3.4375 8.125" stroke="#323232" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    {%- endunless -%}
+  {%- endfor -%}
+  {%- if render_current -%}
+    <span class="breadcrumbs__item is-current" aria-current="page">{{ current_name | escape }}</span>
+  {%- endif -%}
+</nav>
+
+{%- comment -%}
+  JSON-LD (positions match visual)
+{%- endcomment -%}
+{%- assign json_items = '' -%}
+{%- assign pos = 1 -%}
+{%- for c in crumb_items -%}
+  {%- assign pair = c | split: '::' -%}
+  {%- assign t = pair[0] -%}
+  {%- assign u = pair[1] -%}
+  {%- capture item -%}
+    {
+      "@type": "ListItem",
+      "position": {{ pos }},
+      "item": { "@id": "{{ u }}", "name": "{{ t | escape }}" }
+    }
+  {%- endcapture -%}
+  {%- assign json_items = json_items | append: item -%}
+  {%- if forloop.last == false or render_current -%}{%- assign json_items = json_items | append: ',' -%}{%- endif -%}
+  {%- assign pos = pos | plus: 1 -%}
+{%- endfor -%}
+{%- if render_current -%}
+  {%- capture current_item -%}
+    {
+      "@type": "ListItem",
+      "position": {{ pos }},
+      "item": { "@id": "{{ current_url }}", "name": "{{ current_name | escape }}" }
+    }
+  {%- endcapture -%}
+  {%- assign json_items = json_items | append: current_item -%}
+{%- endif -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [ {{ json_items }} ]
+}
+</script>
+
+{%- comment -%}
+Optional CSS
+.breadcrumbs { display:flex; align-items:center; flex-wrap:wrap; gap:.25rem; font-size:.875rem; }
+.breadcrumbs__item { text-decoration:none; }
+.breadcrumbs__item.is-current { color:inherit; font-weight:600; pointer-events:none; }
+.breadcrumbs__separator { opacity:.6; padding:0 .25rem; }
+{%- endcomment -%}
+
+
