@@ -61,56 +61,45 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "custom_xi7eid": {
-          "type": "custom",
-          "disabled": true,
-          "settings": {
-            "show_footer_title": true,
-            "title": "test",
-            "text": "<p>Add your own custom text here.</p>",
-            "container_width": 15
-          }
-        },
-        "footer-0": {
-          "type": "logo_social",
-          "settings": {
-            "logo": "shopify://shop_images/Urban_PS_2c.svg",
-            "desktop_logo_height": 50,
-            "container_width": 95
-          }
-        },
         "footer-1": {
           "type": "menu",
           "settings": {
-            "show_footer_title": false,
-            "menu": "footer",
+            "show_footer_title": true,
+            "menu": "rund-um-ihre-bestellung",
             "container_width": 25
           }
         },
         "menu_DY8JCj": {
           "type": "menu",
           "settings": {
-            "show_footer_title": false,
-            "menu": "n-tzliches",
-            "container_width": 16
+            "show_footer_title": true,
+            "menu": "pers-nliche-beratung",
+            "container_width": 25
           }
         },
-        "footer2": {
+        "menu_tMVt7D": {
+          "type": "menu",
+          "settings": {
+            "show_footer_title": true,
+            "menu": "das-unternehmen",
+            "container_width": 25
+          }
+        },
+        "newsletter_hbqhha": {
           "type": "newsletter",
           "settings": {
             "show_footer_title": true,
-            "title": "Du willst vorne mitspielen? Dann lies, was wir schreiben!",
-            "text": "<p>Unser Newsletter ist das einzige Update, das dein Postfach verdient – alles andere kannst du löschen</p>",
-            "container_width": 33
+            "title": "Sign up and save",
+            "text": "<p>Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>",
+            "container_width": 25
           }
         }
       },
       "block_order": [
-        "custom_xi7eid",
-        "footer-0",
         "footer-1",
         "menu_DY8JCj",
-        "footer2"
+        "menu_tMVt7D",
+        "newsletter_hbqhha"
       ],
       "settings": {
         "show_locale_selector": true,
@@ -118,7 +107,7 @@
         "show_currency_flags": true,
         "show_payment_icons": true,
         "show_copyright": true,
-        "copyright_text": "II Urban-PS GmbH"
+        "copyright_text": ""
       }
     }
   },

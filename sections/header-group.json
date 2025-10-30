@@ -39,14 +39,49 @@
         "announcement_compact": true
       }
     },
+    "secondary_announcement_bar_tz8hRg": {
+      "type": "secondary-announcement-bar",
+      "name": "Secondary announce bar",
+      "settings": {
+        "richtext": "<p>Jetzt anrufen und beraten lassen!     <span style=\"text-decoration:underline\">040 - 999999 - 0</span></p>",
+        "icon_image": "shopify://shop_images/phone.svg",
+        "icon_alt": "Telefonberatung bei Urban PS",
+        "show_price_toggle": true,
+        "show_social": true,
+        "spacer_symbol": "|",
+        "desktop_min_width": 1024,
+        "price_selectors": "[data-product-price]",
+        "gross_suffix_text": "inkl. MwSt.",
+        "net_suffix_text": "zzgl. MwSt.",
+        "vat_rate_percent": 19,
+        "rounding_mode": "half-up",
+        "currency_prefix": "€",
+        "decimal_separator": ",",
+        "thousands_separator": ".",
+        "decimals": 2,
+        "persist_key": "urbanps_price_mode",
+        "bg_color": "#ffffff",
+        "text_color": "#222222",
+        "icon_color": "#222222",
+        "toggle_primary_color": "#222222",
+        "toggle_border_color": "#d9d9d9",
+        "font_size": "14px",
+        "line_height": "1.4",
+        "padding_y": "8px",
+        "padding_x": "16px",
+        "toggle_label_on": "Ja",
+        "toggle_label_off": "Nein",
+        "toggle_text_prefix": "Preise inkl. MwSt."
+      }
+    },
     "header": {
       "type": "header",
       "blocks": {
         "header-0": {
           "type": "logo",
           "settings": {
-            "logo": "shopify://shop_images/Urban_PS_2c.svg",
-            "desktop_logo_width": 140,
+            "logo": "shopify://shop_images/logo.svg",
+            "desktop_logo_width": 180,
             "mobile_logo_width": 110
           }
         }
@@ -55,7 +90,7 @@
         "header-0"
       ],
       "settings": {
-        "main_menu_link_list": "main-menu",
+        "main_menu_link_list": "primary-menu",
         "hover_menu": true,
         "mega_menu_images": true,
         "main_menu_alignment": "left-center",
@@ -63,7 +98,7 @@
         "sticky_index": false,
         "sticky_collection": false,
         "toolbar_menu": "",
-        "toolbar_social": true,
+        "toolbar_social": false,
         "show_locale_selector": true,
         "show_currency_selector": true,
         "show_currency_flags": true
@@ -72,6 +107,7 @@
   },
   "order": [
     "announcement",
+    "secondary_announcement_bar_tz8hRg",
     "header"
   ]
 }
