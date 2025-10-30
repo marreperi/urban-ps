@@ -72,6 +72,26 @@
       border-top: 0;
     }
   {%- endif -%}
+
+  /* Inline predictive search + helpers */
+  .only-desktop { display: none; }
+  .only-mobile { display: inline-flex; }
+  @media (min-width: 1024px) {
+    .only-desktop { display: inline-flex; }
+    .only-mobile { display: none; }
+  }
+
+  .header__row { display: flex; align-items: center; gap: 16px; }
+  .header__search-inline { align-items: center; max-width: 480px; min-width: 250px; flex: 1 1 auto; }
+  .predictive-search--inline { position: static !important; display: block; width: 100%; }
+  .predictive-search--inline .predictive-search__results { position: absolute; z-index: 30; width: 100%; }
+  .predictive-search-form { position: relative; width: 100%; }
+  .predictive-search__input { width: 100%; border: 1px solid #000; border-radius: 999px; padding: 10px 40px 10px 14px; }
+  .header__search-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+  .header__cart-wrap { display: inline-flex; align-items: center; gap: 8px; }
+  [data-cart-total] { white-space: nowrap; font: inherit; }
+  /* Force left alignment for desktop navigation */
+  .site-nav.site-navigation.small--hide { justify-content: flex-start; text-align: left; }
 </style>
 
 <div data-section-id="{{ section.id }}" data-section-type="header">
@@ -160,6 +180,35 @@
             {%- endif -%}
 
             <div class="header-item header-item--icons">
+              <div class="header__row only-desktop">
+                <div class="header__search-inline">
+                  <form action="{{ routes.search_url }}" method="get" role="search" class="predictive-search-form" data-predictive-search>
+                    <predictive-search open class="predictive-search--inline" tabindex="-1">
+                      <input
+                        class="predictive-search__input"
+                        id="HeaderSearchInput"
+                        type="search"
+                        name="q"
+                        value=""
+                        placeholder="Ich suche nach..."
+                        aria-label="Ich suche nach..."
+                        autocomplete="off"
+                        aria-expanded="true"
+                        aria-owns="predictive-search-results"
+                      >
+                      <div id="predictive-search-results" class="predictive-search__results" role="listbox"></div>
+                    </predictive-search>
+                    <span class="header__search-icon" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14.0005 14L10.5359 10.5353M10.5359 10.5353C11.4736 9.59762 12.0004 8.3258 12.0004 6.99967C12.0004 5.67354 11.4736 4.40172 10.5359 3.464C9.59814 2.52629 8.32632 1.99948 7.00019 1.99948C5.67406 1.99948 4.40224 2.52629 3.46452 3.464C2.5268 4.40172 2 5.67354 2 6.99967C2 8.3258 2.5268 9.59762 3.46452 10.5353C4.40224 11.4731 5.67406 11.9999 7.00019 11.9999C8.32632 11.9999 9.59814 11.4731 10.5359 10.5353Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                  </form>
+                </div>
+                <div class="header__wishlist">
+                  <button class="st-wishlist-details-button st-wishlist-details-button--header-icon" data-type="manually" aria-label="View Wishlist Details"></button>
+                </div>
+              </div>
               {%- render 'header-icons', section: section -%}
             </div>
           </div>
@@ -181,6 +230,8 @@
     </div>
   </div>
 </div>
+
+<script src="{{ 'header-cart-total.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

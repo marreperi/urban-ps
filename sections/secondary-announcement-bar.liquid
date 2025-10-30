@@ -41,6 +41,9 @@
   .secondary-announcement-bar__spacer { opacity: .6; }
   .secondary-announcement-bar a { color: inherit; }
   .secondary-announcement-bar__icon { width: 16px; height: 16px; display: inline-block; }
+  .secondary-announcement-bar .social-icons { display: inline-flex; align-items: center; gap: 10px; }
+  .secondary-announcement-bar .social-icons > li { display: inline-flex; align-items: center; }
+  .secondary-announcement-bar .gross-net-switch__label::before { left: 28px; }
 </style>
 
 <div class="secondary-announcement-bar" data-price-toggle-config="{{ cfg_json | strip_newlines | escape }}">
