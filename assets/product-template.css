@@ -12,15 +12,19 @@
   }
 }
 
-.grid-item.pt-card {
+/* Override base grid__item styles for product template cards */
+.grid-wrapper.pt-grid .grid__item.pt-card {
   border-radius: 16px;
   padding: 32px;
   background: #ffffff;
+  padding-left: 32px; /* Override base theme padding-left */
+  float: none; /* Reset float from base grid__item */
 }
 
 @media (max-width: 749px) {
-  .grid-item.pt-card {
+  .grid-wrapper.pt-grid .grid__item.pt-card {
     padding: 24px;
+    padding-left: 24px; /* Override base theme padding-left */
     border-radius: 12px;
   }
 }
