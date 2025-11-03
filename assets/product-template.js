@@ -107,6 +107,8 @@
     ariaLive.className = "pt-aria-live";
     ariaLive.setAttribute("aria-live", "polite");
     ariaLive.setAttribute("aria-atomic", "true");
+    ariaLive.style.position = "absolute";
+    ariaLive.style.left = "-9999px";
     document.body.appendChild(ariaLive);
 
     function announce(message) {
@@ -116,28 +118,64 @@
       }, 1000);
     }
 
-    form.addEventListener("submit", function (e) {
-      if (!addOnCheckbox.checked) return;
+    function openCartDrawer() {
+      // Trigger cart drawer open
+      if (typeof theme !== "undefined" && theme.CartDrawer) {
+        if (
+          window.CartDrawer &&
+          window.CartDrawer.drawer &&
+          window.CartDrawer.drawer.open
+        ) {
+          window.CartDrawer.drawer.open();
+        } else {
+          // Fallback: trigger drawer open event
+          document.dispatchEvent(new CustomEvent("cart:updated"));
+          var drawerBtn = document.querySelector(".js-drawer-open-cart");
+          if (drawerBtn) {
+            drawerBtn.click();
+          }
+        }
+      } else {
+        // Fallback: trigger drawer open event
+        document.dispatchEvent(new CustomEvent("cart:updated"));
+        var drawerBtn = document.querySelector(".js-drawer-open-cart");
+        if (drawerBtn) {
+          drawerBtn.click();
+        }
+      }
+    }
 
+    // ALWAYS intercept form submission to prevent redirect
+    form.addEventListener("submit", function (e) {
       e.preventDefault();
       e.stopPropagation();
+
+      const addToCartButton = form.querySelector(
+        "[data-add-to-cart], .add-to-cart"
+      );
+      if (addToCartButton) {
+        addToCartButton.classList.add("btn--loading");
+      }
 
       const formData = new FormData(form);
       const variantId =
         formData.get("id") || form.querySelector('[name="id"]')?.value;
       const quantity = parseInt(formData.get("quantity") || "1", 10);
-      const addonVariantId = addOnCheckbox.getAttribute(
-        "data-addon-variant-id"
-      );
-      const addonQuantity = parseInt(
-        addOnCheckbox.getAttribute("data-addon-quantity") || "1",
-        10
-      );
 
       const items = [{ id: variantId, quantity: quantity }];
 
-      if (addonVariantId) {
-        items.push({ id: addonVariantId, quantity: addonQuantity });
+      // Add add-on product if checkbox is checked
+      if (addOnCheckbox.checked) {
+        const addonVariantId = addOnCheckbox.getAttribute(
+          "data-addon-variant-id"
+        );
+        const addonQuantity = parseInt(
+          addOnCheckbox.getAttribute("data-addon-quantity") || "1",
+          10
+        );
+        if (addonVariantId) {
+          items.push({ id: addonVariantId, quantity: addonQuantity });
+        }
       }
 
       fetch("/cart/add.js", {
@@ -149,32 +187,40 @@
         body: JSON.stringify({ items: items }),
       })
         .then(function (res) {
-          if (!res.ok) throw new Error("Add to cart failed");
+          if (!res.ok) {
+            return res.json().then(function (err) {
+              throw new Error(err.description || "Add to cart failed");
+            });
+          }
           return res.json();
         })
         .then(function (cart) {
           announce("Produkt zum Warenkorb hinzugefügt");
-          if (typeof window.updateCartDrawer === "function") {
-            window.updateCartDrawer(cart);
-          } else if (
-            typeof window.CartDrawer !== "undefined" &&
-            window.CartDrawer.open
-          ) {
-            window.CartDrawer.open();
-          }
-          if (form.dataset.productFormSubmit) {
-            const submitFn = new Function(
-              "return " + form.dataset.productFormSubmit
-            )();
-            if (typeof submitFn === "function") {
-              submitFn(cart);
-            }
+
+          // Update cart count and total
+          window.dispatchEvent(new CustomEvent("cart:updated"));
+          window.dispatchEvent(
+            new CustomEvent("product:added", { detail: cart })
+          );
+
+          // Open cart drawer
+          openCartDrawer();
+
+          // Remove loading state
+          if (addToCartButton) {
+            addToCartButton.classList.remove("btn--loading");
           }
         })
         .catch(function (err) {
           console.error("Add to cart error:", err);
           announce("Fehler beim Hinzufügen zum Warenkorb");
-          form.submit();
+
+          // Remove loading state
+          if (addToCartButton) {
+            addToCartButton.classList.remove("btn--loading");
+          }
+
+          // Don't redirect on error, just show message
         });
     });
   }
