@@ -93,8 +93,15 @@
     const addOnCheckbox = document.querySelector("[data-addon-variant-id]");
     if (!addOnCheckbox) return;
 
-    const form = addOnCheckbox.closest('form[action*="/cart/add"]');
-    if (!form) return;
+    // Find the product form - try multiple selectors
+    const form =
+      addOnCheckbox.closest("form") ||
+      document.querySelector("form.product-single__form") ||
+      document.querySelector('form[id^="product-form"]');
+    if (!form) {
+      console.warn("[product-template] Could not find product form for add-on");
+      return;
+    }
 
     const ariaLive = document.createElement("div");
     ariaLive.className = "pt-aria-live";
