@@ -366,24 +366,67 @@
                       {%- endunless -%}
                     </div>
                   {%- when 'product_switcher' -%}
-                    {%- if product.metafields.custom.product_variants.value.size > 0 -%}
-                      <div class="product-block" {{ block.shopify_attributes }}>
+                    {%- liquid
+                      assign variant_metafield = product.metafields.custom.product_variants
+                      assign variant_list = variant_metafield.value
+                      assign has_variants = false
+                      if variant_list != blank
+                        assign has_variants = true
+                      endif
+                    -%}
+                    <div class="product-block" {{ block.shopify_attributes }}>
+                      {%- if has_variants -%}
+                        {%- comment -%}Build label::id pairs, sort, then render{%- endcomment -%}
+                        {%- assign label_pairs = '' -%}
+                        {%- for ref in variant_list -%}
+                          {%- assign p = ref -%}
+                          {%- assign p_label = p.metafields.custom.varianten_label | default: p.title | strip -%}
+                          {%- if label_pairs == blank -%}
+                            {%- assign label_pairs = p_label | append: '::' | append: p.id -%}
+                          {%- else -%}
+                            {%- assign label_pairs = label_pairs | append: '||' | append: p_label | append: '::' | append: p.id -%}
+                          {%- endif -%}
+                        {%- endfor -%}
+                        {%- assign pairs_array = label_pairs | split: '||' -%}
+                        {%- assign sorted_pairs = pairs_array | sort -%}
                         <nav class="pt-variant-alt" aria-label="{{ 'products.product.options' | t }}">
-                          {%- for ref in product.metafields.custom.product_variants.value -%}
-                            {%- assign p = ref -%}
-                            {%- assign is_current = false -%}
-                            {%- if p.id == product.id -%}
-                              {%- assign is_current = true -%}
+                          {%- for pair in sorted_pairs -%}
+                            {%- assign parts = pair | split: '::' -%}
+                            {%- assign pair_label = parts[0] -%}
+                            {%- assign pair_id = parts[1] | plus: 0 -%}
+                            {%- assign p = null -%}
+                            {%- for ref in variant_list -%}
+                              {%- if ref.id == pair_id -%}
+                                {%- assign p = ref -%}
+                                {%- break -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                            {%- if p -%}
+                              {%- assign is_current = false -%}
+                              {%- if p.id == product.id -%}
+                                {%- assign is_current = true -%}
+                              {%- endif -%}
+                              {%- assign variant_label = p.metafields.custom.varianten_label | default: p.title -%}
+                              <a class="pt-variant-pill{% if is_current %} is-current{% endif %}"
+                                 href="{{ p.url }}"
+                                 aria-current="{% if is_current %}page{% else %}false{% endif %}">
+                                {{ variant_label }}
+                              </a>
                             {%- endif -%}
-                            <a class="pt-variant-pill{% if is_current %} is-current{% endif %}"
-                               href="{{ p.url }}"
-                               aria-current="{% if is_current %}page{% else %}false{% endif %}">
-                              {{ p.metafields.custom.varianten_label | default: p.title }}
-                            </a>
                           {%- endfor -%}
                         </nav>
-                      </div>
-                    {%- endif -%}
+                      {%- else -%}
+                        <div class="pt-switcher-debug" style="padding: 16px; background: #f5f5f5; border-radius: 8px; font-size: 12px; color: #666;">
+                          <strong>Product Switcher Debug:</strong><br>
+                          Metafield exists: {% if variant_metafield != blank %}Yes{% else %}No{% endif %}<br>
+                          Variant list blank: {% if variant_list == blank %}Yes{% else %}No{% endif %}<br>
+                          Has variants: {% if has_variants %}Yes{% else %}No{% endif %}<br>
+                          Product ID: {{ product.id }}<br>
+                          Metafield namespace: custom.product_variants<br>
+                          First item check: {% if variant_list != blank %}{{ variant_list.first.title }}{% else %}no items{% endif %}
+                        </div>
+                      {%- endif -%}
+                    </div>
                   {%- when 'addon_product' -%}
                     {%- if block.settings.product != blank -%}
                       {%- assign addon_product = all_products[block.settings.product] -%}
@@ -393,17 +436,21 @@
                           <label class="pt-addon-checkbox">
                             <input type="checkbox" data-addon-variant-id="{{ addon_variant.id }}" data-addon-quantity="1" />
                             <div class="pt-addon-content">
-                              <div class="pt-addon-label">{{ block.settings.label | default: addon_product.title }}</div>
-                              {%- if block.settings.text != blank -%}
-                                <div>{{ block.settings.text }}</div>
-                              {%- endif -%}
-                              <div class="pt-addon-price">
-                                <span>+</span>
-                                <span>{{ addon_variant.price | money }}</span>
+                              <div class="pt-addon-info">
+                                <div class="pt-addon-label">{{ block.settings.label | default: addon_product.title }}</div>
+                                {%- if block.settings.text != blank -%}
+                                  <div class="pt-addon-text">{{ block.settings.text }}</div>
+                                {%- endif -%}
                               </div>
-                              {%- if block.settings.subtext != blank -%}
-                                <div class="pt-addon-subtext">{{ block.settings.subtext | default: 'einmalig' }}</div>
-                              {%- endif -%}
+                              <div class="pt-addon-price-wrapper">
+                                <div class="pt-addon-price">
+                                  <span>+</span>
+                                  <span>{{ addon_variant.price | money }}</span>
+                                </div>
+                                {%- if block.settings.subtext != blank -%}
+                                  <div class="pt-addon-subtext">{{ block.settings.subtext | default: 'einmalig' }}</div>
+                                {%- endif -%}
+                              </div>
                             </div>
                           </label>
                         </div>
