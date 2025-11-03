@@ -82,6 +82,9 @@
   }
 
   .header__row { display: flex; align-items: center; gap: 16px; }
+  @media (min-width: 1024px) {
+    .header__row.only-desktop { display: flex; justify-content: flex-start; }
+  }
   .header__search-inline { align-items: center; max-width: 480px; min-width: 250px; flex: 1 1 auto; }
   .predictive-search--inline { position: static !important; display: block; width: 100%; }
   .predictive-search--inline .predictive-search__results { position: absolute; z-index: 30; width: 100%; }

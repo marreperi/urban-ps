@@ -298,7 +298,7 @@
                       {%- endif -%}
                     </div>
                   {%- when 'quantity_selector' -%}
-                    {%- comment -%}Quantity handled inline with buy_buttons if present{%- endcomment -%}
+                    {%- comment -%}Quantity handled inline with buy_buttons block{%- endcomment -%}
                   {%- when 'size_chart' -%}
                     {% if connect_to_sizechart == false %}
                       {%- capture size_chart_title -%}
@@ -376,15 +376,18 @@
                     -%}
                     <div class="product-block" {{ block.shopify_attributes }}>
                       {%- if has_variants -%}
-                        {%- comment -%}Build label::id pairs, sort, then render{%- endcomment -%}
+                        {%- comment -%}Look up full products to access metafields{%- endcomment -%}
                         {%- assign label_pairs = '' -%}
                         {%- for ref in variant_list -%}
-                          {%- assign p = ref -%}
-                          {%- assign p_label = p.metafields.custom.varianten_label | default: p.title | strip -%}
+                          {%- assign full_product = all_products[ref.handle] -%}
+                          {%- if full_product == blank -%}
+                            {%- assign full_product = ref -%}
+                          {%- endif -%}
+                          {%- assign p_label = full_product.metafields.custom.varianten_label | default: ref.title | strip -%}
                           {%- if label_pairs == blank -%}
-                            {%- assign label_pairs = p_label | append: '::' | append: p.id -%}
+                            {%- assign label_pairs = p_label | append: '::' | append: ref.id -%}
                           {%- else -%}
-                            {%- assign label_pairs = label_pairs | append: '||' | append: p_label | append: '::' | append: p.id -%}
+                            {%- assign label_pairs = label_pairs | append: '||' | append: p_label | append: '::' | append: ref.id -%}
                           {%- endif -%}
                         {%- endfor -%}
                         {%- assign pairs_array = label_pairs | split: '||' -%}
@@ -394,21 +397,26 @@
                             {%- assign parts = pair | split: '::' -%}
                             {%- assign pair_label = parts[0] -%}
                             {%- assign pair_id = parts[1] | plus: 0 -%}
-                            {%- assign p = null -%}
+                            {%- assign found_product = null -%}
                             {%- for ref in variant_list -%}
                               {%- if ref.id == pair_id -%}
-                                {%- assign p = ref -%}
+                                {%- assign full_product = all_products[ref.handle] -%}
+                                {%- if full_product == blank -%}
+                                  {%- assign found_product = ref -%}
+                                {%- else -%}
+                                  {%- assign found_product = full_product -%}
+                                {%- endif -%}
                                 {%- break -%}
                               {%- endif -%}
                             {%- endfor -%}
-                            {%- if p -%}
+                            {%- if found_product -%}
                               {%- assign is_current = false -%}
-                              {%- if p.id == product.id -%}
+                              {%- if found_product.id == product.id -%}
                                 {%- assign is_current = true -%}
                               {%- endif -%}
-                              {%- assign variant_label = p.metafields.custom.varianten_label | default: p.title -%}
+                              {%- assign variant_label = found_product.metafields.custom.varianten_label | default: found_product.title -%}
                               <a class="pt-variant-pill{% if is_current %} is-current{% endif %}"
-                                 href="{{ p.url }}"
+                                 href="{{ found_product.url }}"
                                  aria-current="{% if is_current %}page{% else %}false{% endif %}">
                                 {{ variant_label }}
                               </a>
@@ -479,31 +487,85 @@
                   {%- when 'buy_buttons' -%}
                     <div class="product-block" {{ block.shopify_attributes }}>
                       {%- unless product.empty? -%}
-                        {%- assign has_quantity = false -%}
-                        {%- for b in blocks -%}
-                          {%- if b.type == 'quantity_selector' -%}
-                            {%- assign has_quantity = true -%}
-                            {%- break -%}
-                          {%- endif -%}
-                        {%- endfor -%}
-                        <div class="pt-cta-row">
-                          {%- if has_quantity -%}
-                            {%- assign qty_id = section_id | append: product.id -%}
-                            <div class="product__quantity">
-                              <label for="Quantity-{{ qty_id }}" class="visually-hidden">{{ 'products.product.quantity' | t }}</label>
-                              {%- render 'quantity-input', form_id: form_id, id: qty_id, qty: 1, min: 1 -%}
-                            </div>
-                          {%- endif -%}
-                          <div class="product-block pt-cta-button{% unless has_quantity %} pt-cta-button--full{% endunless %}">
-                            {%- render 'product-form',
-                              form_id: form_id,
-                              product: product,
-                              show_dynamic_checkout: block.settings.show_dynamic_checkout,
-                              current_variant: current_variant,
-                              block: block,
+                        {%- assign show_qty = block.settings.show_quantity_selector | default: true -%}
+                        {%- if show_qty -%}
+                          {%- form 'product', product, id: form_id, class: 'product-single__form' -%}
+                            {%- liquid
+                              assign gift_card_recipient_feature_active = false
+                              if block.settings.show_gift_card_recipient and product.gift_card?
+                                assign gift_card_recipient_feature_active = true
+                              endif
+
+                              assign default_text = 'products.product.add_to_cart' | t
+                              assign button_text = 'products.product.add_to_cart' | t
+                              if template contains 'preorder'
+                                assign default_text = 'products.product.preorder' | t
+                                assign button_text = 'products.product.preorder' | t
+                              endif
+                              unless current_variant.available
+                                assign button_text = 'products.product.sold_out' | t
+                              endunless
                             -%}
-                          </div>
-                        </div>
+
+                            {%- if gift_card_recipient_feature_active -%}
+                              {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
+                            {%- endif -%}
+
+                            <div class="pt-cta-row">
+                              {%- assign qty_id = section_id | append: product.id -%}
+                              <div class="product__quantity pt-qty-input">
+                                <label for="Quantity-{{ qty_id }}" class="visually-hidden">{{ 'products.product.quantity' | t }}</label>
+                                {%- render 'quantity-input', form_id: form_id, id: qty_id, qty: 1, min: 1 -%}
+                              </div>
+                              <div class="product-block pt-cta-button">
+                                <button
+                                  {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
+                                  name="add"
+                                  data-add-to-cart
+                                  class="btn btn--full add-to-cart"
+                                  {% unless current_variant.available %} disabled="disabled"{% endunless %}>
+                                  <span data-add-to-cart-text data-default-text="{{ default_text }}">
+                                    {{ button_text }}
+                                  </span>
+                                </button>
+                              </div>
+                            </div>
+
+                            {%- if block.settings.show_dynamic_checkout and gift_card_recipient_feature_active == false -%}
+                              {%- unless template contains 'preorder' -%}
+                                <div class="pt-dynamic-checkout">
+                                  {{ form | payment_button }}
+                                </div>
+                              {%- endunless -%}
+                            {%- endif -%}
+
+                            <div class="shopify-payment-terms product__policies">{{ form | payment_terms }}</div>
+
+                            <select name="id" data-product-select class="product-single__variants no-js">
+                              {%- for variant in product.variants -%}
+                                {%- if variant.available -%}
+                                  <option {% if variant == product.selected_or_first_available_variant %}
+                                    selected="selected"{% endif %}
+                                    value="{{ variant.id }}">
+                                    {{ variant.title }} - {{ variant.price | money_with_currency }}
+                                  </option>
+                                {%- else -%}
+                                  <option disabled="disabled">
+                                    {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                                  </option>
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </select>
+                          {%- endform -%}
+                        {%- else -%}
+                          {%- render 'product-form',
+                            form_id: form_id,
+                            product: product,
+                            show_dynamic_checkout: block.settings.show_dynamic_checkout,
+                            current_variant: current_variant,
+                            block: block,
+                          -%}
+                        {%- endif -%}
                       {%- endunless -%}
 
                       {%- if block.settings.surface_pickup_enable -%}
