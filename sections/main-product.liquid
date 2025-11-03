@@ -10,7 +10,7 @@
   section_id: section.id,
   blocks: section.blocks,
   image_position: section.settings.image_position,
-  image_container_width: section.settings.image_size,
+
   product_zoom_enable: section.settings.product_zoom_enable,
   sku_enable: section.settings.sku_enable,
   isModal: isModal,
@@ -56,26 +56,7 @@
         }
       ]
     },
-    {
-      "type": "select",
-      "id": "image_size",
-      "label": "t:sections.main-product.settings.image_size.label",
-      "default": "medium",
-      "options": [
-        {
-          "value": "small",
-          "label": "t:sections.main-product.settings.image_size.options.small.label"
-        },
-        {
-          "value": "medium",
-          "label": "t:sections.main-product.settings.image_size.options.medium.label"
-        },
-        {
-          "value": "large",
-          "label": "t:sections.main-product.settings.image_size.options.large.label"
-        }
-      ]
-    },
+   
     {
       "type": "checkbox",
       "id": "product_zoom_enable",
@@ -162,6 +143,12 @@
   ],
   "blocks": [{
   "type": "@app"
+},
+{
+  "type": "product_switcher",
+  "name": "Product switcher",
+  "limit": 1,
+  "settings": []
 },
 {
   "type": "price",
@@ -310,6 +297,38 @@
   ]
 },
 {
+  "type": "addon_product",
+  "name": "Add-on product",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Add-on product",
+      "info": "Select a product to offer as an add-on"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "info": "Override the product title for the checkbox label"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Description",
+      "info": "Additional text shown below the label"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "einmalig",
+      "info": "Text shown below the price (e.g., 'einmalig')"
+    }
+  ]
+},
+{
   "type": "buy_buttons",
   "name": "t:product_block.buy_buttons.name",
   "limit": 1,
@@ -334,6 +353,37 @@
       "default": false,
       "label": "t:common.gift_card.show_gift_card_recipient.label",
       "info": "t:common.gift_card.show_gift_card_recipient.info"
+    }
+  ]
+},
+{
+  "type": "support_widget",
+  "name": "Support widget",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Fragen zu diesem Produkt?"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Unser Experte Frank Stampa hilft Ihnen gerne weiter!"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone number",
+      "default": "+49 (0)123 456 789"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Avatar image",
+      "info": "92x92px recommended, will be displayed as a circle"
     }
   ]
 },

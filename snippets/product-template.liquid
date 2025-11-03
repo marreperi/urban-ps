@@ -73,6 +73,9 @@
 
   {%- render 'product-template-variables', product: product, current_variant: current_variant -%}
 
+  {{ 'product-template.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-template.js' | asset_url }}" defer="defer"></script>
+
   <div class="page-content page-content--product">
     {{ 'product-header-bar.css' | asset_url | stylesheet_tag }}
     <div class="page-width">
@@ -119,9 +122,9 @@
         </div>
       </div>
 
-      <div class="grid{% unless image_position == 'left' %} grid--product-images-right{% endunless %}{% if mobile_layout == 'partial' %} grid--product-images--partial{% endif %}">
+      <div class="grid grid-wrapper pt-grid{% unless image_position == 'left' %} grid--product-images-right{% endunless %}{% if mobile_layout == 'partial' %} grid--product-images--partial{% endif %}">
         {%- if image_position == 'left' -%}
-          <div class="grid__item {{ product_image_width }} product-single__sticky">
+          <div class="grid__item product-single__sticky pt-card">
             {%- render 'product-images',
               section_id: section_id,
               product: product,
@@ -144,7 +147,7 @@
           </div>
         {%- endif -%}
 
-        <div class="grid__item {{ product_description_width }}">
+        <div class="grid__item pt-card">
 
           <div class="product-single__meta">
 
@@ -206,37 +209,49 @@
                     </div>
                   {%- when 'price' -%}
                     <div class="product-block product-block--price" {{ block.shopify_attributes }}>
-                      {%- assign hide_sale_price = true -%}
-                      {%- if product.compare_at_price_max > product.price -%}
-                        {%- if current_variant.compare_at_price > current_variant.price -%}
-                          {%- assign hide_sale_price = false -%}
-                        {%- endif -%}
-                        <span
-                          data-a11y-price
-                          class="visually-hidden"
-                          aria-hidden="{{ hide_sale_price }}">
-                            {{ 'products.general.regular_price' | t }}
-                        </span>
-                        <span data-product-price-wrap class="{% if hide_sale_price %} hide{% endif %}">
-                          <span data-compare-price class="product__price product__price--compare">
-                            {%- if current_variant.compare_at_price > current_variant.price -%}
-                              {{ current_variant.compare_at_price | money }}
-                            {%- endif -%}
+                      {%- liquid
+                        assign tax_rate = 1.19
+                        if shop.taxes_included
+                          assign gross_price = current_variant.price
+                          assign net_price = current_variant.price | divided_by: tax_rate
+                        else
+                          assign gross_price = current_variant.price | times: tax_rate
+                          assign net_price = current_variant.price
+                        endif
+                        assign hide_sale_price = true
+                        if product.compare_at_price_max > product.price
+                          if current_variant.compare_at_price > current_variant.price
+                            assign hide_sale_price = false
+                          endif
+                        endif
+                      -%}
+                      <div class="pt-price-row">
+                        <div>
+                          {%- if product.compare_at_price_max > product.price -%}
+                            <span data-a11y-price class="visually-hidden" aria-hidden="{{ hide_sale_price }}">
+                              {{ 'products.general.regular_price' | t }}
+                            </span>
+                            <span data-product-price-wrap class="{% if hide_sale_price %} hide{% endif %}">
+                              <span data-compare-price class="product__price product__price--compare">
+                                {%- if current_variant.compare_at_price > current_variant.price -%}
+                                  {{ current_variant.compare_at_price | money }}
+                                {%- endif -%}
+                              </span>
+                            </span>
+                            <span data-compare-price-a11y class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
+                          {%- else -%}
+                            <span data-a11y-price class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
+                          {%- endif -%}
+                          <span class="pt-price" data-price-gross="{{ gross_price | money }}" data-price-net="{{ net_price | money }}" data-product-price class="product__price{% if current_variant.compare_at_price > current_variant.price %} on-sale{% endif %}">
+                            <span class="pt-price-gross">{{ gross_price | money }}</span>
+                            <span class="pt-price-net">{{ net_price | money }}</span>
                           </span>
-                        </span>
-                        <span data-compare-price-a11y class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
-                      {%- else -%}
-                        <span data-a11y-price class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
-                      {%- endif -%}
-
-                      <span data-product-price
-                        class="product__price{% if current_variant.compare_at_price > current_variant.price %} on-sale{% endif %}">
-                        {%- unless product.empty? -%}
-                          {{ current_variant.price | money }}
-                        {%- else -%}
-                          {{ 1999 | money }}
-                        {%- endunless -%}
-                      </span>
+                          <div class="pt-price-mode">
+                            {%- render 'price-toggle', toggle_label_on: 'Ja', toggle_label_off: 'Nein', toggle_text_prefix: 'Preise inkl. MwSt.' -%}
+                          </div>
+                        </div>
+                        <button class="st-wishlist-button" data-type="details" data-handle="{{ product.handle }}" aria-label="{{ 'products.product.add_to_wishlist' | t }}"></button>
+                      </div>
 
                       {%- if settings.product_save_amount -%}
                         {%- if settings.product_save_type == 'dollar' -%}
@@ -283,13 +298,7 @@
                       {%- endif -%}
                     </div>
                   {%- when 'quantity_selector' -%}
-                    <div class="product-block" {{ block.shopify_attributes }}>
-                      <div class="product__quantity">
-                        {% assign qty_id = section_id | append: product.id %}
-                        <label for="Quantity-{{ qty_id }}">{{ 'products.product.quantity' | t }}</label>
-                        {%- render 'quantity-input', form_id: form_id, id: qty_id, qty: 1, min: 1 -%}
-                      </div>
-                    </div>
+                    {%- comment -%}Quantity handled inline with buy_buttons if present{%- endcomment -%}
                   {%- when 'size_chart' -%}
                     {% if connect_to_sizechart == false %}
                       {%- capture size_chart_title -%}
@@ -356,17 +365,97 @@
                         {%- endfor -%}
                       {%- endunless -%}
                     </div>
+                  {%- when 'product_switcher' -%}
+                    {%- if product.metafields.custom.product_variants.value.size > 0 -%}
+                      <div class="product-block" {{ block.shopify_attributes }}>
+                        <nav class="pt-variant-alt" aria-label="{{ 'products.product.options' | t }}">
+                          {%- for ref in product.metafields.custom.product_variants.value -%}
+                            {%- assign p = ref -%}
+                            {%- assign is_current = false -%}
+                            {%- if p.id == product.id -%}
+                              {%- assign is_current = true -%}
+                            {%- endif -%}
+                            <a class="pt-variant-pill{% if is_current %} is-current{% endif %}"
+                               href="{{ p.url }}"
+                               aria-current="{% if is_current %}page{% else %}false{% endif %}">
+                              {{ p.metafields.custom.varianten_label | default: p.title }}
+                            </a>
+                          {%- endfor -%}
+                        </nav>
+                      </div>
+                    {%- endif -%}
+                  {%- when 'addon_product' -%}
+                    {%- if block.settings.product != blank -%}
+                      {%- assign addon_product = all_products[block.settings.product] -%}
+                      {%- if addon_product != blank and addon_product.available -%}
+                        {%- assign addon_variant = addon_product.selected_or_first_available_variant -%}
+                        <div class="product-block pt-addon-block" {{ block.shopify_attributes }}>
+                          <label class="pt-addon-checkbox">
+                            <input type="checkbox" data-addon-variant-id="{{ addon_variant.id }}" data-addon-quantity="1" />
+                            <div class="pt-addon-content">
+                              <div class="pt-addon-label">{{ block.settings.label | default: addon_product.title }}</div>
+                              {%- if block.settings.text != blank -%}
+                                <div>{{ block.settings.text }}</div>
+                              {%- endif -%}
+                              <div class="pt-addon-price">
+                                <span>+</span>
+                                <span>{{ addon_variant.price | money }}</span>
+                              </div>
+                              {%- if block.settings.subtext != blank -%}
+                                <div class="pt-addon-subtext">{{ block.settings.subtext | default: 'einmalig' }}</div>
+                              {%- endif -%}
+                            </div>
+                          </label>
+                        </div>
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- when 'support_widget' -%}
+                    <div class="product-block pt-support-widget" {{ block.shopify_attributes }}>
+                      <div class="pt-support-content">
+                        <div class="pt-support-text">
+                          <div class="pt-support-title">{{ block.settings.title | default: 'Fragen zu diesem Produkt?' }}</div>
+                          {%- if block.settings.text != blank -%}
+                            <div class="pt-support-body">{{ block.settings.text | default: 'Unser Experte Frank Stampa hilft Ihnen gerne weiter!' }}</div>
+                          {%- endif -%}
+                          {%- if block.settings.phone != blank -%}
+                            <a href="tel:{{ block.settings.phone | replace: ' ', '' | replace: '-', '' | replace: '(', '' | replace: ')', '' }}" class="pt-support-phone">
+                              <svg class="pt-support-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.05 6C15.0268 6.19057 15.9244 6.66826 16.6281 7.37194C17.3318 8.07561 17.8095 8.97326 18 9.95M14.05 2C16.0793 2.22544 17.9716 3.13417 19.4163 4.57701C20.8609 6.01984 21.7721 7.91101 22 9.94M18.5 21C9.93959 21 3 14.0604 3 5.5C3 5.11378 3.01413 4.73086 3.04189 4.35173C3.07375 3.91662 3.08968 3.69907 3.2037 3.50103C3.29814 3.33701 3.4655 3.18146 3.63598 3.09925C3.84181 3 4.08188 3 4.56201 3H7.37932C7.78308 3 7.98496 3 8.15802 3.06645C8.31089 3.12515 8.44701 3.22049 8.55442 3.3441C8.67601 3.48403 8.745 3.67376 8.88299 4.05321L10.0491 7.26005C10.2096 7.70153 10.2899 7.92227 10.2763 8.1317C10.2643 8.31637 10.2012 8.49408 10.0942 8.64506C9.97286 8.81628 9.77145 8.93713 9.36863 9.17882L8 10C9.2019 12.6489 11.3501 14.7999 14 16L14.8212 14.6314C15.0629 14.2285 15.1837 14.0271 15.3549 13.9058C15.5059 13.7988 15.6836 13.7357 15.8683 13.7237C16.0777 13.7101 16.2985 13.7904 16.74 13.9509L19.9468 15.117C20.3262 15.255 20.516 15.324 20.6559 15.4456C20.7795 15.553 20.8749 15.6891 20.9335 15.842C21 16.015 21 16.2169 21 16.6207V19.438C21 19.9181 21 20.1582 20.9007 20.364C20.8185 20.5345 20.663 20.7019 20.499 20.7963C20.3009 20.9103 20.0834 20.9262 19.6483 20.9581C19.2691 20.9859 18.8862 21 18.5 21Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                              <span>{{ block.settings.phone | default: '+49 (0)123 456 789' }}</span>
+                            </a>
+                          {%- endif -%}
+                        </div>
+                        {%- if block.settings.image != blank -%}
+                          <img src="{{ block.settings.image | img_url: '92x92' }}" alt="{{ block.settings.image.alt | default: block.settings.title }}" class="pt-support-avatar" width="92" height="92" />
+                        {%- endif -%}
+                      </div>
+                    </div>
                   {%- when 'buy_buttons' -%}
                     <div class="product-block" {{ block.shopify_attributes }}>
                       {%- unless product.empty? -%}
-                        <div class="product-block">
-                          {%- render 'product-form',
-                            form_id: form_id,
-                            product: product,
-                            show_dynamic_checkout: block.settings.show_dynamic_checkout,
-                            current_variant: current_variant,
-                            block: block,
-                          -%}
+                        {%- assign has_quantity = false -%}
+                        {%- for b in blocks -%}
+                          {%- if b.type == 'quantity_selector' -%}
+                            {%- assign has_quantity = true -%}
+                            {%- break -%}
+                          {%- endif -%}
+                        {%- endfor -%}
+                        <div class="pt-cta-row">
+                          {%- if has_quantity -%}
+                            {%- assign qty_id = section_id | append: product.id -%}
+                            <div class="product__quantity">
+                              <label for="Quantity-{{ qty_id }}" class="visually-hidden">{{ 'products.product.quantity' | t }}</label>
+                              {%- render 'quantity-input', form_id: form_id, id: qty_id, qty: 1, min: 1 -%}
+                            </div>
+                          {%- endif -%}
+                          <div class="product-block pt-cta-button{% unless has_quantity %} pt-cta-button--full{% endunless %}">
+                            {%- render 'product-form',
+                              form_id: form_id,
+                              product: product,
+                              show_dynamic_checkout: block.settings.show_dynamic_checkout,
+                              current_variant: current_variant,
+                              block: block,
+                            -%}
+                          </div>
                         </div>
                       {%- endunless -%}
 
@@ -453,7 +542,7 @@
         </div>
 
         {%- unless image_position == 'left' -%}
-          <div class="grid__item {{ product_image_width }} product-single__sticky">
+          <div class="grid__item product-single__sticky pt-card">
             {%- render 'product-images',
               section_id: section_id,
               product: product,

@@ -9,9 +9,59 @@
 
 <div class="gross-net-switch" data-price-toggle role="group" aria-label="Preisumschalter" style="--toggle-primary: {{ primary }}; --toggle-border: {{ border }}; font-size: .75rem;">
   <span class="gross-net-switch__prefix">{{ prefix_text }}</span>
-  <input id="price-toggle-{{ unique_id }}" type="checkbox" class="gross-net-switch__input" data-price-toggle-input role="switch" aria-checked="true" />
+  <input id="price-toggle-{{ unique_id }}" type="checkbox" class="gross-net-switch__input" data-price-toggle-input role="switch" aria-checked="true" data-role="price-toggle" />
   <label for="price-toggle-{{ unique_id }}" class="gross-net-switch__label" data-on-label="{{ on_label }}" data-off-label="{{ off_label }}"></label>
 </div>
+<script>
+(function() {
+  const toggle = document.querySelector('#price-toggle-{{ unique_id }}');
+  if (!toggle) return;
+  
+  function getMode() {
+    try {
+      return localStorage.getItem('price_mode') || 'gross';
+    } catch (_) {
+      return 'gross';
+    }
+  }
+  
+  function setMode(mode) {
+    try {
+      localStorage.setItem('price_mode', mode);
+    } catch (_) {}
+  }
+  
+  function syncFromStorage() {
+    const mode = getMode();
+    const isGross = mode === 'gross';
+    toggle.checked = isGross;
+    toggle.setAttribute('aria-checked', String(isGross));
+    const wrapper = toggle.closest('[data-price-toggle]');
+    if (wrapper) wrapper.setAttribute('aria-checked', String(isGross));
+  }
+  
+  toggle.addEventListener('change', function(e) {
+    const mode = e.target.checked ? 'gross' : 'net';
+    setMode(mode);
+    window.dispatchEvent(new CustomEvent('price:mode', { detail: { mode: mode } }));
+  });
+  
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'price_mode') {
+      syncFromStorage();
+    }
+  });
+  
+  window.addEventListener('price:mode', function(e) {
+    if (e.detail && e.detail.mode) {
+      setMode(e.detail.mode);
+      syncFromStorage();
+    }
+  });
+  
+  syncFromStorage();
+})();
+</script>
 
 <style>
   .gross-net-switch { display: inline-flex; align-items: center; gap: .5rem; }
