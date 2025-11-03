@@ -101,13 +101,13 @@
 }
 
 .pt-variant-pill.is-current {
-  background: #f2f2f2;
-  border-color: #a6a6a6;
+  background: #E0E5DF;
+  border-color: #2E5129;
   font-weight: 500;
 }
 
 .pt-variant-pill.is-current:focus-visible {
-  outline-color: #a6a6a6;
+  outline-color: #2E5129;
 }
 
 /* Quantity + Add to Cart Row */

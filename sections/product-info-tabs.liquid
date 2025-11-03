@@ -1,0 +1,295 @@
+{% comment %}
+  Product Info Tabs Section
+  Displays product description, technical data, and downloads in tabbed navigation
+{% endcomment %}
+
+{{ 'product-info-tabs.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign show_description = true
+  assign show_technical = true
+  assign show_downloads = true
+
+  comment
+    Check if downloads should be hidden when empty
+  endcomment
+  assign datenblatt = product.metafields.custom.datenblatt
+  if section.settings.hide_empty_downloads and datenblatt == blank
+    assign show_downloads = false
+  endif
+
+  assign nav_label_1 = section.settings.nav_label_1 | default: 'Produktinformationen'
+  assign nav_label_2 = section.settings.nav_label_2 | default: 'Technische Daten'
+  assign nav_label_3 = section.settings.nav_label_3 | default: 'Downloads'
+
+  comment
+    Handle datenblatt metafield - support file reference or URL string
+  endcomment
+  assign datenblatt_url = null
+  if product.metafields.custom.datenblatt
+    if product.metafields.custom.datenblatt.url
+      assign datenblatt_url = product.metafields.custom.datenblatt.url
+    elsif product.metafields.custom.datenblatt.value
+      if product.metafields.custom.datenblatt.value.url
+        assign datenblatt_url = product.metafields.custom.datenblatt.value.url
+      else
+        assign datenblatt_url = product.metafields.custom.datenblatt.value
+      endif
+    elsif product.metafields.custom.datenblatt contains 'http'
+      assign datenblatt_url = product.metafields.custom.datenblatt
+    elsif product.metafields.custom.datenblatt contains 'files/'
+      assign datenblatt_url = product.metafields.custom.datenblatt | file_url
+    endif
+  endif
+-%}
+
+<section class="product-info-tabs-section" data-section-id="{{ section.id }}">
+  <div class="page-width">
+
+    {%- comment -%} Section Heading (outside tabs) {%- endcomment -%}
+    <h2 id="produktinformationen" class="section-heading">Produktinformationen</h2>
+
+    {%- comment -%} Classic Tabs Container {%- endcomment -%}
+    <div class="classic-tabs-container">
+      <div class="tabs" role="tablist">
+        <button
+          class="tab-button active"
+          data-tab="block-produktinformationen1"
+          role="tab"
+          aria-selected="true"
+          aria-controls="block-produktinformationen1"
+          id="nav-block-produktinformationen1">
+          {{ nav_label_1 }}
+        </button>
+        <button
+          class="tab-button"
+          data-tab="block-technische-daten2"
+          role="tab"
+          aria-selected="false"
+          aria-controls="block-technische-daten2"
+          id="nav-block-technische-daten2">
+          {{ nav_label_2 }}
+        </button>
+        {%- if show_downloads -%}
+          <button
+            class="tab-button"
+            data-tab="block-downloads3"
+            role="tab"
+            aria-selected="false"
+            aria-controls="block-downloads3"
+            id="nav-block-downloads3">
+            {{ nav_label_3 }}
+          </button>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Tab Contents {%- endcomment -%}
+      <div class="tab-contents">
+
+        {%- comment -%} Block 1: Produktinformationen (Description) {%- endcomment -%}
+        <div
+          class="tab-content active"
+          id="block-produktinformationen1"
+          role="tabpanel">
+          <div class="cms-block-container">
+            <div class="cms-block-container-row row cms-row">
+              <div class="col-12">
+                <div class="collapse-element">
+                  <div class="card border-0">
+                    <div class="card-header">
+                      <h3>Produktbeschreibung</h3>
+                    </div>
+                    <div class="card-body">
+                      {%- if product.description != blank -%}
+                        <div class="product-description">
+                          {{ product.description }}
+                        </div>
+                      {%- else -%}
+                        <p>{{ 'products.product.no_description' | t | default: 'Keine Beschreibung verfügbar.' }}</p>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {%- comment -%} Block 2: Technische Daten (Technical Data) {%- endcomment -%}
+        <div
+          class="tab-content"
+          id="block-technische-daten2"
+          role="tabpanel">
+          <div class="cms-block-container">
+            <div class="cms-block-container-row row cms-row">
+              <div class="col-12">
+                <div class="collapse-element">
+                  <div class="card border-0">
+                    <div class="card-header">
+                      <h3>Technische Daten</h3>
+                    </div>
+                    <div class="card-body">
+                      {%- liquid
+                        assign technical_data = product.metafields.custom.technical_data.value | default: product.metafields.custom.technical_data
+                        if technical_data == blank or technical_data == empty
+                          assign technical_data = null
+                        endif
+                      -%}
+
+                      {%- if technical_data != blank -%}
+                        <table class="table product-detail-properties-table align-middle">
+                          <tbody>
+                            {%- assign rows = technical_data | split: ';' -%}
+                            {%- for row in rows -%}
+                              {%- assign row = row | strip -%}
+                              {%- if row != blank -%}
+                                {%- assign parts = row | split: '|' -%}
+                                {%- if parts.size >= 2 -%}
+                                  {%- assign label = parts[0] | strip -%}
+                                  {%- assign value = parts[1] | strip -%}
+                                  {%- if label != blank or value != blank -%}
+                                    <tr>
+                                      <th scope="row">{{ label | escape }}</th>
+                                      <td>{{ value | escape }}</td>
+                                    </tr>
+                                  {%- endif -%}
+                                {%- endif -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </tbody>
+                        </table>
+                      {%- else -%}
+                        <p>{{ 'products.product.no_technical_data' | t | default: 'Keine technischen Daten verfügbar.' }}</p>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {%- comment -%} Block 3: Downloads {%- endcomment -%}
+        {%- if show_downloads -%}
+          <div
+            class="tab-content"
+            id="block-downloads3"
+            role="tabpanel">
+            <div class="cms-block-container">
+              <div class="cms-block-container-row row cms-row">
+                <div class="col-12">
+                  <div class="collapse-element">
+                    <div class="card border-0">
+                      <div class="card-header">
+                        <h3>Downloads</h3>
+                      </div>
+                      <div class="card-body">
+                        {%- comment -%} Debug output {%- endcomment -%}
+                        {%- if datenblatt_url == blank -%}
+                          {%- comment -%}
+                            <small style="color: #999; font-size: 0.75rem; display: block; margin-bottom: 0.5rem;">
+                            Debug: datenblatt metafield = {{ product.metafields.custom.datenblatt | json }}<br>
+                            datenblatt_url = {{ datenblatt_url | json }}
+                            </small>
+                          {%- endcomment -%}
+                        {%- endif -%}
+
+                        {%- if datenblatt_url != blank -%}
+                          <div class="download-button-container">
+                            <a
+                              href="{{ datenblatt_url }}"
+                              class="btn btn--primary download-button"
+                              target="_blank"
+                              rel="noopener"
+                              aria-label="{{ section.settings.download_button_text | default: 'Datenblatt (PDF) herunterladen' }}">
+                              <span class="download-button-text">
+                                {{ section.settings.download_button_text | default: 'Datenblatt (PDF) herunterladen' }}
+                              </span>
+                              <svg
+                                class="download-icon"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true">
+                                <path
+                                  d="M8 11V1M8 11L4 7M8 11L12 7M2 11V14C2 14.5523 2.44772 15 3 15H13C13.5523 15 14 14.5523 14 14V11"
+                                  stroke="currentColor"
+                                  stroke-width="1.5"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                              </svg>
+                            </a>
+                          </div>
+                        {%- else -%}
+                          {%- unless section.settings.hide_empty_downloads -%}
+                            <p>{{ 'products.product.no_downloads' | t | default: 'Keine Downloads verfügbar.' }}</p>
+                          {%- endunless -%}
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script src="{{ 'product-info-tabs.js' | asset_url }}" defer></script>
+
+{% schema %}
+  {
+    "name": "Produkt Info Tabs",
+    "tag": "section",
+    "class": "product-info-tabs-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Navigation Labels"
+      },
+      {
+        "type": "text",
+        "id": "nav_label_1",
+        "label": "Tab 1 Label",
+        "default": "Produktinformationen"
+      },
+      {
+        "type": "text",
+        "id": "nav_label_2",
+        "label": "Tab 2 Label",
+        "default": "Technische Daten"
+      },
+      {
+        "type": "text",
+        "id": "nav_label_3",
+        "label": "Tab 3 Label",
+        "default": "Downloads"
+      }, {
+        "type": "header",
+        "content": "Downloads"
+      }, {
+        "type": "text",
+        "id": "download_button_text",
+        "label": "Download Button Text",
+        "default": "Datenblatt (PDF) herunterladen"
+      }, {
+        "type": "checkbox",
+        "id": "hide_empty_downloads",
+        "label": "Hide downloads block if empty",
+        "default": false
+      }
+    ],
+    "presets": [
+      {
+        "name": "Produkt Info Tabs"
+      }
+    ]
+  }
+{% endschema %}
