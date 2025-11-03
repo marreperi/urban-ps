@@ -82,6 +82,17 @@
         "product_video_style": "muted"
       }
     },
+    "product_info_tabs_KK9zc9": {
+      "type": "product-info-tabs",
+      "name": "Produkt Info Tabs",
+      "settings": {
+        "nav_label_1": "Produktinformationen",
+        "nav_label_2": "Technische Daten",
+        "nav_label_3": "Downloads",
+        "download_button_text": "Datenblatt (PDF) herunterladen",
+        "hide_empty_downloads": false
+      }
+    },
     "sub": {
       "type": "product-full-width",
       "disabled": true,
@@ -110,6 +121,7 @@
   },
   "order": [
     "main",
+    "product_info_tabs_KK9zc9",
     "sub",
     "product-recommendations",
     "recently-viewed",
