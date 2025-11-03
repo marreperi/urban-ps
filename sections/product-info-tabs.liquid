@@ -44,53 +44,44 @@
 -%}
 
 <section class="product-info-tabs-section" data-section-id="{{ section.id }}">
+
+  {%- comment -%} Section Heading in separate page-width {%- endcomment -%}
   <div class="page-width">
-
-    {%- comment -%} Section Heading (outside tabs) {%- endcomment -%}
     <h2 id="produktinformationen" class="section-heading">Produktinformationen</h2>
+  </div>
 
-    {%- comment -%} Classic Tabs Container {%- endcomment -%}
+  {%- comment -%} Tabs and Content in single container {%- endcomment -%}
+  <div class="page-width">
+    {%- comment -%} Classic Tabs Navigation (anchor links) {%- endcomment -%}
     <div class="classic-tabs-container">
       <div class="tabs" role="tablist">
-        <button
+        <a
           class="tab-button active"
-          data-tab="block-produktinformationen1"
-          role="tab"
-          aria-selected="true"
-          aria-controls="block-produktinformationen1"
+          href="#block-produktinformationen1"
           id="nav-block-produktinformationen1">
           {{ nav_label_1 }}
-        </button>
-        <button
+        </a>
+        <a
           class="tab-button"
-          data-tab="block-technische-daten2"
-          role="tab"
-          aria-selected="false"
-          aria-controls="block-technische-daten2"
+          href="#block-technische-daten2"
           id="nav-block-technische-daten2">
           {{ nav_label_2 }}
-        </button>
+        </a>
         {%- if show_downloads -%}
-          <button
+          <a
             class="tab-button"
-            data-tab="block-downloads3"
-            role="tab"
-            aria-selected="false"
-            aria-controls="block-downloads3"
+            href="#block-downloads3"
             id="nav-block-downloads3">
             {{ nav_label_3 }}
-          </button>
+          </a>
         {%- endif -%}
       </div>
 
-      {%- comment -%} Tab Contents {%- endcomment -%}
+      {%- comment -%} All Content Blocks (all visible, scrollable) {%- endcomment -%}
       <div class="tab-contents">
 
         {%- comment -%} Block 1: Produktinformationen (Description) {%- endcomment -%}
-        <div
-          class="tab-content active"
-          id="block-produktinformationen1"
-          role="tabpanel">
+        <div class="cms-block" id="block-produktinformationen1">
           <div class="cms-block-container">
             <div class="cms-block-container-row row cms-row">
               <div class="col-12">
@@ -116,10 +107,7 @@
         </div>
 
         {%- comment -%} Block 2: Technische Daten (Technical Data) {%- endcomment -%}
-        <div
-          class="tab-content"
-          id="block-technische-daten2"
-          role="tabpanel">
+        <div class="cms-block" id="block-technische-daten2">
           <div class="cms-block-container">
             <div class="cms-block-container-row row cms-row">
               <div class="col-12">
@@ -171,10 +159,7 @@
 
         {%- comment -%} Block 3: Downloads {%- endcomment -%}
         {%- if show_downloads -%}
-          <div
-            class="tab-content"
-            id="block-downloads3"
-            role="tabpanel">
+          <div class="cms-block" id="block-downloads3">
             <div class="cms-block-container">
               <div class="cms-block-container-row row cms-row">
                 <div class="col-12">
@@ -184,21 +169,11 @@
                         <h3>Downloads</h3>
                       </div>
                       <div class="card-body">
-                        {%- comment -%} Debug output {%- endcomment -%}
-                        {%- if datenblatt_url == blank -%}
-                          {%- comment -%}
-                            <small style="color: #999; font-size: 0.75rem; display: block; margin-bottom: 0.5rem;">
-                            Debug: datenblatt metafield = {{ product.metafields.custom.datenblatt | json }}<br>
-                            datenblatt_url = {{ datenblatt_url | json }}
-                            </small>
-                          {%- endcomment -%}
-                        {%- endif -%}
-
                         {%- if datenblatt_url != blank -%}
                           <div class="download-button-container">
                             <a
                               href="{{ datenblatt_url }}"
-                              class="btn btn--primary download-button"
+                              class="btn btn--secondary download-button"
                               target="_blank"
                               rel="noopener"
                               aria-label="{{ section.settings.download_button_text | default: 'Datenblatt (PDF) herunterladen' }}">
@@ -238,8 +213,8 @@
 
       </div>
     </div>
-
   </div>
+
 </section>
 
 <script src="{{ 'product-info-tabs.js' | asset_url }}" defer></script>

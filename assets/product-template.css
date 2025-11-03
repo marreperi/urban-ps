@@ -131,6 +131,10 @@
   }
 }
 
+.pt-cta-row .product-block {
+    margin-bottom: 0;
+}
+
 .pt-cta-row .product__quantity {
   margin: 0;
 }
