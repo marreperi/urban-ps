@@ -16,6 +16,10 @@
           "type": "price",
           "settings": {}
         },
+        "quantity_selector_NLr89E": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
@@ -25,26 +29,52 @@
             "color_swatches": false
           }
         },
+        "product_switcher_DahaCP": {
+          "type": "product_switcher",
+          "settings": {}
+        },
+        "addon_product_AHwYgg": {
+          "type": "addon_product",
+          "settings": {
+            "product": "garantieverlangerung-12-monate",
+            "label": "Schütze dein Gerät",
+            "text": "<p>Garantieverlängerung, Plusgarantie für 12 Monate per Einmalzahlung</p>",
+            "subtext": "einmalig"
+          }
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "show_dynamic_checkout": true,
+            "show_quantity_selector": true,
+            "show_dynamic_checkout": false,
             "surface_pickup_enable": false,
             "show_gift_card_recipient": false
+          }
+        },
+        "support_widget_BU6a4k": {
+          "type": "support_widget",
+          "settings": {
+            "title": "Fragen zu diesem Produkt?",
+            "text": "Unser Experte Frank Stampa hilft Ihnen gerne weiter!",
+            "phone": "+49 (0)123 456 789",
+            "image": "shopify://shop_images/frank-stampa.png"
           }
         }
       },
       "block_order": [
         "price",
+        "quantity_selector_NLr89E",
         "variant_picker",
-        "buy_buttons"
+        "product_switcher_DahaCP",
+        "addon_product_AHwYgg",
+        "buy_buttons",
+        "support_widget_BU6a4k"
       ],
       "settings": {
         "sku_enable": true,
         "image_position": "left",
-        "image_size": "medium",
         "product_zoom_enable": true,
-        "thumbnail_position": "beside",
+        "thumbnail_position": "below",
         "thumbnail_height": "flexible",
         "thumbnail_arrows": false,
         "mobile_layout": "partial",
@@ -62,7 +92,7 @@
     "product-recommendations": {
       "type": "product-recommendations",
       "settings": {
-        "product_recommendations_heading": "You may also like",
+        "product_recommendations_heading": "Das könnte Sie auch interessieren",
         "related_count": 6,
         "products_per_row": 3
       }
