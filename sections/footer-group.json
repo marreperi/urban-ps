@@ -89,9 +89,13 @@
           "type": "newsletter",
           "settings": {
             "show_footer_title": true,
-            "title": "Sign up and save",
-            "text": "<p>Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>",
-            "container_width": 25
+            "title": "Wo sie uns noch finden",
+            "text": "",
+            "container_width": 25,
+            "newsletter_full_width": false,
+            "disable_newsletter_form": true,
+            "image": "shopify://shop_images/logo.svg",
+            "image_link": ""
           }
         }
       },
@@ -107,7 +111,8 @@
         "show_currency_flags": true,
         "show_payment_icons": true,
         "show_copyright": true,
-        "copyright_text": ""
+        "copyright_text": "",
+        "legal_menu": "footer"
       }
     }
   },
