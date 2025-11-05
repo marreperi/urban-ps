@@ -1,17 +1,8 @@
 <div class="footer__item-padding">
   {%- if block.settings.show_footer_title -%}
-    <h2 class="h4 footer__title small--hide">{{ block.settings.title }}</h2>
-    <button type="button" class="h4 footer__title collapsible-trigger collapsible-trigger-btn medium-up--hide" aria-controls="Footer-{{ block.id }}">
-      {{ block.settings.title }}
-      {%- render 'collapsible-icons' -%}
-    </button>
+    <h2 class="h4 footer__title">{{ block.settings.title }}</h2>
   {%- endif -%}
-  <div
-    {% if block.settings.show_footer_title %}
-      id="Footer-{{ block.id }}" class="collapsible-content collapsible-content--small"
-    {% endif %}>
-    <div class="collapsible-content__inner">
-      <div class="footer__collapsible{% unless block.settings.show_footer_title %} footer_collapsible--disabled{% endunless %}">
+  <div class="footer__collapsible{% unless block.settings.show_footer_title %} footer_collapsible--disabled{% endunless %}">
         {%- if block.settings.text -%}
           {{ block.settings.text }}
         {%- endif -%}
@@ -62,8 +53,5 @@
             {%- endif -%}
           </div>
         {%- endif -%}
-
-      </div>
-    </div>
   </div>
 </div>

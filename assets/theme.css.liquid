@@ -5126,6 +5126,7 @@ predictive-search form{
   margin-top:30px;
   padding-top:20px;
   border-top:1px solid rgba(var(--colorFooterText), 0.2);
+  padding-bottom: 15px;
 }
 
 .footer__bottom-left .footer__small-text{
@@ -5199,6 +5200,13 @@ ul+.footer__small-text{
 }
   }
 
+@media only screen and (max-width:768px){
+  .footer__item-padding{
+    padding-top:30px;
+    padding-bottom:15px;
+  }
+}
+
 @media only screen and (min-width:769px){
   .footer__item-padding{
     padding-right:60px;
@@ -5220,6 +5228,12 @@ ul+.footer__small-text{
   }
 
 @media only screen and (max-width:768px){
+
+.footer__title{
+    margin-bottom:20px;
+    font-weight: 700;
+    font-size: 18px;
+  }
 
 [data-center-text=true] .footer__title{
     text-align:center;
@@ -5393,6 +5407,16 @@ form+.footer__social{
 
 .footer__newsletter-image a{
   display:block;
+}
+
+@media only screen and (max-width:768px){
+  .footer__newsletter-image{
+    text-align:center;
+  }
+
+  .footer__newsletter-image img{
+    margin:0 auto;
+  }
 }
 
 @media only screen and (max-width:768px){
