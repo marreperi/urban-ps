@@ -5126,6 +5126,62 @@ predictive-search form{
   text-align:center;
 }
 
+.footer__bottom{
+  margin-top:30px;
+  padding-top:20px;
+  border-top:1px solid rgba(var(--colorFooterText), 0.2);
+}
+
+.footer__bottom-left .footer__small-text{
+  text-align:center;
+}
+
+.footer__legal-menu-list{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:16px;
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+
+.footer__legal-menu-item{
+  margin:0;
+}
+
+.footer__legal-menu-item .footer__small-text{
+  padding:0;
+}
+
+@media only screen and (min-width:769px){
+  .footer__bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  .footer__bottom-left{
+    text-align:left;
+  }
+
+  .footer__bottom-left .footer__small-text{
+    text-align:left;
+  }
+
+  .footer__bottom-right{
+    text-align:right;
+  }
+
+  .footer__legal-menu-list{
+    justify-content:flex-end;
+  }
+
+  .footer__legal-menu-item .footer__small-text{
+    text-align:right;
+  }
+}
+
 ul+.footer__small-text{
     padding-top:15px;
 }
@@ -5155,13 +5211,16 @@ ul+.footer__small-text{
 
 .footer__title{
   color:var(--colorFooterText);
+  text-transform: none;
 }
 
 @media only screen and (min-width:769px){
 
 .footer__title{
     margin-bottom:20px;
-}
+    font-weight: 700;
+    font-size: 18px;
+  }
   }
 
 @media only screen and (max-width:768px){
@@ -5188,6 +5247,11 @@ ul+.footer__small-text{
   width:100%;
 }
 
+.footer__newsletter--full-width{
+  max-width:100%;
+  display:block;
+}
+
 .footer__newsletter-input{
   background-color:var(--colorFooter);
   border:0;
@@ -5198,6 +5262,10 @@ ul+.footer__small-text{
   max-width:300px;
   padding:10px 45px 10px 0;
   width:100%;
+}
+
+.footer__newsletter--full-width .footer__newsletter-input{
+  max-width:100%;
 }
 
 .footer__newsletter-input:focus{
@@ -5316,6 +5384,20 @@ form+.footer__social{
 .footer__social .icon.icon--wide{
       width:40px;
     }
+
+.footer__newsletter-image{
+  margin-top:20px;
+}
+
+.footer__newsletter-image img{
+  max-width:100%;
+  height:auto;
+  display:block;
+}
+
+.footer__newsletter-image a{
+  display:block;
+}
 
 @media only screen and (max-width:768px){
 

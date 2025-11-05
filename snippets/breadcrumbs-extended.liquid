@@ -108,15 +108,10 @@
 {%- endif -%}
 
 {%- comment -%}
-  Avoid duplicate current link when already last in crumbs
+  Never show current item - always render_current = false
 {%- endcomment -%}
 {%- assign crumb_items = crumbs | split: '||' -%}
-{%- assign last_pair = crumb_items | last | split: '::' -%}
-{%- assign last_url = last_pair[1] -%}
-{%- assign render_current = true -%}
-{%- if last_url == current_url -%}
-  {%- assign render_current = false -%}
-{%- endif -%}
+{%- assign render_current = false -%}
 
 {%- comment -%}
   Render visual breadcrumbs
@@ -130,7 +125,7 @@
     {%- unless forloop.last and render_current == false -%}
       <span class="breadcrumbs__separator" aria-hidden="true">
         <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3.4375 1.875L6.5625 5L3.4375 8.125" stroke="#323232" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3.4375 1.875L6.5625 5L3.4375 8.125" stroke="#c8c8c8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </span>
     {%- endunless -%}
@@ -182,7 +177,8 @@
 {%- comment -%}
 Optional CSS
 .breadcrumbs { display:flex; align-items:center; flex-wrap:wrap; gap:.25rem; font-size:.875rem; }
-.breadcrumbs__item { text-decoration:none; }
+.breadcrumbs__item { text-decoration:none; color:#c8c8c8; }
+.breadcrumbs__item:hover { opacity:0.8; }
 .breadcrumbs__item.is-current { color:inherit; font-weight:600; pointer-events:none; }
 .breadcrumbs__separator { opacity:.6; padding:0 .25rem; }
 {%- endcomment -%}

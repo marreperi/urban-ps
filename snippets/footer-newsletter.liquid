@@ -16,32 +16,52 @@
           {{ block.settings.text }}
         {%- endif -%}
 
-        {%- form 'customer', id: 'newsletter-footer' -%}
-          {%- if form.posted_successfully? -%}
-            <div class="note note--success">{{ 'general.newsletter_form.newsletter_confirmation' | t }}</div>
-          {%- endif -%}
-          {%- if form.context == 'footer' -%}
-            {%- if form.errors -%}
-              {{ form.errors | default_errors }}
+        {%- unless block.settings.disable_newsletter_form -%}
+          {%- form 'customer', id: 'newsletter-footer' -%}
+            {%- if form.posted_successfully? -%}
+              <div class="note note--success">{{ 'general.newsletter_form.newsletter_confirmation' | t }}</div>
             {%- endif -%}
-          {%- endif -%}
+            {%- if form.context == 'footer' -%}
+              {%- if form.errors -%}
+                {{ form.errors | default_errors }}
+              {%- endif -%}
+            {%- endif -%}
 
-          <label for="Email-{{ block.id }}" class="hidden-label">{{ 'general.newsletter_form.newsletter_email' | t }}</label>
-          <label for="newsletter-submit-{{ block.id }}" class="hidden-label">{{ 'general.newsletter_form.submit' | t }}</label>
-          <input type="hidden" name="contact[tags]" value="prospect,newsletter">
-          <input type="hidden" name="contact[context]" value="footer">
-          <div class="footer__newsletter">
-            <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="contact[email]" id="Email-{{ block.id }}" class="footer__newsletter-input" autocorrect="off" autocapitalize="off" required>
-            <button type="submit" id="newsletter-submit-{{ block.id }}" class="footer__newsletter-btn" name="commit">
-              <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-email" viewBox="0 0 64 64"><title>icon-email</title><path d="M63 52H1V12h62ZM1 12l25.68 24h9.72L63 12M21.82 31.68 1.56 51.16m60.78.78L41.27 31.68"/></svg>
-              <span class="footer__newsletter-btn-label">
-                {{ 'general.newsletter_form.submit' | t }}
-              </span>
-            </button>
-          </div>
-        {%- endform -%}
+            <label for="Email-{{ block.id }}" class="hidden-label">{{ 'general.newsletter_form.newsletter_email' | t }}</label>
+            <label for="newsletter-submit-{{ block.id }}" class="hidden-label">{{ 'general.newsletter_form.submit' | t }}</label>
+            <input type="hidden" name="contact[tags]" value="prospect,newsletter">
+            <input type="hidden" name="contact[context]" value="footer">
+            <div class="footer__newsletter{% if block.settings.newsletter_full_width %} footer__newsletter--full-width{% endif %}">
+              <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="contact[email]" id="Email-{{ block.id }}" class="footer__newsletter-input" autocorrect="off" autocapitalize="off" required>
+              <button type="submit" id="newsletter-submit-{{ block.id }}" class="footer__newsletter-btn" name="commit">
+                <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-email" viewBox="0 0 64 64"><title>icon-email</title><path d="M63 52H1V12h62ZM1 12l25.68 24h9.72L63 12M21.82 31.68 1.56 51.16m60.78.78L41.27 31.68"/></svg>
+                <span class="footer__newsletter-btn-label">
+                  {{ 'general.newsletter_form.submit' | t }}
+                </span>
+              </button>
+            </div>
+          {%- endform -%}
+        {%- endunless -%}
 
         {% render 'social-icons', additional_classes: 'footer__social' %}
+
+        {%- if block.settings.image != blank -%}
+          <div class="footer__newsletter-image">
+            {%- if block.settings.image_link != blank -%}
+              <a href="{{ block.settings.image_link }}">
+            {%- endif -%}
+            <img 
+              src="{{ block.settings.image | img_url: '400x' }}" 
+              alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+              loading="lazy"
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}"
+            >
+            {%- if block.settings.image_link != blank -%}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
 
       </div>
     </div>

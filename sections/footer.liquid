@@ -96,15 +96,31 @@
       {%- endunless -%}
     {%- endif -%}
 
-    {%- if section.settings.show_copyright -%}
-      <p class="footer__small-text">
-        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
-        {%- if section.settings.copyright_text != blank -%}
-          {{ section.settings.copyright_text }}
+    <div class="footer__bottom">
+      <div class="footer__bottom-left">
+        {%- if section.settings.show_copyright -%}
+          <p class="footer__small-text">
+            &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
+            {%- if section.settings.copyright_text != blank -%}
+              {{ section.settings.copyright_text }}
+            {%- endif -%}
+          </p>
         {%- endif -%}
-      </p>
-    {%- endif -%}
-    <p class="footer__small-text">{{ powered_by_link }}</p>
+      </div>
+      {%- if section.settings.legal_menu != blank -%}
+        <div class="footer__bottom-right">
+          <nav class="footer__legal-menu" aria-label="Legal links">
+            <ul class="footer__legal-menu-list">
+              {%- for link in linklists[section.settings.legal_menu].links -%}
+                <li class="footer__legal-menu-item">
+                  <a href="{{ link.url }}" class="footer__small-text">{{ link.title }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        </div>
+      {%- endif -%}
+    </div>
 
   </div>
 </footer>
@@ -161,6 +177,16 @@
       "type": "text",
       "id": "copyright_text",
       "label": "t:sections.footer.settings.copyright_text.label"
+    },
+    {
+      "type": "header",
+      "content": "Legal Links"
+    },
+    {
+      "type": "link_list",
+      "id": "legal_menu",
+      "label": "Legal menu",
+      "info": "Menu for legal links (AGB, Datenschutz, Impressum, etc.)"
     }
   ],
   "blocks": [
@@ -257,6 +283,32 @@
           "min": 15,
           "max": 95,
           "unit": "%"
+        },
+        {
+          "type": "checkbox",
+          "id": "newsletter_full_width",
+          "label": "Newsletter form full width",
+          "default": false,
+          "info": "Make the newsletter form span the full width of the column"
+        },
+        {
+          "type": "checkbox",
+          "id": "disable_newsletter_form",
+          "label": "Disable newsletter form",
+          "default": false,
+          "info": "Hide the newsletter form (social icons will still show)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Image displayed below social icons"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image link",
+          "info": "Optional link for the image"
         }
       ]
     },
