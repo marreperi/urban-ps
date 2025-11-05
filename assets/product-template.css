@@ -4,6 +4,7 @@
 .grid-wrapper.pt-grid {
   display: grid;
   gap: 24px;
+  margin: 0px;
 }
 
 @media (min-width: 750px) {
@@ -19,6 +20,7 @@
   background: #ffffff;
   padding-left: 32px; /* Override base theme padding-left */
   float: none; /* Reset float from base grid__item */
+  height: 100%;
 }
 
 @media (max-width: 749px) {
@@ -64,6 +66,19 @@
 }
 
 /* Variant Product Switcher */
+.pt-variant-alt-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pt-variant-alt-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  margin: 0;
+}
+
 .pt-variant-alt {
   display: flex;
   flex-wrap: nowrap;
@@ -101,13 +116,13 @@
 }
 
 .pt-variant-pill.is-current {
-  background: #E0E5DF;
-  border-color: #2E5129;
+  background: #e0e5df;
+  border-color: #2e5129;
   font-weight: 500;
 }
 
 .pt-variant-pill.is-current:focus-visible {
-  outline-color: #2E5129;
+  outline-color: #2e5129;
 }
 
 /* Quantity + Add to Cart Row */
@@ -132,7 +147,7 @@
 }
 
 .pt-cta-row .product-block {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .pt-cta-row .product__quantity {
@@ -283,7 +298,6 @@
   border-radius: 12px;
   padding: 24px;
   background: #f2f2f2;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   color: #000000;
 }
 

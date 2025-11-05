@@ -32,6 +32,6 @@
       <span class="icon__fallback-text">{{ 'layout.cart.title' | t }}</span>
       <span class="cart-link__bubble{% if cart.item_count > 0 %} cart-link__bubble--visible{% endif %}"></span>
     </a>
-    <span class="header__cart-total" data-cart-total>{{ cart.total_price | money }}</span>
+    <span class="header__cart-total" data-cart-total data-vat-rate="19">{{ cart.total_price | money }}</span>
   </div>
 </div>

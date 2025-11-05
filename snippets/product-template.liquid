@@ -392,8 +392,10 @@
                         {%- endfor -%}
                         {%- assign pairs_array = label_pairs | split: '||' -%}
                         {%- assign sorted_pairs = pairs_array | sort -%}
-                        <nav class="pt-variant-alt" aria-label="{{ 'products.product.options' | t }}">
-                          {%- for pair in sorted_pairs -%}
+                        <div class="pt-variant-alt-wrapper">
+                          <label class="pt-variant-alt-label">Auswahl</label>
+                          <nav class="pt-variant-alt" aria-label="{{ 'products.product.options' | t }}">
+                            {%- for pair in sorted_pairs -%}
                             {%- assign parts = pair | split: '::' -%}
                             {%- assign pair_label = parts[0] -%}
                             {%- assign pair_id = parts[1] | plus: 0 -%}
@@ -423,6 +425,7 @@
                             {%- endif -%}
                           {%- endfor -%}
                         </nav>
+                        </div>
                       {%- else -%}
                         <div class="pt-switcher-debug" style="padding: 16px; background: #f5f5f5; border-radius: 8px; font-size: 12px; color: #666;">
                           <strong>Product Switcher Debug:</strong><br>

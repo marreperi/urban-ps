@@ -260,14 +260,105 @@
 
       console.log("[product-template] Sending items to cart:", items);
 
-      fetch("/cart/add.js", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ items: items }),
-      })
+      // Helper function to add items to cart
+      function addItemsToCart(itemsToAdd) {
+        return fetch("/cart/add.js", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({ items: itemsToAdd }),
+        });
+      }
+
+      // Helper function to handle successful cart add
+      function handleCartSuccess(cart, was422) {
+        console.log("[product-template] Cart add success, cart:", cart);
+        
+        // Only announce success if this wasn't a 422 error
+        if (!was422) {
+          announce("Produkt zum Warenkorb hinzugefügt");
+        }
+
+        // The theme's CartDrawer listens for 'ajaxProduct:added' event
+        const addToCartBtn = form.querySelector(
+          "[data-add-to-cart], .add-to-cart"
+        );
+        console.log("[product-template] Dispatching ajaxProduct:added event");
+        form.dispatchEvent(
+          new CustomEvent("ajaxProduct:added", {
+            detail: {
+              product: cart.items && cart.items.length > 0 ? cart.items[0] : cart,
+              addToCartBtn: addToCartBtn,
+            },
+            bubbles: true,
+          })
+        );
+
+        document.dispatchEvent(
+          new CustomEvent("ajaxProduct:added", {
+            detail: {
+              product: cart.items && cart.items.length > 0 ? cart.items[0] : cart,
+              addToCartBtn: addToCartBtn,
+            },
+            bubbles: true,
+          })
+        );
+
+        // Update cart count and total (only if not already updated from 422 handler)
+        if (!was422) {
+          window.dispatchEvent(new CustomEvent("cart:updated"));
+          console.log("[product-template] Dispatched cart:updated event");
+        }
+
+        // Remove loading state
+        if (addToCartButton) {
+          addToCartButton.classList.remove("btn--loading");
+        }
+        console.log("[product-template] Form submission complete");
+      }
+
+      // Helper function to refresh cart after 422
+      function refreshCartAfter422() {
+        return fetch("/cart.js")
+          .then(function (res) {
+            return res.json();
+          })
+          .then(function (cart) {
+            console.log("[product-template] Cart refreshed after 422");
+            cart._was422 = true;
+            window.dispatchEvent(
+              new CustomEvent("cart:updated", { detail: cart })
+            );
+            // Trigger cart drawer to open/update
+            const addToCartBtn = form.querySelector(
+              "[data-add-to-cart], .add-to-cart"
+            );
+            form.dispatchEvent(
+              new CustomEvent("ajaxProduct:added", {
+                detail: {
+                  product: cart.items && cart.items.length > 0 ? cart.items[0] : cart,
+                  addToCartBtn: addToCartBtn,
+                },
+                bubbles: true,
+              })
+            );
+            document.dispatchEvent(
+              new CustomEvent("ajaxProduct:added", {
+                detail: {
+                  product: cart.items && cart.items.length > 0 ? cart.items[0] : cart,
+                  addToCartBtn: addToCartBtn,
+                },
+                bubbles: true,
+              })
+            );
+            return cart;
+          });
+      }
+
+      // Try adding all items together first
+      addItemsToCart(items)
         .then(function (res) {
           console.log(
             "[product-template] Cart add response status:",
@@ -277,74 +368,65 @@
             return res.json().then(function (err) {
               console.error("[product-template] Cart add error response:", err);
               // 422 means validation error (often product already in cart or max quantity)
-              // Still refresh cart display even on error
               if (res.status === 422) {
                 console.log(
-                  "[product-template] 422 error - refreshing cart display"
+                  "[product-template] 422 error - checking if add-on needs separate handling"
                 );
-                window.dispatchEvent(new CustomEvent("cart:updated"));
-                // Also fetch cart to update UI
-                fetch("/cart.js")
-                  .then(function (res) {
-                    return res.json();
-                  })
-                  .then(function (cart) {
-                    window.dispatchEvent(
-                      new CustomEvent("cart:updated", { detail: cart })
-                    );
-                  })
-                  .catch(function (e) {
-                    console.warn(
-                      "[product-template] Failed to refresh cart:",
-                      e
-                    );
-                  });
+                
+                // If we have multiple items and one failed, try adding them separately
+                // This handles the case where main product is at max but add-on can still be added
+                if (items.length > 1 && addOnCheckbox.checked) {
+                  console.log(
+                    "[product-template] Multiple items failed, trying to add add-on separately"
+                  );
+                  const addonVariantId = addOnCheckbox.getAttribute(
+                    "data-addon-variant-id"
+                  );
+                  const addonQuantity = parseInt(
+                    addOnCheckbox.getAttribute("data-addon-quantity") || "1",
+                    10
+                  );
+                  
+                  if (addonVariantId) {
+                    // Try adding just the add-on product
+                    return addItemsToCart([
+                      { id: addonVariantId, quantity: addonQuantity },
+                    ])
+                      .then(function (addonRes) {
+                        if (addonRes.ok) {
+                          console.log(
+                            "[product-template] Add-on added successfully separately"
+                          );
+                          return addonRes.json();
+                        } else {
+                          console.log(
+                            "[product-template] Add-on also failed, refreshing cart"
+                          );
+                          return refreshCartAfter422();
+                        }
+                      })
+                      .catch(function (e) {
+                        console.warn(
+                          "[product-template] Error adding add-on separately:",
+                          e
+                        );
+                        return refreshCartAfter422();
+                      });
+                  }
+                }
+                
+                // Single item failed or no add-on - just refresh cart
+                return refreshCartAfter422();
               }
+              // For other errors, show error message
               throw new Error(err.description || "Add to cart failed");
             });
           }
           return res.json();
         })
         .then(function (cart) {
-          console.log("[product-template] Cart add success, cart:", cart);
-          announce("Produkt zum Warenkorb hinzugefügt");
-
-          // The theme's CartDrawer listens for 'ajaxProduct:added' event
-          // Dispatch it to trigger cart drawer open
-          const addToCartBtn = form.querySelector(
-            "[data-add-to-cart], .add-to-cart"
-          );
-          console.log("[product-template] Dispatching ajaxProduct:added event");
-          form.dispatchEvent(
-            new CustomEvent("ajaxProduct:added", {
-              detail: {
-                product: cart.items && cart.items[0] ? cart.items[0] : cart,
-                addToCartBtn: addToCartBtn,
-              },
-              bubbles: true,
-            })
-          );
-
-          // Also dispatch on document for CartDrawer listener
-          document.dispatchEvent(
-            new CustomEvent("ajaxProduct:added", {
-              detail: {
-                product: cart.items && cart.items[0] ? cart.items[0] : cart,
-                addToCartBtn: addToCartBtn,
-              },
-              bubbles: true,
-            })
-          );
-
-          // Update cart count and total
-          window.dispatchEvent(new CustomEvent("cart:updated"));
-          console.log("[product-template] Dispatched cart:updated event");
-
-          // Remove loading state
-          if (addToCartButton) {
-            addToCartButton.classList.remove("btn--loading");
-          }
-          console.log("[product-template] Form submission complete");
+          const was422 = cart._was422;
+          handleCartSuccess(cart, was422);
         })
         .catch(function (err) {
           console.error("[product-template] Add to cart error:", err);

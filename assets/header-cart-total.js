@@ -2,6 +2,15 @@
   var totalEl = document.querySelector("[data-cart-total]");
   if (!totalEl) return;
 
+  // Get VAT rate from data attribute or default to 19%
+  var vatRatePercent = parseFloat(
+    totalEl.getAttribute("data-vat-rate") || "19"
+  );
+  var vatRate = vatRatePercent / 100;
+
+  // Store original gross total
+  var originalGrossTotal = null;
+
   function formatMoney(cents) {
     try {
       // Use theme.Currency.formatMoney if available (most reliable)
@@ -28,6 +37,43 @@
     return "€ " + amount;
   }
 
+  function getPriceMode() {
+    try {
+      // Check for price-toggle.js mode (urbanps_price_mode)
+      var priceToggleMode = localStorage.getItem("urbanps_price_mode");
+      if (priceToggleMode) {
+        return priceToggleMode === "net" ? "net" : "gross";
+      }
+      // Fallback to price-toggle.liquid mode (price_mode)
+      var priceMode = localStorage.getItem("price_mode");
+      return priceMode === "net" ? "net" : "gross";
+    } catch (_) {
+      return "gross";
+    }
+  }
+
+  function computeNetFromGross(grossCents) {
+    // Calculate net: gross / (1 + VAT rate)
+    var gross = grossCents / 100;
+    var net = gross / (1 + vatRate);
+    // Round to 2 decimals
+    return Math.round(net * 100);
+  }
+
+  function updateDisplay() {
+    if (originalGrossTotal === null) return;
+
+    var mode = getPriceMode();
+    var displayAmount = originalGrossTotal;
+
+    if (mode === "net") {
+      displayAmount = computeNetFromGross(originalGrossTotal);
+    }
+
+    var formatted = formatMoney(displayAmount);
+    totalEl.textContent = formatted;
+  }
+
   async function refresh() {
     try {
       var res = await fetch("/cart.js", {
@@ -35,10 +81,32 @@
       });
       if (!res.ok) return;
       var cart = await res.json();
-      var formatted = formatMoney(cart.total_price);
-      totalEl.textContent = formatted;
+      // Store the original gross total
+      originalGrossTotal = cart.total_price;
+      // Update display based on current mode
+      updateDisplay();
     } catch (_) {}
   }
+
+  // Listen for price mode changes
+  window.addEventListener("priceToggle:mode", function (e) {
+    if (e.detail && e.detail.mode) {
+      updateDisplay();
+    }
+  });
+
+  window.addEventListener("price:mode", function (e) {
+    if (e.detail && e.detail.mode) {
+      updateDisplay();
+    }
+  });
+
+  // Listen for storage changes (when price mode changes in another tab)
+  window.addEventListener("storage", function (e) {
+    if (e.key === "urbanps_price_mode" || e.key === "price_mode") {
+      updateDisplay();
+    }
+  });
 
   window.addEventListener("cart:updated", refresh);
   document.addEventListener("product:added", refresh);
