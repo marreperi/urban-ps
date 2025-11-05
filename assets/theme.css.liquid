@@ -3538,9 +3538,7 @@ button[disabled],html input[disabled]{
   cursor:pointer;
 
   display:inline-block;
-
-  font-size:calc(var(--typeBaseSize) - 4px);
-  font-size:max(calc(var(--typeBaseSize) - 4px), 13px);
+  font-size::1rem;
   font-weight:700;
   line-height:1.42;
   margin:0;
@@ -3560,8 +3558,6 @@ button[disabled],html input[disabled]{
 @media only screen and (max-width:768px){
 
 .btn,.rte .btn,.shopify-payment-button .shopify-payment-button__button--unbranded{
-    font-size:calc(var(--typeBaseSize) - 5px);
-    font-size:max(calc(var(--typeBaseSize) - 5px), 11px);
     padding:9px 17px;
 }
   }
@@ -12096,7 +12092,7 @@ iframe.zoid-component-frame{
 .product-single__meta{
     margin-top:15px;
     padding-left:0;
-    text-align:center;
+    text-align:left;
 }
   }
 

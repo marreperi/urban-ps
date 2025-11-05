@@ -25,8 +25,7 @@
 
 @media (max-width: 749px) {
   .grid-wrapper.pt-grid .grid__item.pt-card {
-    padding: 24px;
-    padding-left: 24px; /* Override base theme padding-left */
+    padding: 0px;
     border-radius: 12px;
   }
 }
@@ -37,6 +36,12 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
+}
+
+@media (max-width: 749px) {
+  .pt-price-row > div:first-child {
+    text-align: left;
+  }
 }
 
 .price-suffix {
@@ -89,6 +94,13 @@
   overflow-x: auto;
 }
 
+@media (max-width: 749px) {
+  .pt-variant-alt {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}
+
 .pt-variant-pill {
   display: inline-flex;
   align-items: center;
@@ -128,21 +140,19 @@
 /* Quantity + Add to Cart Row */
 .pt-cta-row {
   display: grid;
-  grid-template-columns: minmax(110px, 130px) 1fr;
   gap: 16px;
   align-items: stretch;
 }
 
-@media (min-width: 750px) {
-  .pt-cta-row .pt-qty-input {
-    min-width: 110px;
+@media (max-width: 749px) {
+  .pt-cta-row {
+    grid-template-columns: minmax(60px, auto) 1fr;
   }
 }
 
-@media (max-width: 749px) {
+@media (min-width: 750px) {
   .pt-cta-row {
-    grid-template-columns: minmax(110px, auto) 1fr;
-    gap: 16px;
+    grid-template-columns: minmax(110px, 130px) 1fr;
   }
 }
 
@@ -155,10 +165,17 @@
 }
 
 .pt-cta-row .pt-qty-input {
-  min-width: 110px;
-  flex: 0 0 110px;
+  min-width: 60px;
+  flex: 0 0 60px;
   display: flex;
   align-items: stretch;
+}
+
+@media (min-width: 750px) {
+  .pt-cta-row .pt-qty-input {
+    min-width: 110px;
+    flex: 0 0 110px;
+  }
 }
 
 /* Quantity input wrapper - match button height */
@@ -170,6 +187,18 @@
   align-items: center;
   background: #ffffff;
   min-height: 65px;
+}
+
+@media (max-width: 749px) {
+  .pt-cta-row .pt-qty-input {
+    min-width: 60px;
+    max-width: 80px;
+    flex: 0 0 60px;
+  }
+
+  .pt-cta-row .pt-qty-input .js-qty__wrapper {
+    width: 100%;
+  }
 }
 
 .pt-cta-row .pt-qty-input .js-qty__wrapper .js-qty__num {
@@ -256,6 +285,24 @@
 
 .pt-addon-info {
   flex: 1;
+}
+
+@media (max-width: 749px) {
+  .pt-addon-info {
+    text-align: left;
+  }
+
+  /* Ensure product SKU is visible on mobile */
+  .product-single__sku,
+  .product-block--header .product-single__sku,
+  .only-mobile .product-single__sku {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 0.75 !important;
+    font-size: 14px;
+    margin-top: 4px;
+    margin-bottom: 0;
+  }
 }
 
 .pt-addon-label {
@@ -366,8 +413,7 @@
   }
 
   .pt-support-content {
-    flex-direction: column;
-    text-align: center;
+    flex-direction: row;
   }
 
   .pt-support-avatar {

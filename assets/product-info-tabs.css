@@ -11,9 +11,12 @@
 
 .section-heading {
   margin: 0 0 1.5rem 0;
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.3;
+}
+
+@media (max-width: 749px) {
+  .section-heading {
+    text-align: center;
+  }
 }
 
 /* Classic Tabs Container */
@@ -38,7 +41,7 @@
   cursor: pointer;
   font-size: 14px;
   background: none;
-  padding: 12px 20px;
+  padding: 12px 15px;
   margin: 0;
   font-family: inherit;
   transition: all 0.2s ease;
@@ -141,6 +144,7 @@
   width: 100%;
   border-collapse: collapse;
   margin: 0;
+  background: transparent;
 }
 
 .product-detail-properties-table th,

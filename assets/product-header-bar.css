@@ -38,6 +38,12 @@
 .page-content.page-content--product {
   background-color: #fafafa;
 }
+
+@media (max-width: 749px) {
+  .page-content.page-content--product {
+    background-color: #ffffff;
+  }
+}
 .grid__item.medium-up--one-half {
   background: #ffffff;
 }

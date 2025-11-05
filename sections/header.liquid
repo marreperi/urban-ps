@@ -85,6 +85,41 @@
   @media (min-width: 1024px) {
     .header__row.only-desktop { display: flex; justify-content: flex-start; }
   }
+  @media (max-width: 1023px) {
+    .header-item--icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .header-item--icons .site-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .header-item--icons .site-nav__icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    /* Burger menu next to logo on mobile */
+    .header-logo-mobile-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .header-burger-mobile {
+      flex-shrink: 0;
+    }
+    
+    /* Hide burger menu from header-icons on mobile when logo is left-aligned */
+    .header-layout--left .header-item--icons .js-drawer-open-nav,
+    .header-layout--left-center .header-item--icons .js-drawer-open-nav,
+    .header-layout--left-drawer .header-item--icons .js-drawer-open-nav {
+      display: none;
+    }
+  }
   .header__search-inline { align-items: center; max-width: 480px; min-width: 250px; flex: 1 1 auto; }
   .predictive-search--inline { position: static !important; display: block; width: 100%; }
   .predictive-search--inline .predictive-search__results { position: absolute; z-index: 30; width: 100%; }
@@ -133,7 +168,20 @@
 
             {%- if logo_alignment == 'left' -%}
               <div class="header-item header-item--logo">
-                {%- render 'header-logo-block', section: section -%}
+                <div class="header-logo-mobile-wrapper">
+                  {%- if section.settings.main_menu_alignment == 'left' or section.settings.main_menu_alignment == 'left-center' or section.settings.main_menu_alignment == 'left-drawer' -%}
+                    <div class="site-nav medium-up--hide header-burger-mobile">
+                      <button
+                        type="button"
+                        class="site-nav__link site-nav__link--icon js-drawer-open-nav"
+                        aria-controls="NavDrawer">
+                        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-hamburger" viewBox="0 0 64 64"><title>icon-hamburger</title><path d="M7 15h51M7 32h43M7 49h51"/></svg>
+                        <span class="icon__fallback-text">{{ 'general.drawers.navigation' | t }}</span>
+                      </button>
+                    </div>
+                  {%- endif -%}
+                  {%- render 'header-logo-block', section: section -%}
+                </div>
               </div>
             {%- endif -%}
 

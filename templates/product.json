@@ -86,7 +86,7 @@
       "type": "product-info-tabs",
       "name": "Produkt Info Tabs",
       "settings": {
-        "nav_label_1": "Produktbeschreibung",
+        "nav_label_1": "Beschreibung",
         "nav_label_2": "Technische Daten",
         "nav_label_3": "Downloads",
         "download_button_text": "Datenblatt (PDF) herunterladen",
