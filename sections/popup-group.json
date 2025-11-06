@@ -52,10 +52,151 @@
         "decline_text": "<p>Sorry, the content of this store can't be seen by a younger audience. Come back when you're older.</p>",
         "return_button_label": "Oops, I entered incorrectly"
       }
+    },
+    "mr_vue_cart_LGQc4g": {
+      "type": "mr-vue-cart",
+      "blocks": {
+        "shipping_rate_qKJWaK": {
+          "type": "shipping_rate",
+          "settings": {
+            "country_code": "DE",
+            "country_name": "Deutschland",
+            "price": 5,
+            "delivery_time": "2-3 Werktage",
+            "restrictions": ""
+          }
+        },
+        "shipping_rate_aUnLB8": {
+          "type": "shipping_rate",
+          "settings": {
+            "country_code": "EU",
+            "country_name": "Europa",
+            "price": 8,
+            "delivery_time": "3-5 Werktage",
+            "restrictions": ""
+          }
+        },
+        "shipping_rate_cr9LGb": {
+          "type": "shipping_rate",
+          "settings": {
+            "country_code": "CH",
+            "country_name": "Schweiz",
+            "price": 15,
+            "delivery_time": "3-7 Werktage",
+            "restrictions": ""
+          }
+        },
+        "shipping_rate_UxcXHW": {
+          "type": "shipping_rate",
+          "settings": {
+            "country_code": "AT",
+            "country_name": "Österreich",
+            "price": 8,
+            "delivery_time": "2-4 Werktage",
+            "restrictions": ""
+          }
+        }
+      },
+      "block_order": [
+        "shipping_rate_qKJWaK",
+        "shipping_rate_aUnLB8",
+        "shipping_rate_cr9LGb",
+        "shipping_rate_UxcXHW"
+      ],
+      "name": "Dynamischer Warenkorb",
+      "settings": {
+        "recommendations_title": "Für dich vorgeschlagen",
+        "recommendations": [],
+        "use_recommended": false,
+        "slider_sticky": false,
+        "order_note": false,
+        "order_note_footer_text": "Notiz hinzufügen",
+        "order_note_heading": "Möchtest du uns noch etwas mitteilen?",
+        "order_note_confirm": "Speichern",
+        "enable_free_shipping": true,
+        "freeshipping": 5000,
+        "fs_not_reached": "Nur noch price bis zum kostenlosen Versand!",
+        "fs_reached": "Deine Bestellung ist Versandkostenfrei",
+        "enable_free_gift": true,
+        "free_gift_product": "",
+        "free_gift_threshold": 10000,
+        "gift_not_reached": "Nur noch price bis zum kostenlosen Geschenk!",
+        "gift_reached": "Du erhälst ein kostenloses Geschenk",
+        "enable_second_free_gift": false,
+        "second_free_gift_product": "",
+        "second_free_gift_threshold": 15000,
+        "second_gift_reached": "Du erhälst ein zweites kostenloses Geschenk",
+        "second_gift_not_reached": "Du bist nur price vom zweiten Geschenk entfernt!",
+        "shipping_fee_text": "Versandkosten (DE)",
+        "shipping_is_free": "Kostenlos",
+        "express_shipping": "",
+        "cart_heading": "Warenkorb",
+        "empty_cart": "Dein Warenkorb ist leer",
+        "empty_cart_button": "Produkte entdecken",
+        "subtotal": "Zwischensumme",
+        "checkout_button_text": "Zur Kasse",
+        "remove_text": "Entfernen",
+        "warning_message": "Artikel im Warenkorb werden nicht reserviert.",
+        "discount_code_label": "Rabattcode eingeben",
+        "discount_code_placeholder": "Rabattcode eingeben",
+        "shipping_label": "Versandkosten",
+        "total_label": "Gesamtbetrag",
+        "old_cart": "#CartDrawer",
+        "button_class": ".btn",
+        "cart_icon_class": "[aria-controls=\"CartDrawer\"]",
+        "cart_count_bubble_class": ".cart-link__bubble",
+        "add_to_cart_class": ".add-to-cart",
+        "drawer_width": 600,
+        "drawer_width_mobile": 90,
+        "background_header": "#ffffff",
+        "background_footer": "#f5f4eb",
+        "background_main": "#ffffff",
+        "background_shipping_bar_container": "#ffffff",
+        "background_shipping_bar": "#D1D1D1",
+        "background_shipping_progress": "#000000",
+        "background_product_card": "",
+        "background_slider": "",
+        "background_slider_card_arrows": "",
+        "background_slider_button": "",
+        "background_express_shipping": "",
+        "background_order_note_button": "",
+        "background_order_note": "",
+        "background_inputs": "#ffffff",
+        "font_header_icon": "#ffffff",
+        "font_header_footer": "#000000",
+        "font_shipping_bar": "#000000",
+        "font_product_card": "#000000",
+        "font_compare_at_price": "",
+        "font_slider_heading": "",
+        "font_slider_card_arrows": "",
+        "font_slider_button": "#ffffff",
+        "font_express_shipping": "",
+        "font_order_note_button": "",
+        "font_order_note": "",
+        "font_inputs": "",
+        "shadow_header_footer": "#EFEFEF",
+        "alpha_header_footer": 0,
+        "shadow_product_card": "#ffffff",
+        "alpha_product_card": 1,
+        "shadow_product_card_slider": "#ffffff",
+        "alpha_product_card_slider": 0,
+        "radius_header_footer": 0,
+        "radius_shipping_bar_container": 0,
+        "radius_product_card": 0,
+        "radius_product_image": 0,
+        "radius_slider_product_card": 0,
+        "radius_slider_product_image": 0,
+        "radius_order_note_button": 0,
+        "radius_order_note": 0,
+        "radius_inputs": 0,
+        "b2b_customer_tag": "b2b",
+        "show_payment_icons": false
+      }
     }
   },
   "order": [
     "newsletter-popup",
-    "age-verification-popup"
+    "age-verification-popup",
+    "mr_vue_cart_LGQc4g"
   ]
 }
