@@ -1300,7 +1300,7 @@
           if (!shippingThreshold) return { display: 'none' };
           
           const borderStyle = this.cart.total_price >= shippingThreshold.value
-            ? `2px solid #F36917`
+            ? `2px solid #537c2e`
             : '';
 
           const maxThreshold = Math.max(...thresholds.map(t => t.value));
@@ -1336,7 +1336,7 @@
           const giftPosition = (giftThreshold.value / maxThreshold) * 100;
 
           return {
-            border: this.cart.total_price >= giftThreshold.value ? '2px solid #F36917' : '2px solid {{ss.background_shipping_bar}}',
+            border: this.cart.total_price >= giftThreshold.value ? '2px solid #537c2e' : '2px solid {{ss.background_shipping_bar}}',
             position: 'absolute',
             left: `${giftPosition}%`,
             transform: 'translateX(-50%)'
@@ -1353,7 +1353,7 @@
           const secondGiftPosition = (secondGiftThreshold.value / maxThreshold) * 100;
 
           return {
-            border: this.cart.total_price >= secondGiftThreshold.value ? '2px solid #F36917' : '2px solid {{ss.background_shipping_bar}}',
+            border: this.cart.total_price >= secondGiftThreshold.value ? '2px solid #537c2e' : '2px solid {{ss.background_shipping_bar}}',
             position: 'absolute',
             left: `${secondGiftPosition}%`,
             transform: 'translateX(-50%)'
@@ -2375,7 +2375,7 @@ height: fit-content;
 /* Special styling for free gift items */
 .item-container-{{ si }} .has-hidden-prop {
   background: #F0F3E5;
-  border: 2px solid #F36917;
+  border: 2px solid #537c2e;
   padding: 5px 15px;
   border-radius: 8px;
 }
@@ -2612,7 +2612,7 @@ font-size: smaller;
 }
 
 .cart__shipping-cost .free-shipping {
-  color: #F36917;
+  color: #537c2e;
 }
 
 .cart__total-cost {
@@ -2754,7 +2754,7 @@ a {
 .pulse-dot-{{ si }} {
   width: 8px;
   height: 8px;
-  background: #F36917;
+  background: #537c2e;
   border-radius: 50%;
 }
 
@@ -2787,14 +2787,14 @@ a {
 
 .progress-{{ si }} {
   height: 100%;
-  background: #F36917;
+  background: #537c2e;
   display: block !important;
   transition: width 1s ease;
 }
 
 .progress-{{ si }} {
   height: 100%;
-  background: #F36917;
+  background: #537c2e;
   display: block !important;
   transition: width 1s ease;
 }
@@ -3110,14 +3110,14 @@ font-size: small;
 
 .progress-{{ si }} {
   height: 100%;
-  background: #F36917;
+  background: #537c2e;
   display: block !important;
   transition: width 1s ease;
 }
 
 .progress-{{ si }} {
   height: 100%;
-  background: #F36917;
+  background: #537c2e;
   display: block !important;
   transition: width 1s ease;
 }

@@ -627,9 +627,9 @@
     --mr-overlay-alpha: {{ ss.overlay_alpha | default: 0.6 }};
     --mr-width: {% if ss.width == '75' %}75vw{% elsif ss.width == '90' %}90vw{% else %}100vw{% endif %};
     --mr-list-gap: {{ ss.list_gap | default: 8 }}px;
-    --mr-banner-overlay-text: {{ ss.banner_overlay_text_color | default: '#F36917' }};
+    --mr-banner-overlay-text: {{ ss.banner_overlay_text_color | default: '#537c2e' }};
     --mr-banner-overlay-size: {{ ss.banner_overlay_text_size | default: 24 }}px;
-    --mr-root-chevron-color: {{ ss.root_chevron_color | default: '#F36917' }};
+    --mr-root-chevron-color: {{ ss.root_chevron_color | default: '#537c2e' }};
     --mr-thumb-size: {{ ss.thumb_size | default: 20 }}px;
     --mr-primary-border-color: {{ ss.primary_item_border_color | default: '#DDDDDD' }};
     --mr-secondary-border-color: {{ ss.secondary_item_border_color | default: '#DDDDDD' }};
@@ -806,7 +806,7 @@
     {"type":"text","id":"back_label","label":"Back label","default":"Zurück"},
     {"type":"select","id":"menu_depth","label":"Menu depth","default":"2","options":[{"value":"1","label":"1"},{"value":"2","label":"2"},{"value":"3","label":"3"}]},
     {"type":"checkbox","id":"show_root_chevrons","label":"Show chevrons on first-tier links when depth=1","default":false},
-    {"type":"color","id":"root_chevron_color","label":"First-tier chevron color","default":"#F36917"},
+    {"type":"color","id":"root_chevron_color","label":"First-tier chevron color","default":"#537c2e"},
     {"type":"select","id":"submenu_icon_type","label":"Submenu icon type","default":"chevron","options":[{"value":"chevron","label":"Chevron"},{"value":"caret","label":"Caret"},{"value":"arrow","label":"Arrow"}]},
     {"type":"color","id":"submenu_icon_color","label":"Icon color","default":"#111111"},
     {"type":"range","id":"submenu_icon_size","label":"Icon size","min":12,"max":24,"step":1,"default":16},
@@ -897,7 +897,7 @@
     {"type":"color","id":"badge_bg","label":"Badge BG","default":"#f5f5f5"},
     {"type":"color","id":"badge_text_color","label":"Badge text","default":"#111111"},
     {"type":"color","id":"badge_border","label":"Badge border","default":"#e0e0e0"},
-    {"type":"color","id":"banner_overlay_text_color","label":"Banner overlay text color","default":"#F36917"},
+    {"type":"color","id":"banner_overlay_text_color","label":"Banner overlay text color","default":"#537c2e"},
     {"type":"range","id":"banner_overlay_text_size","label":"Banner overlay text size","min":12,"max":48,"step":1,"default":24},
     {"type":"checkbox","id":"banner_overlay_show_chevron","label":"Show chevron in banner overlay","default":false},
     {"type":"range","id":"base_font_size","label":"Base font size (px)","min":12,"max":22,"step":1,"default":16},
