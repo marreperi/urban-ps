@@ -705,6 +705,9 @@
         selectedShippingCountry: { code: 'DE', name: 'Deutschland', price: 5 },
         shippingCountries: [],
         freeShippingText: {{ free_shipping_text | json }},
+        // Price toggle functionality
+        priceMode: 'gross', // 'gross' or 'net'
+        priceToggleConfig: null,
         // Discount code functionality
         discountCode: '',
         appliedDiscountCode: '',
@@ -905,6 +908,13 @@
         },
 
         openCart() {
+            // Re-read price toggle config in case it wasn't available during initialization
+            if (!this.priceToggleConfig) {
+              this.priceToggleConfig = this.readPriceToggleConfig();
+              if (this.priceToggleConfig) {
+                this.priceMode = this.getPriceMode();
+              }
+            }
             this.cartOpen = !this.cartOpen;
         },
 
@@ -988,11 +998,99 @@
 
 
 
+        readPriceToggleConfig() {
+          try {
+            const el = document.querySelector("[data-price-toggle-config]");
+            if (!el) return null;
+            const json = el.getAttribute("data-price-toggle-config");
+            return JSON.parse(json);
+          } catch (e) {
+            console.warn("[Cart] Invalid price toggle config");
+            return null;
+          }
+        },
+
+        getPriceMode() {
+          try {
+            const config = this.priceToggleConfig;
+            const key = config?.persist_key || 'urbanps_price_mode';
+            const saved = localStorage.getItem(key);
+            return saved === 'net' ? 'net' : 'gross';
+          } catch (_) {
+            return 'gross';
+          }
+        },
+
+        computeNet(gross, decimals = 2) {
+          if (!this.priceToggleConfig) return gross;
+          const rate = parseFloat(this.priceToggleConfig.vat_rate_percent || 0) / 100;
+          const net = gross / (1 + rate);
+          const factor = Math.pow(10, decimals);
+          return Math.round(net * factor) / factor;
+        },
+
         formatMoney(cents) {
-            if (cents === null) return "";
-            let euros = (cents / 100).toFixed(2);
-            euros = euros.replace('.', ',');
-            return `${euros} €`;
+            if (cents === null || cents === undefined) return "";
+            
+            // Convert cents to euros (gross price)
+            const grossEuros = cents / 100;
+            
+            // Get the actual price value based on mode
+            let value = grossEuros;
+            if (this.priceMode === 'net' && this.priceToggleConfig) {
+              // Compute net from gross
+              const rate = parseFloat(this.priceToggleConfig.vat_rate_percent || 0) / 100;
+              value = grossEuros / (1 + rate);
+            }
+            
+            // Format the number
+            const config = this.priceToggleConfig || {};
+            const decimals = Math.max(0, Math.min(4, parseInt(config.decimals || 2, 10)));
+            const dec = config.decimal_separator || ',';
+            const thou = config.thousands_separator || '.';
+            
+            // Round the value based on rounding mode
+            const roundingMode = config.rounding_mode || 'half-up';
+            const factor = Math.pow(10, decimals);
+            let rounded;
+            switch (roundingMode) {
+              case 'floor':
+                rounded = Math.floor(value * factor) / factor;
+                break;
+              case 'ceil':
+                rounded = Math.ceil(value * factor) / factor;
+                break;
+              case 'bankers': {
+                const n = Math.floor(value * factor);
+                const r = value * factor - n;
+                if (r > 0.5) rounded = (n + 1) / factor;
+                else if (r < 0.5) rounded = n / factor;
+                else rounded = (n % 2 === 0 ? n : n + 1) / factor;
+                break;
+              }
+              case 'half-up':
+              default:
+                rounded = Math.round(value * factor) / factor;
+            }
+            
+            const parts = rounded.toFixed(decimals).split('.');
+            let intPart = parts[0];
+            const fracPart = parts[1] || '';
+            
+            if (thou !== 'none') {
+              const rgx = /\B(?=(\d{3})+(?!\d))/g;
+              const sep = thou === 'space' ? ' ' : thou;
+              intPart = intPart.replace(rgx, sep);
+            }
+            
+            const formatted = intPart + (decimals ? (dec === '.' ? '.' : ',') : '') + (decimals ? fracPart : '');
+            const prefix = config.currency_prefix || '';
+            // Don't show suffix text in cart (only on product pages)
+            // const suffix = this.priceMode === 'net' 
+            //   ? (config.net_suffix_text || '') 
+            //   : (config.gross_suffix_text || '');
+            
+            return `${prefix ? prefix + ' ' : ''}${formatted}`;
         },
 
         insertAmount(string) {
@@ -1660,6 +1758,32 @@
       
       // Initialize bulk shipment map
       this.loadBulkShipmentMap();
+      
+      // Initialize price toggle
+      this.priceToggleConfig = this.readPriceToggleConfig();
+      this.priceMode = this.getPriceMode();
+      
+      // Listen to price toggle mode changes
+      window.addEventListener('priceToggle:mode', (e) => {
+        const mode = (e && e.detail && e.detail.mode) || this.getPriceMode();
+        if (this.priceMode !== mode) {
+          this.priceMode = mode;
+          this.$forceUpdate(); // Force re-render to update all prices
+        }
+      });
+      
+      // Also listen to storage changes
+      window.addEventListener('storage', (e) => {
+        const config = this.priceToggleConfig;
+        const key = config?.persist_key || 'urbanps_price_mode';
+        if (e.key === key) {
+          const mode = e.newValue === 'net' ? 'net' : 'gross';
+          if (this.priceMode !== mode) {
+            this.priceMode = mode;
+            this.$forceUpdate();
+          }
+        }
+      });
 
       
       document.addEventListener("DOMContentLoaded", function() {
@@ -1725,7 +1849,7 @@
             // Add the flag to the item
             hasHiddenProperties, 
             isGiftProduct,
-            // Add formatted prices for better reactivity
+            // Add formatted prices for better reactivity (will update when priceMode changes)
             formattedLinePrice: this.formatMoney(item.line_price),
             formattedOriginalLinePrice: this.formatMoney(item.original_line_price),
             hasDiscount: item.original_line_price > item.line_price
@@ -1932,6 +2056,15 @@
     
     mounted() {
       this.checkExistingDiscount();
+      
+      // Re-read price toggle config on mount in case it wasn't available during created()
+      if (!this.priceToggleConfig) {
+        this.priceToggleConfig = this.readPriceToggleConfig();
+        if (this.priceToggleConfig) {
+          this.priceMode = this.getPriceMode();
+          this.$forceUpdate();
+        }
+      }
     }
     
   }
