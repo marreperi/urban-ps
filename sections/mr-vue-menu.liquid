@@ -1,0 +1,935 @@
+{% assign si = section.id %}
+{% assign ss = section.settings %}
+
+<div id="mr-menu-{{ si }}" class="mrMenuDrawer" aria-live="polite" data-initialized="false"
+  data-align="{{ ss.alignment | default: 'left' }}"
+  data-trigger-selector="{{ ss.trigger_selector | default: '[data-js-sidebar-handle][aria-controls="site-menu-sidebar"], .js-drawer-open-nav, [aria-controls="DrawerMenu"], .header__icon--menu, .mobile-menu-button' | escape }}"
+  data-legacy-selectors="{{ ss.legacy_selectors | default: '#NavDrawer, #DrawerMenu, #site-menu-sidebar' }}"
+  data-override-theme="{{ ss.override_theme | default: true }}"
+  data-editor-mode="{{ ss.editor_mode | default: false }}"
+  data-show-search-root="{{ ss.show_search_root | default: true }}"
+  data-menu-depth="{{ ss.menu_depth | default: '2' }}"
+  data-primary-title="{{ ss.primary_title | default: 'Menü' | escape }}"
+  data-icon-type="{{ ss.submenu_icon_type | default: 'chevron' }}"
+  data-search-url="{{ routes.search_url }}"
+>
+  <div class="mrMenuDrawer__overlay" data-role="overlay" aria-hidden="true"></div>
+  <aside class="mrMenuDrawer__panel" role="dialog" aria-modal="true" aria-labelledby="mr-menu-title-{{ si }}">
+    <header class="mrMenuDrawer__header">
+      <div class="mrMenuDrawer__headerLeft">
+        <button class="mrMenuDrawer__back" type="button" aria-label="{{ ss.back_label | default: 'Zurück' }}" data-action="back" hidden tabindex="-1">
+          <span class="mrMenuDrawer__icon mrMenuDrawer__icon--back" aria-hidden="true"></span>
+          <span class="mrMenuDrawer__backLabel">{{ ss.back_label | default: 'Zurück' }}</span>
+        </button>
+      </div>
+      <div class="mrMenuDrawer__headerCenter">
+        <h2 id="mr-menu-title-{{ si }}" class="mrMenuDrawer__title" hidden></h2>
+      </div>
+      {% if ss.show_search_root and ss.search_position == 'header' %}
+      <div class="mrMenuDrawer__search -inHeader" data-root-search>
+        <label for="mr-menu-search-{{ si }}" class="visually-hidden">Suche</label>
+        <div class="mrMenuDrawer__searchWrap">
+          <input id="mr-menu-search-{{ si }}" type="search" placeholder="Suche nach..." autocomplete="off" />
+        </div>
+      </div>
+      {% endif %}
+      <div class="mrMenuDrawer__headerRight">
+        <button class="mrMenuDrawer__close" type="button" aria-label="Schließen" data-action="close">
+          <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path d="M17.658 6.343 6.344 17.657M17.658 17.657 6.344 6.343" stroke="currentColor" stroke-width="2"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    {% if ss.show_search_root and ss.search_position == 'below' %}
+    <div class="mrMenuDrawer__search" data-root-search>
+      <label for="mr-menu-search-{{ si }}" class="visually-hidden">Suche</label>
+      <div class="mrMenuDrawer__searchWrap">
+        <input id="mr-menu-search-{{ si }}" type="search" placeholder="Suche nach..." autocomplete="off" />
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="mrMenuDrawer__body" data-scrollable>
+      {% comment %} Banners BEFORE {% endcomment %}
+      {% if section.blocks.size > 0 and ss.banners_position == 'before' %}
+        <div class="mrMenuDrawer__banners {% if ss.banners_mode == 'slider' %}-slider{% else %}-stack{% endif %}" data-banners>
+          {% for block in section.blocks %}
+            {% if block.type == 'banner' and block.settings.image != blank %}
+              <a href="{{ block.settings.link | default: '#' }}" class="mrMenuDrawer__banner" style="--banner-w: {{ ss.banners_width | default: '100' }}%;" {{ block.shopify_attributes }}>
+                <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.alt | escape }}" loading="lazy">
+                {% if block.settings.title != blank %}
+                  <span class="mrMenuDrawer__bannerOverlay">{{ block.settings.title }}{% if ss.banner_overlay_show_chevron %}<span class="mrMenuDrawer__bannerChevron" aria-hidden="true"></span>{% endif %}</span>
+                {% endif %}
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <nav class="mrMenuDrawer__menu -primary" aria-label="{{ ss.primary_title | default: 'Hauptmenü' }}">
+        {% assign primary = linklists[ss.primary_menu] %}
+        {% if primary and primary.links.size > 0 %}
+          <div class="mrMenu__group -primary" style="--mr-group-bg: {{ ss.primary_group_bg | default: ss.boxed_overlay_bg | default: 'rgba(0,0,0,0.35)' }}; --mr-group-title: {{ ss.primary_group_title_color | default: ss.boxed_text_color | default: '#ffffff' }}; --mr-boxed-overlay: {{ ss.primary_boxed_overlay_bg | default: ss.boxed_overlay_bg | default: 'rgba(0,0,0,0.35)' }}; --mr-boxed-text: {{ ss.primary_boxed_text_color | default: ss.boxed_text_color | default: '#ffffff' }}; --mr-media-bg: {{ ss.primary_media_bg | default: 'transparent' }}; --mr-media-text: {{ ss.primary_media_text | default: ss.body_text | default: '#111111' }};">
+            {% if ss.primary_title != blank %}
+            <div class="mrMenuDrawer__menuTitle">{{ ss.primary_title }}</div>
+            {% endif %}
+            <ul class="mrMenu__list {% if ss.primary_grid == '2' %}is-grid-2{% else %}is-grid-1{% endif %}" data-level="1">
+            {% assign design = ss.primary_design %}
+            {% assign show_subtitle_flag = false %}
+            {% if ss.subheadings_map != blank or ss.show_subtitle %}{% assign show_subtitle_flag = true %}{% endif %}
+            {% for link in primary.links %}
+              {% assign has_children = false %}
+              {% if link.links.size > 0 %}{% assign has_children = true %}{% endif %}
+              {% assign is_collection = false %}
+              {% if link.type == 'collection_link' %}{% assign is_collection = true %}{% endif %}
+              {% assign is_product = false %}
+              {% if link.type == 'product_link' %}{% assign is_product = true %}{% endif %}
+              {% assign obj = link.object %}
+              {% assign img = '' %}
+              {% assign img_small = '' %}
+              {% assign subtitle = '' %}
+              {%- comment -%} Override image via metafield if provided {%- endcomment -%}
+              {% if ss.primary_image_metafield != blank and obj and obj.metafields %}
+                {% assign pim = ss.primary_image_metafield | strip %}
+                {% assign pim_ns = pim | split: '.' | first %}
+                {% assign pim_key = pim | split: '.' | last %}
+                {% if obj.metafields[pim_ns] and obj.metafields[pim_ns][pim_key] %}
+                  {% assign pimf = obj.metafields[pim_ns][pim_key] %}
+                  {% if pimf.value %}
+                    {% if pimf.type contains 'file' or pimf.type contains 'image' %}
+                      {% assign img = pimf.value | image_url: width: 800 %}
+                      {% assign img_small = pimf.value | image_url: width: 80 %}
+                    {% else %}
+                      {% assign img = pimf.value %}
+                      {% assign img_small = pimf.value %}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+              {% endif %}
+              {% if is_collection and obj %}
+                {% if img == '' and obj.image %}
+                  {% assign img = obj.image | image_url: width: 800 %}
+                  {% assign img_small = obj.image | image_url: width: 80 %}
+                {% endif %}
+                {% if subtitle == '' and obj.metafields and obj.metafields.custom and obj.metafields.custom.subtitle %}
+                  {% assign subtitle = obj.metafields.custom.subtitle %}
+                {% elsif subtitle == '' and obj.description != blank %}
+                  {% assign subtitle = obj.description | strip_html | truncate: 80, '…' %}
+                {% endif %}
+              {% elsif is_product and obj %}
+                {% if img == '' and obj.featured_image %}
+                  {% assign img = obj.featured_image | image_url: width: 800 %}
+                  {% assign img_small = obj.featured_image | image_url: width: 80 %}
+                {% endif %}
+              {% endif %}
+              {% assign submenu_id = 'submenu-' | append: si | append: '-p-' | append: forloop.index0 %}
+              <li class="mrMenu__item {% if design == 'image_text' %}-imageText{% elsif design == 'text_bg' %}-textBg{% else %}-plain{% endif %}"
+                  data-item data-depth="1" data-has-children="{% if has_children %}true{% else %}false{% endif %}">
+                {% if has_children and ss.menu_depth != '1' %}
+                  {% if design == 'image_text' %}
+                    <button type="button" class="mrMenu__mediaLink has-children" data-action="submenu" data-target="{{ submenu_id }}" data-title="{{ link.title | escape }}">
+                      <span class="mrMenu__mediaLeft">
+                        <span class="mrMenu__thumb">{% if img_small != '' %}<img src="{{ img_small }}" width="40" height="40" alt="{{ link.title | escape }}">{% endif %}</span>
+                        <span class="mrMenu__text"><span class="mrMenu__title">{{ link.title }}</span>{% if ss.show_subtitle and subtitle != '' %}<span class="mrMenu__subtitle">{{ subtitle }}</span>{% endif %}</span>
+                      </span>
+                      <span class="mrMenuDrawer__chevron" aria-hidden="true"></span>
+                    </button>
+                  {% elsif design == 'text_bg' %}
+                    <button type="button" class="mrMenu__card has-children" data-action="submenu" data-target="{{ submenu_id }}" data-title="{{ link.title | escape }}" style="{% if img != '' %}background-image: url('{{ img }}'); background-size: cover; background-position: center;{% endif %}">
+                      <span class="mrMenu__cardText">{{ link.title }}</span>
+                      <span class="mrMenuDrawer__chevron" aria-hidden="true"></span>
+                    </button>
+                  {% else %}
+                    <button type="button" class="mrMenu__link has-children" data-action="submenu" data-target="{{ submenu_id }}" data-title="{{ link.title | escape }}">
+                      {{ link.title }}
+                      <span class="mrMenuDrawer__chevron" aria-hidden="true"></span>
+                    </button>
+                  {% endif %}
+                {% else %}
+                  {% if design == 'image_text' %}
+                    <a class="mrMenu__mediaLink" href="{{ link.url }}">
+                      <span class="mrMenu__mediaLeft">
+                        <span class="mrMenu__thumb">{% if img_small != '' %}<img src="{{ img_small }}" width="40" height="40" alt="{{ link.title | escape }}">{% endif %}</span>
+                        <span class="mrMenu__text"><span class="mrMenu__title">{{ link.title }}</span>{% if ss.show_subtitle and subtitle != '' %}<span class="mrMenu__subtitle">{{ subtitle }}</span>{% endif %}</span>
+                      </span>
+                    </a>
+                  {% elsif design == 'text_bg' %}
+                    <a class="mrMenu__card" href="{{ link.url }}" style="{% if img != '' %}background-image: url('{{ img }}'); background-size: cover; background-position: center;{% endif %}"><span class="mrMenu__cardText">{{ link.title }}</span></a>
+                  {% else %}
+                    <a class="mrMenu__link" href="{{ link.url }}">{{ link.title }}{% if ss.menu_depth == '1' and ss.show_root_chevrons %}<span class="mrMenuRootChevron" aria-hidden="true"></span>{% endif %}</a>
+                  {% endif %}
+                {% endif %}
+
+                {% if has_children and ss.menu_depth != '1' %}
+                  <div id="{{ submenu_id }}" class="mrMenuDrawer__submenu -level2" hidden>
+                    {% comment %} Inject collection slider blocks matching this submenu handle {% endcomment %}
+                    {% assign current_handle = link.url | split: '/' | last | handleize %}
+                    {% for block in section.blocks %}
+                      {% assign block_menu_handle = block.settings.menu_handle | handleize %}
+                      {% if block.type == 'collection_slider' and block.settings.menu_handle != blank and block_menu_handle == current_handle %}
+                        {% assign col = block.settings.collection %}
+                        {% if col and col.products_count > 0 %}
+                        <div class="mrMenuDrawer__prodSlider -slider" style="--item-w: {{ block.settings.item_width | default: 120 }}px;">
+                          <div class="mrMenuDrawer__prodTrack">
+                            {% for p in col.products limit: block.settings.limit %}
+                              <a href="{{ p.url }}" class="mrMenuDrawer__prodCard">
+                                {% if p.featured_image %}
+                                  <img src="{{ p.featured_image | image_url }}" alt="{{ p.title | escape }}" loading="lazy" />
+                                {% endif %}
+                                <div class="mrMenuDrawer__prodTitle">{{ p.title }}</div>
+                                <div class="mrMenuDrawer__prodPrice">{% if p.price_varies %}{{ ss.str_from | default: 'Ab' }} {% endif %}{{ p.price_min | money }}</div>
+                              </a>
+                            {% endfor %}
+                          </div>
+                        </div>
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                    <ul class="mrMenuDrawer__list mrMenu__list -plain {% if ss.level2_grid == '2' %}is-grid-2{% else %}is-grid-1{% endif %}" data-level="2">
+                      {% for l2 in link.links %}
+                        {% assign has_children2 = false %}
+                        {% if l2.links.size > 0 %}
+                          {% assign has_children2 = true %}
+                        {% endif %}
+                        {% assign submenu2_id = submenu_id | append: '-c-' | append: forloop.index0 %}
+                        {% assign l2_img_small = '' %}
+                        {% assign l2_subtitle = '' %}
+                        {% assign l2_obj = l2.object %}
+                        {% if design == 'image_text' and l2_obj %}
+                          {%- comment -%} Apply primary_image_metafield override if provided {%- endcomment -%}
+                          {% if ss.primary_image_metafield != blank and l2_obj.metafields %}
+                            {% assign pim = ss.primary_image_metafield | strip %}
+                            {% assign pim_ns = pim | split: '.' | first %}
+                            {% assign pim_key = pim | split: '.' | last %}
+                            {% if l2_obj.metafields[pim_ns] and l2_obj.metafields[pim_ns][pim_key] %}
+                              {% assign pimf = l2_obj.metafields[pim_ns][pim_key] %}
+                              {% if pimf.value %}
+                                {% if pimf.type contains 'file' or pimf.type contains 'image' %}
+                                  {% assign l2_img_small = pimf.value | image_url: width: 80 %}
+                                {% else %}
+                                  {% assign l2_img_small = pimf.value %}
+                                {% endif %}
+                              {% endif %}
+                            {% endif %}
+                          {% endif %}
+                          {% if l2.type == 'collection_link' and l2_obj.image %}
+                            {% if l2_img_small == '' %}{% assign l2_img_small = l2_obj.image | image_url: width: 80 %}{% endif %}
+                            {% if l2_obj.metafields and l2_obj.metafields.custom and l2_obj.metafields.custom.subtitle %}
+                              {% assign l2_subtitle = l2_obj.metafields.custom.subtitle %}
+                            {% endif %}
+                          {% elsif l2.type == 'product_link' and l2_obj.featured_image %}
+                            {% if l2_img_small == '' %}{% assign l2_img_small = l2_obj.featured_image | image_url: width: 80 %}{% endif %}
+                          {% endif %}
+                        {% endif %}
+                        <li class="mrMenuDrawer__item -plain">
+                          {% if has_children2 and ss.menu_depth == '3' %}
+                            {% if design == 'image_text' %}
+                              <button type="button" class="mrMenu__mediaLink has-children" data-action="submenu" data-target="{{ submenu2_id }}" data-title="{{ l2.title | escape }}">
+                                <span class="mrMenu__mediaLeft">
+                                  <span class="mrMenu__thumb">{% if l2_img_small != '' %}<img src="{{ l2_img_small }}" width="40" height="40" alt="{{ l2.title | escape }}">{% endif %}</span>
+                                  <span class="mrMenu__text"><span class="mrMenu__title">{{ l2.title }}</span>{% if show_subtitle_flag and l2_subtitle != '' %}<span class="mrMenu__subtitle">{{ l2_subtitle }}</span>{% endif %}</span>
+                                </span>
+                                <span class="mrMenuDrawer__chevron" aria-hidden="true"></span>
+                              </button>
+                            {% else %}
+                              <button type="button" class="mrMenuDrawer__link has-children" data-action="submenu" data-target="{{ submenu2_id }}" data-title="{{ l2.title | escape }}">
+                                <span class="mrMenuDrawer__linkText">{{ l2.title }}</span>
+                                <span class="mrMenuDrawer__chevron" aria-hidden="true"></span>
+                              </button>
+                            {% endif %}
+                          {% else %}
+                            {% if design == 'image_text' %}
+                              <a href="{{ l2.url }}" class="mrMenu__mediaLink">
+                                <span class="mrMenu__mediaLeft">
+                                  <span class="mrMenu__thumb">{% if l2_img_small != '' %}<img src="{{ l2_img_small }}" width="40" height="40" alt="{{ l2.title | escape }}">{% endif %}</span>
+                                  <span class="mrMenu__text"><span class="mrMenu__title">{{ l2.title }}</span>{% if show_subtitle_flag and l2_subtitle != '' %}<span class="mrMenu__subtitle">{{ l2_subtitle }}</span>{% endif %}</span>
+                                </span>
+                              </a>
+                            {% else %}
+                              <a href="{{ l2.url }}" class="mrMenuDrawer__link"><span class="mrMenuDrawer__linkText">{{ l2.title }}</span></a>
+                            {% endif %}
+                          {% endif %}
+                        </li>
+                        {% assign _row_mod = forloop.index | modulo: 2 %}
+                        {% if ss.level2_grid == '2' and forloop.index != link.links.size and _row_mod == 0 %}
+                          <li class="mrMenu__rowSep" aria-hidden="true"></li>
+                        {% endif %}
+                        {% comment %} Inject subheading after matched link title {% endcomment %}
+                        {% if ss.subheadings_map != blank %}
+                          {% assign entries = ss.subheadings_map | split: ';' %}
+                          {% for entry in entries %}
+                            {% assign pair = entry | strip | split: ',' %}
+                            {% if pair.size > 1 %}
+                              {% assign match_title = pair[0] | strip %}
+                              {% assign heading_title = pair[1] | strip %}
+                              {% assign l2_handle = l2.title | handleize %}
+                              {% assign match_handle = match_title | handleize %}
+                              {% assign l2_norm = l2_handle | replace: 'sets-', 'set-' | replace: '-sets-', '-set-' %}
+                              {% assign match_norm = match_handle | replace: 'sets-', 'set-' | replace: '-sets-', '-set-' %}
+                              {% assign should_insert = false %}
+                              {% if match_title != '' and heading_title != '' %}
+                                {% if l2.title == match_title %}
+                                  {% assign should_insert = true %}
+                                {% else %}
+                                  {% if l2_handle == match_handle or l2_norm == match_norm %}
+                                    {% assign should_insert = true %}
+                                  {% else %}
+                                    {% if l2_handle contains match_handle or match_handle contains l2_handle or l2_norm contains match_norm or match_norm contains l2_norm %}
+                                      {% assign should_insert = true %}
+                                    {% endif %}
+                                  {% endif %}
+                                {% endif %}
+                              {% endif %}
+                              {% if should_insert %}
+                                <li class="mrMenu__subheading" aria-hidden="true">{{ heading_title }}</li>
+                              {% endif %}                             
+                                <!-- debug-subheading: link_title="{{ l2.title }}" match_title="{{ match_title }}" l2_handle="{{ l2_handle }}" match_handle="{{ match_handle }}" l2_norm="{{ l2_norm }}" match_norm="{{ match_norm }}" should_insert="{{ should_insert }}" -->
+
+                            {% endif %}
+                          {% endfor %}
+                        {% endif %}
+                        {% if has_children2 and ss.menu_depth == '3' %}
+                          <div id="{{ submenu2_id }}" class="mrMenuDrawer__submenu -level3" hidden>
+                            <ul class="mrMenuDrawer__list mrMenu__list -plain {% if ss.level3_grid == '2' %}is-grid-2{% else %}is-grid-1{% endif %}" data-level="3">
+                              {% for l3 in l2.links %}
+                                <li class="mrMenuDrawer__item -plain"><a href="{{ l3.url }}" class="mrMenuDrawer__link"><span class="mrMenuDrawer__linkText">{{ l3.title }}</span></a></li>
+                              {% endfor %}
+                            </ul>
+                          </div>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
+              </li>
+            {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </nav>
+
+      {% comment %} Banners BETWEEN {% endcomment %}
+      {% if section.blocks.size > 0 and ss.banners_position == 'between' %}
+        <div class="mrMenuDrawer__banners {% if ss.banners_mode == 'slider' %}-slider{% else %}-stack{% endif %}" data-banners>
+          {% for block in section.blocks %}
+            {% if block.type == 'banner' and block.settings.image != blank %}
+              <a href="{{ block.settings.link | default: '#' }}" class="mrMenuDrawer__banner" style="--banner-w: {{ ss.banners_width | default: '100' }}%;" {{ block.shopify_attributes }}>
+                <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.alt | escape }}" loading="lazy">
+                {% if block.settings.title != blank %}
+                  <span class="mrMenuDrawer__bannerOverlay">{{ block.settings.title }}</span>
+                {% endif %}
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <nav class="mrMenuDrawer__menu -secondary" aria-label="{{ ss.secondary_title | default: 'Sekundärmenü' }}">
+        {% assign secondary = linklists[ss.secondary_menu] %}
+        {% if secondary and secondary.links.size > 0 %}
+          <div class="mrMenu__group -secondary" style="--mr-group-bg: {{ ss.secondary_group_bg | default: ss.boxed_overlay_bg | default: 'rgba(0,0,0,0.35)' }}; --mr-group-title: {{ ss.secondary_group_title_color | default: ss.boxed_text_color | default: '#ffffff' }}; --mr-boxed-overlay: {{ ss.secondary_boxed_overlay_bg | default: ss.boxed_overlay_bg | default: 'rgba(0,0,0,0.35)' }}; --mr-boxed-text: {{ ss.secondary_boxed_text_color | default: ss.boxed_text_color | default: '#ffffff' }}; --mr-media-bg: {{ ss.secondary_media_bg | default: 'transparent' }}; --mr-media-text: {{ ss.secondary_media_text | default: ss.body_text | default: '#111111' }};">
+            {% if ss.secondary_title != blank %}
+            <div class="mrMenuDrawer__menuTitle">{{ ss.secondary_title }}</div>
+            {% endif %}
+            <ul class="mrMenu__list {% if ss.secondary_grid == '2' %}is-grid-2{% else %}is-grid-1{% endif %}" data-level="1">
+            {% assign design = ss.secondary_design %}
+            {% for link in secondary.links %}
+              {% assign has_children = false %}{% if link.links.size > 0 %}{% assign has_children = true %}{% endif %}
+              {% assign is_collection = false %}{% if link.type == 'collection_link' %}{% assign is_collection = true %}{% endif %}
+              {% assign is_product = false %}{% if link.type == 'product_link' %}{% assign is_product = true %}{% endif %}
+              {% assign obj = link.object %}
+              {% assign img = '' %}
+              {% assign img_small = '' %}
+              {% assign subtitle = '' %}
+              {%- comment -%} Override image via metafield if provided {%- endcomment -%}
+              {% if ss.secondary_image_metafield != blank and obj and obj.metafields %}
+                {% assign sim = ss.secondary_image_metafield | strip %}
+                {% assign sim_ns = sim | split: '.' | first %}
+                {% assign sim_key = sim | split: '.' | last %}
+                {% if obj.metafields[sim_ns] and obj.metafields[sim_ns][sim_key] %}
+                  {% assign simf = obj.metafields[sim_ns][sim_key] %}
+                  {% if simf.value %}
+                    {% if simf.type contains 'file' or simf.type contains 'image' %}
+                      {% assign img = simf.value | image_url: width: 800 %}
+                      {% assign img_small = simf.value | image_url: width: 80 %}
+                    {% else %}
+                      {% assign img = simf.value %}
+                      {% assign img_small = simf.value %}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+              {% endif %}
+              {% if is_collection and obj %}
+                {% if img == '' and obj.image %}
+                  {% assign img = obj.image | image_url: width: 800 %}
+                  {% assign img_small = obj.image | image_url: width: 80 %}
+                {% endif %}
+                {% if subtitle == '' and obj.metafields and obj.metafields.custom and obj.metafields.custom.subtitle %}
+                  {% assign subtitle = obj.metafields.custom.subtitle %}
+                {% elsif subtitle == '' and obj.description != blank %}
+                  {% assign subtitle = obj.description | strip_html | truncate: 80, '…' %}
+                {% endif %}
+              {% elsif is_product and obj %}
+                {% if img == '' and obj.featured_image %}
+                  {% assign img = obj.featured_image | image_url: width: 800 %}
+                  {% assign img_small = obj.featured_image | image_url: width: 80 %}
+                {% endif %}
+              {% endif %}
+              {% assign submenu_id = 'submenu-' | append: si | append: '-s-' | append: forloop.index0 %}
+              <li class="mrMenu__item {% if design == 'image_text' %}-imageText{% elsif design == 'text_bg' %}-textBg{% else %}-plain{% endif %}"
+                  data-item data-depth="1" data-has-children="{% if has_children %}true{% else %}false{% endif %}">
+                {% if has_children and ss.menu_depth != '1' %}
+                  {% if design == 'image_text' %}
+                    <button type="button" class="mrMenu__mediaLink has-children" data-action="submenu" data-target="{{ submenu_id }}" data-title="{{ link.title | escape }}">
+                      <span class="mrMenu__mediaLeft">
+                        <span class="mrMenu__thumb">{% if img_small != '' %}<img src="{{ img_small }}" width="40" height="40" alt="{{ link.title | escape }}">{% endif %}</span>
+                        <span class="mrMenu__text"><span class="mrMenu__title">{{ link.title }}</span>{% if subtitle != '' %}<span class="mrMenu__subtitle">{{ subtitle }}</span>{% endif %}</span>
+                      </span>
+                      <span class="mrMenuDrawer__chevron" aria-hidden="true"></span>
+                    </button>
+                  {% elsif design == 'text_bg' %}
+                    <button type="button" class="mrMenu__card has-children" data-action="submenu" data-target="{{ submenu_id }}" data-title="{{ link.title | escape }}" style="{% if img != '' %}background-image: url('{{ img }}'); background-size: cover; background-position: center;{% endif %}">
+                      <span class="mrMenu__cardText">{{ link.title }}</span>
+                      <span class="mrMenuDrawer__chevron" aria-hidden="true"></span>
+                    </button>
+                  {% else %}
+                    <button type="button" class="mrMenu__link has-children" data-action="submenu" data-target="{{ submenu_id }}" data-title="{{ link.title | escape }}">
+                      {{ link.title }}
+                      <span class="mrMenuDrawer__chevron" aria-hidden="true"></span>
+                    </button>
+                  {% endif %}
+                {% else %}
+                  {% if design == 'image_text' %}
+                    <a class="mrMenu__mediaLink" href="{{ link.url }}">
+                      <span class="mrMenu__mediaLeft">
+                        <span class="mrMenu__thumb">{% if img_small != '' %}<img src="{{ img_small }}" width="40" height="40" alt="{{ link.title | escape }}">{% endif %}</span>
+                        <span class="mrMenu__text"><span class="mrMenu__title">{{ link.title }}</span>{% if subtitle != '' %}<span class="mrMenu__subtitle">{{ subtitle }}</span>{% endif %}</span>
+                      </span>
+                    </a>
+                  {% elsif design == 'text_bg' %}
+                    <a class="mrMenu__card" href="{{ link.url }}" style="{% if img != '' %}background-image: url('{{ img }}'); background-size: cover; background-position: center;{% endif %}"><span class="mrMenu__cardText">{{ link.title }}</span></a>
+                  {% else %}
+                    <a class="mrMenu__link" href="{{ link.url }}">{{ link.title }}{% if ss.menu_depth == '1' and ss.show_root_chevrons %}<span class="mrMenuRootChevron" aria-hidden="true"></span>{% endif %}</a>
+                  {% endif %}
+                {% endif %}
+
+                {% if has_children and ss.menu_depth != '1' %}
+                  <div id="{{ submenu_id }}" class="mrMenuDrawer__submenu -level2" hidden>
+                    <ul class="mrMenuDrawer__list -plain grid-1" data-level="2">
+                      {% for l2 in link.links %}
+                        {% assign has_children2 = false %}{% if l2.links.size > 0 %}{% assign has_children2 = true %}{% endif %}
+                        {% assign submenu2_id = submenu_id | append: '-c-' | append: forloop.index0 %}
+                        <li class="mrMenuDrawer__item -plain">
+                          {% if has_children2 and ss.menu_depth == '3' %}
+                            <button type="button" class="mrMenuDrawer__link has-children" data-action="submenu" data-target="{{ submenu2_id }}" data-title="{{ l2.title | escape }}">
+                              <span class="mrMenuDrawer__linkText">{{ l2.title }}</span>
+                              <span class="mrMenuDrawer__chevron" aria-hidden="true"></span>
+                            </button>
+                          {% else %}
+                            <a href="{{ l2.url }}" class="mrMenuDrawer__link"><span class="mrMenuDrawer__linkText">{{ l2.title }}</span></a>
+                          {% endif %}
+                        </li>
+                        {% if has_children2 and ss.menu_depth == '3' %}
+                          <div id="{{ submenu2_id }}" class="mrMenuDrawer__submenu -level3" hidden>
+                            <ul class="mrMenuDrawer__list -plain grid-1" data-level="3">
+                              {% for l3 in l2.links %}
+                                <li class="mrMenuDrawer__item -plain"><a href="{{ l3.url }}" class="mrMenuDrawer__link"><span class="mrMenuDrawer__linkText">{{ l3.title }}</span></a></li>
+                              {% endfor %}
+                            </ul>
+                          </div>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
+              </li>
+            {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </nav>
+
+      {% comment %} Banners AFTER {% endcomment %}
+      {% if section.blocks.size > 0 and ss.banners_position == 'after' %}
+        <div class="mrMenuDrawer__banners {% if ss.banners_mode == 'slider' %}-slider{% else %}-stack{% endif %}" data-banners>
+          {% for block in section.blocks %}
+            {% if block.type == 'banner' and block.settings.image != blank %}
+              <a href="{{ block.settings.link | default: '#' }}" class="mrMenuDrawer__banner" style="--banner-w: {{ ss.banners_width | default: '100' }}%;" {{ block.shopify_attributes }}>
+                <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.alt | escape }}" loading="lazy">
+                {% if block.settings.title != blank %}
+                  <span class="mrMenuDrawer__bannerOverlay">{{ block.settings.title }}</span>
+                {% endif %}
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    {% comment %} Compute footer visibility flags {% endcomment %}
+    {% assign has_benefit_1 = false %}
+    {% if ss.show_benefit_1 %}
+      {% if ss.benefit_1_icon != blank or ss.benefit_1_text != blank %}
+        {% assign has_benefit_1 = true %}
+      {% endif %}
+    {% endif %}
+    {% assign has_benefit_2 = false %}
+    {% if ss.show_benefit_2 %}
+      {% if ss.benefit_2_icon != blank or ss.benefit_2_text != blank %}
+        {% assign has_benefit_2 = true %}
+      {% endif %}
+    {% endif %}
+    {% assign has_benefit_3 = false %}
+    {% if ss.show_benefit_3 %}
+      {% if ss.benefit_3_icon != blank or ss.benefit_3_text != blank %}
+        {% assign has_benefit_3 = true %}
+      {% endif %}
+    {% endif %}
+    {% assign has_badge = false %}
+    {% if ss.show_badge and ss.badge_text != blank %}{% assign has_badge = true %}{% endif %}
+    {% assign has_login = false %}
+    {% if ss.show_login and shop.customer_accounts_enabled %}{% assign has_login = true %}{% endif %}
+    {% assign has_socials = false %}
+    {% if ss.show_socials %}
+      {% if settings.social_facebook_link or settings.social_instagram_link or settings.social_twitter_link or settings.social_youtube_link or settings.social_pinterest_link or settings.social_tiktok_link %}
+        {% assign has_socials = true %}
+      {% endif %}
+    {% endif %}
+    {% assign has_secondary = false %}
+    {% if ss.show_secondary_button and ss.secondary_button_text != blank %}{% assign has_secondary = true %}{% endif %}
+    {% assign has_languages = false %}
+    {% if ss.show_languages %}
+      {% if localization and localization.available_languages %}
+        {% if localization.available_languages.size > 1 %}{% assign has_languages = true %}{% endif %}
+      {% elsif shop.published_locales %}
+        {% if shop.published_locales.size > 1 %}{% assign has_languages = true %}{% endif %}
+      {% endif %}
+    {% endif %}
+
+    {% if has_benefit_1 or has_benefit_2 or has_badge or has_login or has_socials or has_languages or has_secondary %}
+    <footer class="mrMenuDrawer__footer{% if ss.footer_sticky %} is-sticky{% endif %}">
+      <div class="mrMenuDrawer__footerInner">
+        {% if has_benefit_1 or has_benefit_2 or has_benefit_3 %}
+        <div class="mrMenuDrawer__benefits">
+          {% if has_benefit_1 %}
+            <div class="mrMenuDrawer__benefit">
+              {% if ss.benefit_1_icon %}<img src="{{ ss.benefit_1_icon | image_url }}" alt="" loading="lazy"/>{% endif %}
+              {% if ss.benefit_1_text != blank %}<span>{{ ss.benefit_1_text }}</span>{% endif %}
+            </div>
+          {% endif %}
+          {% if has_benefit_2 %}
+            <div class="mrMenuDrawer__benefit">
+              {% if ss.benefit_2_icon %}<img src="{{ ss.benefit_2_icon | image_url }}" alt="" loading="lazy"/>{% endif %}
+              {% if ss.benefit_2_text != blank %}<span>{{ ss.benefit_2_text }}</span>{% endif %}
+            </div>
+          {% endif %}
+          {% if has_benefit_3 %}
+            <div class="mrMenuDrawer__benefit">
+              {% if ss.benefit_3_icon %}<img src="{{ ss.benefit_3_icon | image_url }}" alt="" loading="lazy"/>{% endif %}
+              {% if ss.benefit_3_text != blank %}<span>{{ ss.benefit_3_text }}</span>{% endif %}
+            </div>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% if ss.show_badge and ss.badge_text != blank %}
+        <div class="mrMenuDrawer__badge" style="--badge-bg: {{ ss.badge_bg | default: '#f5f5f5' }}; --badge-text: {{ ss.badge_text_color | default: '#111111' }}; --badge-border: {{ ss.badge_border | default: '#e0e0e0' }};">
+          {% if ss.badge_icon %}<img src="{{ ss.badge_icon | image_url: width: 32 }}" alt="" loading="lazy"/>{% endif %}
+          <span>{{ ss.badge_text }}</span>
+        </div>
+        {% endif %}
+
+        <div class="mrMenuDrawer__footerMeta">
+          {% if ss.show_login and shop.customer_accounts_enabled %}
+            {% if customer %}
+              <a href="{{ routes.account_url }}" class="mrMenuDrawer__button -login" style="--btn-bg: {{ ss.login_btn_bg | default: '#111111' }}; --btn-text: {{ ss.login_btn_text_color | default: '#ffffff' }}; --btn-border: {{ ss.login_btn_border_color | default: '#111111' }}; --btn-border-w: {{ ss.login_btn_border_width | default: 1 }}px; --btn-radius: {{ ss.login_btn_border_radius | default: 8 }}px;">
+                <span class="mrMenuDrawer__btnIcon" aria-hidden="true">
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.9998 4.5C10.9998 5.16304 10.7364 5.79893 10.2676 6.26777C9.79875 6.73661 9.16286 7 8.49982 7C7.83678 7 7.2009 6.73661 6.73205 6.26777C6.26321 5.79893 5.99982 5.16304 5.99982 4.5C5.99982 3.83696 6.26321 3.20107 6.73205 2.73223C7.2009 2.26339 7.83678 2 8.49982 2C9.16286 2 9.79875 2.26339 10.2676 2.73223C10.7364 3.20107 10.9998 3.83696 10.9998 4.5ZM3.50049 13.912C3.52191 12.6002 4.05805 11.3494 4.99327 10.4294C5.9285 9.50929 7.18788 8.99365 8.49982 8.99365C9.81176 8.99365 11.0711 9.50929 12.0064 10.4294C12.9416 11.3494 13.4777 12.6002 13.4992 13.912C11.9307 14.6312 10.2253 15.0023 8.49982 15C6.71582 15 5.02249 14.6107 3.50049 13.912Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span>{{ 'Mein Konto' }}</span>
+              </a>
+              <a href="{{ routes.account_logout_url }}" class="mrMenuDrawer__button -login" style="--btn-bg: {{ ss.login_btn_bg | default: '#111111' }}; --btn-text: {{ ss.login_btn_text_color | default: '#ffffff' }}; --btn-border: {{ ss.login_btn_border_color | default: '#111111' }}; --btn-border-w: {{ ss.login_btn_border_width | default: 1 }}px; --btn-radius: {{ ss.login_btn_border_radius | default: 8 }}px;">Abmelden</a>
+            {% else %}
+              <a href="{{ routes.account_login_url }}" class="mrMenuDrawer__button -login" style="--btn-bg: {{ ss.login_btn_bg | default: '#111111' }}; --btn-text: {{ ss.login_btn_text_color | default: '#ffffff' }}; --btn-border: {{ ss.login_btn_border_color | default: '#111111' }}; --btn-border-w: {{ ss.login_btn_border_width | default: 1 }}px; --btn-radius: {{ ss.login_btn_border_radius | default: 8 }}px;">
+                <span class="mrMenuDrawer__btnIcon" aria-hidden="true">
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.9998 4.5C10.9998 5.16304 10.7364 5.79893 10.2676 6.26777C9.79875 6.73661 9.16286 7 8.49982 7C7.83678 7 7.2009 6.73661 6.73205 6.26777C6.26321 5.79893 5.99982 5.16304 5.99982 4.5C5.99982 3.83696 6.26321 3.20107 6.73205 2.73223C7.2009 2.26339 7.83678 2 8.49982 2C9.16286 2 9.79875 2.26339 10.2676 2.73223C10.7364 3.20107 10.9998 3.83696 10.9998 4.5ZM3.50049 13.912C3.52191 12.6002 4.05805 11.3494 4.99327 10.4294C5.9285 9.50929 7.18788 8.99365 8.49982 8.99365C9.81176 8.99365 11.0711 9.50929 12.0064 10.4294C12.9416 11.3494 13.4777 12.6002 13.4992 13.912C11.9307 14.6312 10.2253 15.0023 8.49982 15C6.71582 15 5.02249 14.6107 3.50049 13.912Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span>{{ ss.login_btn_text | default: 'Anmelden' }}</span>
+              </a>
+            {% endif %}
+          {% endif %}
+
+          {% if ss.show_secondary_button and ss.secondary_button_text != blank %}
+            <a href="{{ ss.secondary_button_url | default: '#' }}" class="mrMenuDrawer__button -secondary" style="--btn-bg: {{ ss.secondary_button_bg | default: '#ffffff' }}; --btn-text: {{ ss.secondary_button_text_color | default: '#111111' }}; --btn-border: {{ ss.secondary_button_border_color | default: '#111111' }}; --btn-border-w: {{ ss.secondary_button_border_width | default: 1 }}px; --btn-radius: {{ ss.secondary_button_border_radius | default: 8 }}px;">{{ ss.secondary_button_text }}</a>
+          {% endif %}
+
+          {% if ss.show_socials %}
+          <div class="mrMenuDrawer__socials">
+            {% if settings.social_facebook_link %}<a href="{{ settings.social_facebook_link }}" aria-label="Facebook" class="mrMenuDrawer__social">F</a>{% endif %}
+            {% if settings.social_instagram_link %}<a href="{{ settings.social_instagram_link }}" aria-label="Instagram" class="mrMenuDrawer__social">I</a>{% endif %}
+            {% if settings.social_twitter_link %}<a href="{{ settings.social_twitter_link }}" aria-label="Twitter" class="mrMenuDrawer__social">X</a>{% endif %}
+            {% if settings.social_youtube_link %}<a href="{{ settings.social_youtube_link }}" aria-label="YouTube" class="mrMenuDrawer__social">Y</a>{% endif %}
+            {% if settings.social_pinterest_link %}<a href="{{ settings.social_pinterest_link }}" aria-label="Pinterest" class="mrMenuDrawer__social">P</a>{% endif %}
+            {% if settings.social_tiktok_link %}<a href="{{ settings.social_tiktok_link }}" aria-label="TikTok" class="mrMenuDrawer__social">T</a>{% endif %}
+          </div>
+          {% endif %}
+
+          {% if ss.show_languages %}
+            {% assign total_locales = 0 %}
+            {% if localization and localization.available_languages %}
+              {% assign total_locales = localization.available_languages | size %}
+            {% elsif shop.published_locales %}
+              {% assign total_locales = shop.published_locales | size %}
+            {% endif %}
+            {% if total_locales > 1 %}
+            <div class="mrMenuDrawer__locales">
+              {% if localization and localization.available_languages %}
+                {% for lang in localization.available_languages %}
+                  <a href="{{ request.path | locale_url: lang.iso_code }}" class="mrMenuDrawer__metaLink">{{ lang.endonym_name | default: lang.name }}</a>
+                {% endfor %}
+              {% elsif shop.published_locales %}
+                {% for loc in shop.published_locales %}
+                  <a href="{{ request.path | locale_url: loc.iso_code }}" class="mrMenuDrawer__metaLink">{{ loc.endonym_name | default: loc.name }}</a>
+                {% endfor %}
+              {% endif %}
+            </div>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </footer>
+    {% endif %}
+  </aside>
+</div>
+
+<style>
+  #mr-menu-{{ si }} {
+    --mr-header-bg: {{ ss.header_bg | default: '#ffffff' }};
+    --mr-header-text: {{ ss.header_text | default: '#111111' }};
+    --mr-body-bg: {{ ss.body_bg | default: '#ffffff' }};
+    --mr-body-text: {{ ss.body_text | default: '#111111' }};
+    --mr-footer-bg: {{ ss.footer_bg | default: '#f8f8f8' }};
+    --mr-footer-text: {{ ss.footer_text | default: '#111111' }};
+    --mr-link: {{ ss.link_text_color | default: '#111111' }};
+    --mr-link-hover: {{ ss.link_text_hover | default: '#000000' }};
+    --mr-divider: {{ ss.region_divider_color | default: '#e5e5e5' }};
+    --mr-radius: {{ ss.drawer_radius | default: 0 }}px;
+    --mr-card-overlay-bg: {{ ss.card_overlay_bg | default: 'rgba(0,0,0,0.3)' }};
+    --mr-card-overlay-text: {{ ss.card_overlay_text | default: '#ffffff' }};
+    --mr-icon-color: {{ ss.submenu_icon_color | default: '#111111' }};
+    --mr-icon-size: {{ ss.submenu_icon_size | default: 16 }}px;
+    --mr-overlay-alpha: {{ ss.overlay_alpha | default: 0.6 }};
+    --mr-width: {% if ss.width == '75' %}75vw{% elsif ss.width == '90' %}90vw{% else %}100vw{% endif %};
+    --mr-list-gap: {{ ss.list_gap | default: 8 }}px;
+    --mr-banner-overlay-text: {{ ss.banner_overlay_text_color | default: '#F36917' }};
+    --mr-banner-overlay-size: {{ ss.banner_overlay_text_size | default: 24 }}px;
+    --mr-root-chevron-color: {{ ss.root_chevron_color | default: '#F36917' }};
+    --mr-thumb-size: {{ ss.thumb_size | default: 20 }}px;
+    --mr-primary-border-color: {{ ss.primary_item_border_color | default: '#DDDDDD' }};
+    --mr-secondary-border-color: {{ ss.secondary_item_border_color | default: '#DDDDDD' }};
+    --mr-base-font-size: {{ ss.base_font_size | default: 16 }}px;
+    --mr-benefit-img-h: {{ ss.benefit_icons_height | default: 70 }}px;
+  }
+
+  .mrMenuDrawer { position: relative; z-index: 10000; font-size: var(--mr-base-font-size, 16px); }
+  .mrMenuDrawer__overlay { position: fixed; inset: 0; background: rgba(0,0,0,var(--mr-overlay-alpha)); opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+  .mrMenuDrawer__panel { position: fixed; top: 0; height: 100vh; width: 0; max-width: var(--mr-width); background: var(--mr-body-bg); color: var(--mr-body-text); overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,.15); transition: width .3s ease; display: flex; flex-direction: column; }
+  {% if ss.alignment == 'right' %}
+  .mrMenuDrawer__panel { right: 0; border-top-left-radius: var(--mr-radius); border-bottom-left-radius: var(--mr-radius); }
+  {% else %}
+  .mrMenuDrawer__panel { left: 0; border-top-right-radius: var(--mr-radius); border-bottom-right-radius: var(--mr-radius); }
+  {% endif %}
+  .mrMenuDrawer.is-open .mrMenuDrawer__overlay { opacity: 1; pointer-events: auto; }
+  .mrMenuDrawer.is-open .mrMenuDrawer__panel { width: var(--mr-width); }
+  .mrMenuDrawer__header { display: grid; grid-template-columns: 1fr 4fr 1fr; align-items: center; gap: 8px; padding: 12px 16px 12px; background: var(--mr-header-bg); color: var(--mr-header-text); border-bottom: {% if ss.show_region_dividers %}1px solid var(--mr-divider){% else %}none{% endif %}; }
+  :root { --mr-menu-header-h-approx: 56px; }
+  .mrMenuDrawer__headerLeft { display: flex; align-items: center; justify-content: flex-start; }
+  .mrMenuDrawer__headerCenter { display: flex; align-items: center; justify-content: center; }
+  .mrMenuDrawer__headerRight { display: flex; align-items: center; justify-content: flex-end; }
+  .mrMenuDrawer__close { background: none; border: 1px solid transparent; color: #000 !important; padding: 6px; line-height: 0; cursor: pointer; border-radius: 6px; }
+  .mrMenuDrawer__back { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: #111; cursor: pointer; padding: 6px; border-radius: 6px; }
+  .mrMenuDrawer__back[hidden] { display: none !important; }
+  .mrMenuDrawer__title { margin: 0; font-size: 16px; font-weight: 600; }
+  .mrMenuDrawer__search { padding: 8px 16px; border-bottom: {% if ss.show_region_dividers %}1px solid var(--mr-divider){% else %}none{% endif %}; }
+  .mrMenuDrawer__search.-inHeader { grid-column: 1 / span 2; padding: 8px 0; border-bottom: none; }
+  .mrMenuDrawer__searchWrap { position: relative; }
+  .mrMenuDrawer__searchWrap::before { content: ''; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; background: currentColor; -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23000" d="m495,466.1l-110.1-110.1c31.1-37.7 48-84.6 48-134 0-56.4-21.9-109.3-61.8-149.2-39.8-39.9-92.8-61.8-149.1-61.8-56.3,0-109.3,21.9-149.2,61.8-39.9,39.8-61.8,92.8-61.8,149.2 0,56.3 21.9,109.3 61.8,149.2 39.8,39.8 92.8,61.8 149.2,61.8 49.5,0 96.4-16.9 134-48l110.1,110c8,8 20.9,8 28.9,0 8-8 8-20.9 0-28.9zm-393.3-123.9c-32.2-32.1-49.9-74.8-49.9-120.2 0-45.4 17.7-88.2 49.8-120.3 32.1-32.1 74.8-49.8 120.3-49.8 45.4,0 88.2,17.7 120.3,49.8 32.1,32.1 49.8,74.8 49.8,120.3 0,45.4-17.7,88.2-49.8,120.3-32.1,32.1-74.9,49.8-120.3,49.8-45.4,0-88.1-17.7-120.2-49.9z"/></svg>') no-repeat center / contain; mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23000" d="m495,466.1l-110.1-110.1c31.1-37.7 48-84.6 48-134 0-56.4-21.9-109.3-61.8-149.2-39.8-39.9-92.8-61.8-149.1-61.8-56.3,0-109.3,21.9-149.2,61.8-39.9,39.8-61.8,92.8-61.8,149.2 0,56.3 21.9,109.3 61.8,149.2 39.8,39.8 92.8,61.8 149.2,61.8 49.5,0 96.4-16.9 134-48l110.1,110c8,8 20.9,8 28.9,0 8-8 8-20.9 0-28.9zm-393.3-123.9c-32.2-32.1-49.9-74.8-49.9-120.2 0-45.4 17.7-88.2 49.8-120.3 32.1-32.1 74.8-49.8 120.3-49.8 45.4,0 88.2,17.7 120.3,49.8 32.1,32.1 49.8,74.8 49.8,120.3 0,45.4-17.7,88.2-49.8,120.3-32.1,32.1-74.9,49.8-120.3,49.8-45.4,0-88.1-17.7-120.2-49.9z"/></svg>') no-repeat center / contain; opacity: .5; }
+  .mrMenuDrawer__search input { width: 100%; padding: 10px 12px 10px 36px; border: 1px solid #ddd; border-radius: 6px; background: #fff; color: #111; }
+  .mrMenuDrawer__search.-inHeader input { background: transparent; border-radius: 16px; }
+  .mrMenuDrawer__body { position: relative; overflow: hidden; display: flex; flex-direction: column; flex: 1 1 auto; }
+  .mrMenuDrawer__body { overflow-y: auto; overflow-x: hidden; -ms-overflow-style: none; scrollbar-width: none; }
+  .mrMenuDrawer__body::-webkit-scrollbar { width: 0; height: 0; }
+  .mrMenuDrawer__menu { padding: 12px 16px; position: static; }
+  {% if ss.primary_item_borders %}
+  .mrMenuDrawer__menu.-primary { padding: 12px 0px 0px; }
+  .mrMenuDrawer__menu.-primary .mrMenu__item { padding: 6px 16px; }
+  .mrMenuDrawer__menu.-primary .mrMenu__item + .mrMenu__item { border-top: 1px solid var(--mr-primary-border-color); }
+  .mrMenuDrawer__menu.-primary .mrMenuDrawer__menuTitle { padding-left: 16px; }
+  {% endif %}
+  {% if ss.secondary_item_borders %}
+  .mrMenuDrawer__menu.-secondary { padding: 6px 0px; }
+  .mrMenuDrawer__menu.-secondary .mrMenu__item { padding: 12px 16px; }
+  .mrMenuDrawer__menu.-secondary .mrMenu__item + .mrMenu__item { border-top: 1px solid var(--mr-secondary-border-color); }
+  .mrMenuDrawer__menu.-secondary .mrMenuDrawer__menuTitle { padding-left: 16px; padding-top: 16px;}
+  {% endif %}
+  .mrMenuDrawer__menu + .mrMenuDrawer__menu { border-top: {% if ss.show_region_dividers %}1px solid var(--mr-divider){% else %}none{% endif %}; }
+  .mrMenu__group { background: var(--mr-group-bg); border-radius: var(--mr-radius); padding: 0px; }
+  .mrMenuDrawer__menuTitle { font-weight: 600; margin: 0 0 8px 0; color: var(--mr-group-title); }
+  .mrMenu__list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--mr-list-gap); }
+  .mrMenu__list.is-grid-1 { grid-template-columns: 1fr; }
+  .mrMenu__list.is-grid-2 { grid-template-columns: 1fr 1fr; }
+  .mrMenu__list.is-grid-2 { position: relative; }
+  .mrMenu__rowSep { grid-column: 1 / -1; border-top: 1px solid var(--mr-primary-border-color); }
+  .mrMenuDrawer__item { box-sizing: border-box; min-width: 0; }
+  .mrMenuDrawer__link, .mrMenu__mediaLink, .mrMenu__link { width: 100%; box-sizing: border-box; min-width: 0; }
+  .mrMenuDrawer__item { display: block; }
+  .mrMenuDrawer__link { display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left; background: none; border: none; color: var(--mr-link); text-decoration: none; padding: 12px; border-radius: 8px; cursor: pointer; }
+  .mrMenuDrawer__link:hover, .mrMenuDrawer__link:focus { color: var(--mr-link-hover); background: #f7f7f7; }
+  .mrMenuDrawer__link.has-children { border: 1px solid #eee; }
+  .mrMenuDrawer__linkText { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mrMenuDrawer__chevron::before { content: ''; display: inline-block; width: var(--mr-icon-size); height: var(--mr-icon-size); border-right: 2px solid var(--mr-icon-color); border-top: 2px solid var(--mr-icon-color); transform: rotate(45deg); margin-left: 8px; }
+  {% if ss.submenu_icon_type == 'caret' %}
+  .mrMenuDrawer__chevron::before { border: none; clip-path: polygon(0 0, 100% 50%, 0 100%); background: var(--mr-icon-color); }
+  {% elsif ss.submenu_icon_type == 'arrow' %}
+  .mrMenuDrawer__chevron::before { border: none; position: relative; background: currentColor; width: 0; height: 0; border-top: calc(var(--mr-icon-size)/2) solid transparent; border-bottom: calc(var(--mr-icon-size)/2) solid transparent; border-left: calc(var(--mr-icon-size)) solid var(--mr-icon-color); }
+  {% endif %}
+  .mrMenu__item.-plain .mrMenu__link { text-decoration: none; color: var(--mr-link); display: flex; align-items: center; gap: 8px; padding: 0px 0px; border-radius: 8px; width: 100%; justify-content: space-between;}
+  .mrMenu__item.-plain .mrMenu__link:hover { color: var(--mr-link-hover); background: #f7f7f7; }
+  .mrMenu__item.-textBg .mrMenu__card { display: grid; align-items: end; min-height: 120px; border-radius: var(--mr-radius); overflow: hidden; padding: 0.75rem; position: relative; color: var(--mr-boxed-text); text-decoration: none; background: var(--mr-boxed-overlay); }
+  .mrMenu__item.-textBg .mrMenu__card .mrMenu__cardText { position: relative; z-index: 1; }
+  .mrMenu__item.-imageText .mrMenu__mediaLink { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; text-decoration: none; color: var(--mr-media-text); background: var(--mr-media-bg); padding: 8px 0; border-radius: 8px; width: 100%; }
+  .mrMenu__mediaLeft { display: inline-flex; align-items: center; gap: 0.75rem; }
+  .mrMenuRootChevron { display: inline-block; margin-left: auto; }
+  .mrMenuRootChevron::before { content: ''; display: inline-block; width: var(--mr-icon-size); height: var(--mr-icon-size); border-right: 2px solid var(--mr-root-chevron-color); border-top: 2px solid var(--mr-root-chevron-color); transform: rotate(45deg); }
+  .mrMenu__item.-imageText .mrMenuRootChevron { justify-self: end; }
+  .mrMenu__item.-textBg .mrMenu__card { position: relative; }
+  .mrMenu__item.-textBg .mrMenuRootChevron { position: absolute; right: 10px; bottom: 10px; }
+  .mrMenu__thumb { width: var(--mr-thumb-size); height: var(--mr-thumb-size); border-radius: 6px; overflow: hidden; display: inline-flex; align-items:center; justify-content:center; }
+  .mrMenu__thumb img { width: var(--mr-thumb-size); height: var(--mr-thumb-size); object-fit: cover; display:block; }
+  .mrMenu__title { display:block; line-height: 1.25; }
+  .mrMenu__subtitle { display:block; font-size: 0.875rem; line-height: 1.3; color: {{ ss.image_text_subtitle_color | default: '#555555' }}; }
+  .mrMenuDrawer__submenu { position: absolute; left: 0; right: 0; top: 0; height: 0; z-index: 2; background: var(--mr-body-bg); padding: 12px 0; overflow: hidden; display: block; visibility: hidden; pointer-events: none; transform: translateX({% if ss.alignment == 'right' %}100%{% else %}-100%{% endif %}); opacity: 0; transition: transform .25s ease, opacity .25s ease, visibility 0s linear .25s; will-change: transform, opacity; }
+  .mrMenuDrawer__submenu.is-active { height: calc(100vh - var(--header-h, 0px) - var(--footer-h, 0px)); overflow-y: auto; visibility: visible; pointer-events: auto; transform: translateX(0); opacity: 1; transition-delay: 0s; }
+  .mrMenuDrawer__submenuHost { position: relative; z-index: 3; }
+  .mrMenuDrawer__submenuHeader { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .mrMenuDrawer__submenuTitle { font-weight: 600; font-size: 16px; }
+  .mrMenu__subheading { grid-column: 1 / -1; font-weight: 700; padding-left: 16px; padding-top: 16px; text-align: left; }
+  .mrMenuDrawer__icon--back::before { content: ''; display: inline-block; width: var(--mr-icon-size); height: var(--mr-icon-size); border-left: 2px solid #111; border-bottom: 2px solid #111; transform: rotate(45deg); }
+  {% if ss.submenu_icon_type == 'caret' %}
+  .mrMenuDrawer__icon--back::before { border: none; clip-path: polygon(100% 0, 0 50%, 100% 100%); background: #111; }
+  {% elsif ss.submenu_icon_type == 'arrow' %}
+  .mrMenuDrawer__icon--back::before { border: none; width: 0; height: 0; border-top: calc(var(--mr-icon-size)/2) solid transparent; border-bottom: calc(var(--mr-icon-size)/2) solid transparent; border-right: calc(var(--mr-icon-size)) solid #111; }
+  {% endif %}
+  .mrMenuDrawer__banners { display: grid; gap: 10px; padding: 8px 0; }
+  .mrMenuDrawer__banners.-slider { display: grid; }
+  .mrMenuDrawer__banners.-slider .mrMenuDrawer__bannerTrack { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+  .mrMenuDrawer__banners.-slider .mrMenuDrawer__bannerTrack::-webkit-scrollbar { width: 0; height: 0; display: none; }
+  .mrMenuDrawer__banner { position: relative; display: block; width: var(--banner-w, 100%); flex: 0 0 auto; scroll-snap-align: center; border-radius: 10px; overflow: hidden; }
+  .mrMenuDrawer__banners.-slider .mrMenuDrawer__banner:first-child { margin-left: 16px; }
+  .mrMenuDrawer__banners.-slider .mrMenuDrawer__banner:last-child { margin-right: 16px; }
+  .mrMenuDrawer__banner img { width: 100%; height: 140px; object-fit: contain; display: block; }
+  .mrMenuDrawer__prodSlider { padding: 8px 0 24px; }
+  .mrMenuDrawer__prodSlider.-slider .mrMenuDrawer__prodCard:first-child { margin-left: 16px; }
+  .mrMenuDrawer__prodSlider.-slider .mrMenuDrawer__prodCard:last-child { margin-right: 16px; }
+  .mrMenuDrawer__prodTrack { display: flex; flex-wrap: nowrap; gap: 10px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; align-items: stretch; scroll-snap-type: x mandatory; }
+  .mrMenuDrawer__prodTrack::-webkit-scrollbar { width: 0; height: 0; }
+  .mrMenuDrawer__prodCard { flex: 0 0 var(--item-w, 120px); width: var(--item-w, 120px); display: grid; gap: 6px; color: var(--mr-link); text-decoration: none; scroll-snap-align: center; }
+  .mrMenuDrawer__prodCard img { width: 100%; height: var(--item-w, 120px); object-fit: contain; background: #fff; border-radius: 8px; }
+  .mrMenuDrawer__prodTitle { font-size: 13px; line-height: 1.3; max-height: calc(1.3em * 2); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .mrMenuDrawer__prodPrice { font-weight: 600; font-size: 13px; }
+  .mrMenuDrawer__bannerOverlay { position: absolute; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.8); color: var(--mr-banner-overlay-text); padding: 6px 12px; display: flex; justify-content: flex-start; align-items: flex-end; font-weight: 900; font-size: var(--mr-banner-overlay-size); }
+  .mrMenuDrawer__bannerChevron { display: inline-block; margin-left: 8px; }
+  .mrMenuDrawer__bannerChevron::before { content: ''; display: inline-block; width: calc(var(--mr-banner-overlay-size) * 0.6); height: calc(var(--mr-banner-overlay-size) * 0.6); border-right: 3px solid var(--mr-banner-overlay-text); border-top: 3px solid var(--mr-banner-overlay-text); transform: rotate(45deg); }
+  .mrMenuDrawer__footer { background: var(--mr-footer-bg); color: var(--mr-footer-text); border-top: {% if ss.show_region_dividers %}1px solid var(--mr-divider){% else %}none{% endif %}; }
+  .mrMenuDrawer__footerInner { padding: 12px 16px; display: grid; gap: 12px; }
+  #mr-menu-{{ si }} { --header-h: var(--mr-menu-header-h-approx); --footer-h: {% if ss.footer_sticky %} var(--mr-menu-footer-h, 64px) {% else %} 0px {% endif %}; }
+  .mrMenuDrawer__benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; align-items: center; }
+  @media (max-width: 360px) { .mrMenuDrawer__benefits { grid-template-columns: 1fr 1fr; } }
+  .mrMenuDrawer__benefit { display: inline-flex; gap: 8px; align-items: center; font-size: 14px; }
+  .mrMenuDrawer__benefit { justify-content: center; }
+  .mrMenuDrawer__benefit img { width: auto; height: var(--mr-benefit-img-h); object-fit: contain; }
+  .mrMenuDrawer__badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; background: var(--badge-bg); color: var(--badge-text); border: 1px solid var(--badge-border); border-radius: 999px; width: fit-content; }
+  .mrMenuDrawer__badge img { width: 16px; height: 16px; object-fit: contain; }
+  .mrMenuDrawer__footerMeta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; }
+  .mrMenuDrawer__metaLink { color: var(--mr-link); text-decoration: underline; font-size: 14px; }
+  .mrMenuDrawer__button { display: inline-flex; align-items: center; justify-content: center; padding: 10px 14px; background: var(--btn-bg, #111); color: var(--btn-text, #fff); border: var(--btn-border-w, 1px) solid var(--btn-border, #111); border-radius: var(--btn-radius, 8px); text-decoration: none; font-weight: 600; font-size: 12px; gap: 2px; }
+  .mrMenuDrawer__btnIcon { display: inline-flex; align-items: center; line-height: 0; }
+  .mrMenuDrawer__socials { display: inline-flex; gap: 8px; }
+  .mrMenuDrawer__social { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: #eee; color: #333; border-radius: 50%; font-weight: 600; text-decoration: none; }
+  .mrMenuDrawer__locales { display: inline-flex; gap: 10px; }
+  .is-sticky { position: sticky; bottom: 0; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+  .mrMenuDrawer__menu { transition: opacity .25s ease; }
+  {% if ss.primary_title != blank %}
+  nav.-primary .mrMenuDrawer__list .mrMenuDrawer__item{ padding-left: 1rem; padding-right: 1rem; }
+  {% endif %}
+  {% if ss.secondary_title != blank %}
+  nav.-secondary .mrMenuDrawer__list { padding-left: 1rem; }
+  {% endif %}
+  html.mr-menu-open {{ ss.legacy_selectors | default: '#NavDrawer, #DrawerMenu, #site-menu-sidebar' }} { display: none !important; visibility: hidden !important; }
+</style>
+
+
+
+<script>
+  (function(){
+    var root = document.getElementById('mr-menu-{{ si }}');
+    if (!root) return;
+    var s = document.createElement('script');
+    s.src = '{{ 'mr-vue-menu.js' | asset_url }}';
+    s.defer = true;
+    document.head.appendChild(s);
+  })();
+</script>
+ 
+
+{% schema %}
+{
+  "name": "Vue Menu",
+  "settings": [
+    {"type":"checkbox","id":"editor_mode","label":"Editor mode (keep drawer open in editor)","default":false},
+    {"type":"text","id":"trigger_selector","label":"Trigger Selector","default":"[data-js-sidebar-handle][aria-controls=\"site-menu-sidebar\"], .js-drawer-open-nav, [aria-controls=\"DrawerMenu\"], .header__icon--menu, .mobile-menu-button"},
+    {"type":"text","id":"legacy_selectors","label":"Legacy Drawer Selectors (comma)","default":"#NavDrawer, #DrawerMenu, #site-menu-sidebar"},
+    {"type":"checkbox","id":"override_theme","label":"Override theme drawer open()","default":true},
+    {"type":"select","id":"width","label":"Drawer width","default":"75","options":[{"value":"75","label":"75%"},{"value":"90","label":"90%"},{"value":"100","label":"100%"}]},
+    {"type":"range","id":"overlay_alpha","label":"Overlay alpha","min":0,"max":0.9,"step":0.1,"default":0.6},
+    {"type":"range","id":"list_gap","label":"List item gap (px)","min":0,"max":15,"step":1,"default":8},
+    {"type":"select","id":"alignment","label":"Drawer alignment","default":"left","options":[{"value":"left","label":"Left"},{"value":"right","label":"Right"}]},
+    {"type":"checkbox","id":"show_search_root","label":"Show search on root","default":true},
+    {"type":"select","id":"search_position","label":"Search position","default":"header","options":[{"value":"header","label":"Inside header"},{"value":"below","label":"Below header"}]},
+    {"type":"text","id":"back_label","label":"Back label","default":"Zurück"},
+    {"type":"select","id":"menu_depth","label":"Menu depth","default":"2","options":[{"value":"1","label":"1"},{"value":"2","label":"2"},{"value":"3","label":"3"}]},
+    {"type":"checkbox","id":"show_root_chevrons","label":"Show chevrons on first-tier links when depth=1","default":false},
+    {"type":"color","id":"root_chevron_color","label":"First-tier chevron color","default":"#F36917"},
+    {"type":"select","id":"submenu_icon_type","label":"Submenu icon type","default":"chevron","options":[{"value":"chevron","label":"Chevron"},{"value":"caret","label":"Caret"},{"value":"arrow","label":"Arrow"}]},
+    {"type":"color","id":"submenu_icon_color","label":"Icon color","default":"#111111"},
+    {"type":"range","id":"submenu_icon_size","label":"Icon size","min":12,"max":24,"step":1,"default":16},
+
+    {"type":"link_list","id":"primary_menu","label":"Primary menu"},
+    {"type":"text","id":"primary_title","label":"Primary title","default":"Shop"},
+    {"type":"select","id":"primary_design","label":"Primary design","default":"plain","options":[{"value":"plain","label":"Plain"},{"value":"text_bg","label":"Text with background"},{"value":"image_text","label":"Image + text"}]},
+    {"type":"select","id":"primary_grid","label":"Primary grid","default":"1","options":[{"value":"1","label":"1 column"},{"value":"2","label":"2 columns"}]},
+    {"type":"range","id":"thumb_size","label":"Thumb size (px)","min":10,"max":40,"step":2,"default":20},
+    {"type":"text","id":"primary_image_metafield","label":"Primary Image+Text: metafield key for image override (namespace.key)","info":"Example: custom.menu_image"},
+    {"type":"color","id":"boxed_overlay_bg","label":"Default Boxed overlay BG","default":"rgba(0,0,0,0.35)"},
+    {"type":"color","id":"boxed_text_color","label":"Default Boxed text color","default":"#ffffff"},
+    {"type":"color","id":"image_text_subtitle_color","label":"Default Image+Text subtitle color","default":"#555555"},
+    {"type":"checkbox","id":"show_subtitle","label":"Show subtitle under Image+Text items","default":false},
+    {"type":"color","id":"primary_group_bg","label":"Primary group BG","default":"transparent"},
+    {"type":"color","id":"primary_group_title_color","label":"Primary group title color","default":"#111111"},
+    {"type":"color","id":"primary_boxed_overlay_bg","label":"Primary boxed overlay BG","default":"rgba(0,0,0,0.35)"},
+    {"type":"color","id":"primary_boxed_text_color","label":"Primary boxed text color","default":"#ffffff"},
+    {"type":"color","id":"primary_media_bg","label":"Primary media link BG","default":"transparent"},
+    {"type":"color","id":"primary_media_text","label":"Primary media link text","default":"#111111"},
+    {"type":"checkbox","id":"primary_item_borders","label":"Primary: show item borders","default":false},
+    {"type":"color","id":"primary_item_border_color","label":"Primary item border color","default":"#DDDDDD"},
+
+    {"type":"link_list","id":"secondary_menu","label":"Secondary menu"},
+    {"type":"text","id":"secondary_title","label":"Secondary title","default":"Mehr"},
+    {"type":"select","id":"secondary_design","label":"Secondary design","default":"plain","options":[{"value":"plain","label":"Plain"},{"value":"text_bg","label":"Text with background"},{"value":"image_text","label":"Image + text"}]},
+    {"type":"select","id":"secondary_grid","label":"Secondary grid","default":"1","options":[{"value":"1","label":"1 column"},{"value":"2","label":"2 columns"}]},
+    {"type":"text","id":"secondary_image_metafield","label":"Secondary Image+Text: metafield key for image override (namespace.key)","info":"Example: custom.menu_image"},
+    {"type":"color","id":"secondary_group_bg","label":"Secondary group BG","default":"transparent"},
+    {"type":"color","id":"secondary_group_title_color","label":"Secondary group title color","default":"#111111"},
+    {"type":"color","id":"secondary_boxed_overlay_bg","label":"Secondary boxed overlay BG","default":"rgba(0,0,0,0.35)"},
+    {"type":"color","id":"secondary_boxed_text_color","label":"Secondary boxed text color","default":"#ffffff"},
+    {"type":"color","id":"secondary_media_bg","label":"Secondary media link BG","default":"transparent"},
+    {"type":"color","id":"secondary_media_text","label":"Secondary media link text","default":"#111111"},
+    {"type":"select","id":"level2_grid","label":"Level 2 grid","default":"1","options":[{"value":"1","label":"1 column"},{"value":"2","label":"2 columns"}]},
+    {"type":"select","id":"level3_grid","label":"Level 3 grid","default":"1","options":[{"value":"1","label":"1 column"},{"value":"2","label":"2 columns"}]},
+    {"type":"checkbox","id":"secondary_item_borders","label":"Secondary: show item borders","default":false},
+    {"type":"color","id":"secondary_item_border_color","label":"Secondary item border color","default":"#DDDDDD"},
+
+    {"type":"color","id":"header_bg","label":"Header BG","default":"#ffffff"},
+    {"type":"color","id":"header_text","label":"Header Text","default":"#111111"},
+    {"type":"color","id":"body_bg","label":"Body BG","default":"#ffffff"},
+    {"type":"color","id":"body_text","label":"Body Text","default":"#111111"},
+    {"type":"color","id":"footer_bg","label":"Footer BG","default":"#f8f8f8"},
+    {"type":"color","id":"footer_text","label":"Footer Text","default":"#111111"},
+    {"type":"range","id":"drawer_radius","label":"Drawer border radius","min":0,"max":20,"step":1,"default":0},
+    {"type":"checkbox","id":"show_region_dividers","label":"Show region dividers","default":true},
+    {"type":"color","id":"region_divider_color","label":"Divider color","default":"#e5e5e5"},
+    {"type":"color","id":"link_text_color","label":"Link color","default":"#111111"},
+    {"type":"color","id":"link_text_hover","label":"Link hover color","default":"#000000"},
+    {"type":"color","id":"card_overlay_bg","label":"Card overlay BG","default":"rgba(0,0,0,0.3)","info":"Visible when any design is Image + text"},
+    {"type":"color","id":"card_overlay_text","label":"Card overlay text","default":"#ffffff","info":"Visible when any design is Image + text"},
+
+    {"type":"checkbox","id":"footer_sticky","label":"Sticky footer","default":true},
+    {"type":"checkbox","id":"show_login","label":"Show login","default":true},
+    {"type":"color","id":"login_btn_bg","label":"Login button BG","default":"#111111"},
+    {"type":"color","id":"login_btn_text_color","label":"Login button text","default":"#ffffff"},
+    {"type":"color","id":"login_btn_border_color","label":"Login button border","default":"#111111"},
+    {"type":"range","id":"login_btn_border_width","label":"Login button border width","min":0,"max":6,"step":1,"default":1},
+    {"type":"range","id":"login_btn_border_radius","label":"Login button radius","min":0,"max":24,"step":1,"default":8},
+    {"type":"text","id":"login_btn_text","label":"Login button text","default":"Anmelden"},
+    {"type":"text","id":"str_from","label":"Price label for 'from'","default":"Ab"},
+    {"type":"textarea","id":"subheadings_map","label":"Subheadings mapping","info":"Syntax: [Link title],[Subheading title]; ..."},
+    {"type":"checkbox","id":"show_socials","label":"Show socials","default":false},
+    {"type":"checkbox","id":"show_languages","label":"Show languages","default":false},
+    {"type":"checkbox","id":"show_secondary_button","label":"Show secondary button","default":false},
+    {"type":"text","id":"secondary_button_text","label":"Secondary button text"},
+    {"type":"url","id":"secondary_button_url","label":"Secondary button URL"},
+    {"type":"color","id":"secondary_button_bg","label":"Secondary button BG","default":"#ffffff"},
+    {"type":"color","id":"secondary_button_text_color","label":"Secondary button text","default":"#111111"},
+    {"type":"color","id":"secondary_button_border_color","label":"Secondary button border","default":"#111111"},
+    {"type":"range","id":"secondary_button_border_width","label":"Secondary button border width","min":0,"max":6,"step":1,"default":1},
+    {"type":"range","id":"secondary_button_border_radius","label":"Secondary button radius","min":0,"max":24,"step":1,"default":8},
+    {"type":"range","id":"benefit_icons_height","label":"Benefit icons height (px)","min":30,"max":120,"step":2,"default":70},
+    {"type":"checkbox","id":"show_benefit_1","label":"Show benefit 1","default":false},
+    {"type":"image_picker","id":"benefit_1_icon","label":"Benefit 1 icon"},
+    {"type":"text","id":"benefit_1_text","label":"Benefit 1 text"},
+    {"type":"checkbox","id":"show_benefit_2","label":"Show benefit 2","default":false},
+    {"type":"image_picker","id":"benefit_2_icon","label":"Benefit 2 icon"},
+    {"type":"text","id":"benefit_2_text","label":"Benefit 2 text"},
+    {"type":"checkbox","id":"show_benefit_3","label":"Show benefit 3","default":false},
+    {"type":"image_picker","id":"benefit_3_icon","label":"Benefit 3 icon"},
+    {"type":"text","id":"benefit_3_text","label":"Benefit 3 text"},
+
+    {"type":"checkbox","id":"show_badge","label":"Show badge","default":false},
+    {"type":"image_picker","id":"badge_icon","label":"Badge icon"},
+    {"type":"text","id":"badge_text","label":"Badge text"},
+    {"type":"color","id":"badge_bg","label":"Badge BG","default":"#f5f5f5"},
+    {"type":"color","id":"badge_text_color","label":"Badge text","default":"#111111"},
+    {"type":"color","id":"badge_border","label":"Badge border","default":"#e0e0e0"},
+    {"type":"color","id":"banner_overlay_text_color","label":"Banner overlay text color","default":"#F36917"},
+    {"type":"range","id":"banner_overlay_text_size","label":"Banner overlay text size","min":12,"max":48,"step":1,"default":24},
+    {"type":"checkbox","id":"banner_overlay_show_chevron","label":"Show chevron in banner overlay","default":false},
+    {"type":"range","id":"base_font_size","label":"Base font size (px)","min":12,"max":22,"step":1,"default":16},
+
+    {"type":"select","id":"banners_mode","label":"Banners mode","default":"stack","options":[{"value":"stack","label":"Stack"},{"value":"slider","label":"Slider"}]},
+    {"type":"select","id":"banners_position","label":"Banners position","default":"before","options":[{"value":"before","label":"Before menus"},{"value":"between","label":"Between menus"},{"value":"after","label":"After menus"}]},
+    {"type":"select","id":"banners_width","label":"Banner width","default":"100","options":[{"value":"75","label":"75%"},{"value":"100","label":"100%"}]}
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "limit": 3,
+      "settings": [
+        {"type":"image_picker","id":"image","label":"Image"},
+        {"type":"url","id":"link","label":"Link"},
+        {"type":"text","id":"alt","label":"Alt text"},
+        {"type":"text","id":"title","label":"Title (optional)"}
+      ]
+    },
+    {
+      "type": "collection_slider",
+      "name": "Collection slider",
+      "limit": 3,
+      "settings": [
+        {"type":"collection","id":"collection","label":"Collection"},
+        {"type":"range","id":"limit","label":"Items to show","min":1,"max":20,"step":1,"default":8},
+        {"type":"text","id":"menu_handle","label":"Menu handle to attach (e.g. all-categories)"},
+        {"type":"range","id":"item_width","label":"Item width (px)","min":80,"max":240,"step":4,"default":120}
+      ]
+    }
+  ],
+  "presets": [{ "name": "Vue Menu" }]
+}
+{% endschema %}
