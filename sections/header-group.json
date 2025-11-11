@@ -21,19 +21,10 @@
             "link_text": "und spare 10% auf deine erste Bestellung",
             "link": ""
           }
-        },
-        "announcement-1": {
-          "type": "announcement",
-          "settings": {
-            "text": "Hassle-free returns",
-            "link_text": "30-day postage paid returns",
-            "link": ""
-          }
         }
       },
       "block_order": [
-        "announcement-0",
-        "announcement-1"
+        "announcement-0"
       ],
       "settings": {
         "announcement_compact": true
