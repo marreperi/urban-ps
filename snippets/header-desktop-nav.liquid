@@ -76,7 +76,7 @@
                     {%- if childlink.levels > 0 and childlink.url contains '/collections/' -%}
                       {%- if collections[childlink.object.handle].image != blank and section.settings.mega_menu_images -%}
                         <a href="{{ childlink.url }}">
-                          <div class="svg-mask svg-mask--landscape">
+                          <div class="svg-mask svg-mask--square">
                           {%- render 'image-element',
                             img: collections[childlink.object.handle].image,
                             sizeVariable: '20vw',

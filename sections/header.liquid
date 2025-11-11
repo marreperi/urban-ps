@@ -85,6 +85,49 @@
   @media (min-width: 1024px) {
     .header__row.only-desktop { display: flex; justify-content: flex-start; }
   }
+
+  /* Hide desktop search on mobile */
+  @media (max-width: 1023px) {
+    .header__search-inline {
+      display: none !important;
+    }
+  }
+
+  /* Mobile predictive search - full width, below header, still sticky */
+  .header__search-mobile {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    background: {{ settings.color_header }};
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .header__search-mobile .predictive-search-form {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .header__search-mobile .predictive-search__input {
+    flex: 1;
+    width: 100%;
+    padding: 10px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 999px;
+    font-size: 16px;
+  }
+  
+  .header__search-mobile .header__search-icon {
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  
+  @media (min-width: 1024px) {
+    .header__search-mobile {
+      display: none !important;
+    }
+  }
   @media (max-width: 1023px) {
     .header-item--icons {
       display: flex;
@@ -278,6 +321,32 @@
           </div>
         </div>
       </header>
+      
+      {%- comment -%} Mobile predictive search - positioned below header, full width, still sticky {%- endcomment -%}
+      <div class="header__search-mobile only-mobile">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="predictive-search-form" data-predictive-search>
+          <predictive-search open class="predictive-search--inline" tabindex="-1">
+            <input
+              class="predictive-search__input"
+              id="HeaderSearchInputMobile"
+              type="search"
+              name="q"
+              value=""
+              placeholder="Ich suche nach..."
+              aria-label="Ich suche nach..."
+              autocomplete="off"
+              aria-expanded="true"
+              aria-owns="predictive-search-results-mobile"
+            >
+            <div id="predictive-search-results-mobile" class="predictive-search__results" role="listbox"></div>
+          </predictive-search>
+          <span class="header__search-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.0005 14L10.5359 10.5353M10.5359 10.5353C11.4736 9.59762 12.0004 8.3258 12.0004 6.99967C12.0004 5.67354 11.4736 4.40172 10.5359 3.464C9.59814 2.52629 8.32632 1.99948 7.00019 1.99948C5.67406 1.99948 4.40224 2.52629 3.46452 3.464C2.5268 4.40172 2 5.67354 2 6.99967C2 8.3258 2.5268 9.59762 3.46452 10.5353C4.40224 11.4731 5.67406 11.9999 7.00019 11.9999C8.32632 11.9999 9.59814 11.4731 10.5359 10.5353Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </form>
+      </div>
     </div>
   </div>
 </div>
