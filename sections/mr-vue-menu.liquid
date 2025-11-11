@@ -646,7 +646,12 @@
   .mrMenuDrawer__panel { left: 0; border-top-right-radius: var(--mr-radius); border-bottom-right-radius: var(--mr-radius); }
   {% endif %}
   .mrMenuDrawer.is-open .mrMenuDrawer__overlay { opacity: 1; pointer-events: auto; }
-  .mrMenuDrawer.is-open .mrMenuDrawer__panel { width: var(--mr-width); }
+  /* Open state - set width based on drawer width setting */
+  #mr-menu-{{ si }}.is-open .mrMenuDrawer__panel,
+  #mr-menu-{{ si }} .mrMenuDrawer.is-open .mrMenuDrawer__panel,
+  .mrMenuDrawer.is-open .mrMenuDrawer__panel { 
+    width: var(--mr-width, {% if ss.width == '75' %}75vw{% elsif ss.width == '90' %}90vw{% else %}100vw{% endif %}) !important; 
+  }
   .mrMenuDrawer__header { display: grid; grid-template-columns: 1fr 4fr 1fr; align-items: center; gap: 8px; padding: 12px 16px 12px; background: var(--mr-header-bg); color: var(--mr-header-text); border-bottom: {% if ss.show_region_dividers %}1px solid var(--mr-divider){% else %}none{% endif %}; }
   :root { --mr-menu-header-h-approx: 56px; }
   .mrMenuDrawer__headerLeft { display: flex; align-items: center; justify-content: flex-start; }
@@ -773,6 +778,16 @@
   nav.-secondary .mrMenuDrawer__list { padding-left: 1rem; }
   {% endif %}
   html.mr-menu-open {{ ss.legacy_selectors | default: '#NavDrawer, #DrawerMenu, #site-menu-sidebar' }} { display: none !important; visibility: hidden !important; }
+  
+  /* Suppress legacy drawer when Vue menu is active */
+  {% if ss.override_theme %}
+  #NavDrawer,
+  #DrawerMenu,
+  #site-menu-sidebar {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  {% endif %}
 </style>
 
 
@@ -781,9 +796,159 @@
   (function(){
     var root = document.getElementById('mr-menu-{{ si }}');
     if (!root) return;
+    
+    // Suppress legacy drawer immediately
+    {% if ss.override_theme %}
+    function suppressLegacyDrawer() {
+      var legacySelectors = '{{ ss.legacy_selectors | default: "#NavDrawer, #DrawerMenu, #site-menu-sidebar" }}';
+      var legacyDrawers = document.querySelectorAll(legacySelectors);
+      legacyDrawers.forEach(function(drawer) {
+        drawer.style.display = 'none';
+        drawer.style.visibility = 'hidden';
+        drawer.classList.remove('drawer--is-open');
+      });
+    }
+    
+    suppressLegacyDrawer();
+    
+    // Override theme drawer open if enabled
+    function overrideThemeDrawer() {
+      if (window.theme && window.theme.NavDrawer) {
+        // Override the open method
+        if (window.theme.NavDrawer.open) {
+          var originalNavDrawerOpen = window.theme.NavDrawer.open.bind(window.theme.NavDrawer);
+          window.theme.NavDrawer.open = function(evt) {
+            // Prevent default drawer from opening - Vue menu will handle it
+            if (evt) {
+              evt.preventDefault();
+              evt.stopPropagation();
+            }
+            suppressLegacyDrawer();
+            // Vue menu script will handle opening
+            return false;
+          };
+        }
+      }
+    }
+    
+    // Try to override immediately, and also after DOMContentLoaded
+    overrideThemeDrawer();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        overrideThemeDrawer();
+        suppressLegacyDrawer();
+      });
+    }
+    
+    // Also override after theme initialization
+    setTimeout(overrideThemeDrawer, 100);
+    setTimeout(overrideThemeDrawer, 500);
+    {% endif %}
+    
+    // Function to open Vue menu
+    function openVueMenu() {
+      root.classList.add('is-open');
+      document.documentElement.classList.add('mr-menu-open');
+      {% if ss.override_theme %}
+      suppressLegacyDrawer();
+      {% endif %}
+    }
+    
+    // Function to close Vue menu
+    function closeVueMenu() {
+      root.classList.remove('is-open');
+      document.documentElement.classList.remove('mr-menu-open');
+    }
+    
+    // Attach trigger listeners immediately
+    function attachTriggers() {
+      var triggerSelector = root.getAttribute('data-trigger-selector') || '.js-drawer-open-nav';
+      // Also include common menu button selectors as fallback
+      var allSelectors = triggerSelector + ', .js-drawer-open-nav, [aria-controls="NavDrawer"], [aria-controls="DrawerMenu"]';
+      var triggers = document.querySelectorAll(allSelectors);
+      
+      triggers.forEach(function(trigger) {
+        // Skip if already handled
+        if (trigger.hasAttribute('data-vue-menu-handled')) {
+          return;
+        }
+        trigger.setAttribute('data-vue-menu-handled', 'true');
+        
+        trigger.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          openVueMenu();
+        }, true); // Use capture phase to intercept early
+      });
+    }
+    
+    // Attach close listeners
+    function attachCloseListeners() {
+      // Close button
+      var closeBtn = root.querySelector('[data-action="close"]');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          closeVueMenu();
+        });
+      }
+      
+      // Overlay close
+      var overlay = root.querySelector('[data-role="overlay"]');
+      if (overlay) {
+        overlay.addEventListener('click', function() {
+          closeVueMenu();
+        });
+      }
+    }
+    
+    // Initialize immediately if DOM is ready
+    if (document.readyState !== 'loading') {
+      attachTriggers();
+      attachCloseListeners();
+    } else {
+      document.addEventListener('DOMContentLoaded', function() {
+        attachTriggers();
+        attachCloseListeners();
+      });
+    }
+    
+    // Also attach after a delay to catch dynamically added elements
+    setTimeout(attachTriggers, 100);
+    setTimeout(attachTriggers, 500);
+    
+    // Use MutationObserver to catch dynamically added triggers
+    // Throttle to avoid excessive calls
+    var reattachTimeout = null;
+    var observer = new MutationObserver(function(mutations) {
+      var shouldReattach = false;
+      mutations.forEach(function(mutation) {
+        if (mutation.addedNodes.length > 0) {
+          shouldReattach = true;
+        }
+      });
+      if (shouldReattach) {
+        // Throttle reattachment to avoid excessive calls
+        if (reattachTimeout) {
+          clearTimeout(reattachTimeout);
+        }
+        reattachTimeout = setTimeout(attachTriggers, 100);
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    // Load Vue menu script
     var s = document.createElement('script');
     s.src = '{{ 'mr-vue-menu.js' | asset_url }}';
     s.defer = true;
+    s.onload = function() {
+      // Script should handle everything, but ensure triggers are still attached
+      setTimeout(attachTriggers, 100);
+    };
+    s.onerror = function() {
+      // Fallback already handled by attachTriggers above
+    };
     document.head.appendChild(s);
   })();
 </script>
