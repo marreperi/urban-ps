@@ -219,7 +219,7 @@
         "primary_design": "image_text",
         "primary_grid": "1",
         "thumb_size": 36,
-        "primary_image_metafield": "",
+        "primary_image_metafield": "custom.menu_image",
         "boxed_overlay_bg": "#00000059",
         "boxed_text_color": "#ffffff",
         "image_text_subtitle_color": "#555555",
