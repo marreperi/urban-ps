@@ -46,9 +46,10 @@
         "subcollections",
         "product_grid"
       ],
+      "custom_css": [],
       "settings": {
-        "enable_sidebar": true,
-        "collapsed": true,
+        "enable_sidebar": false,
+        "collapsed": false,
         "filter_style": "sidebar",
         "enable_color_swatches": false,
         "enable_swatch_labels": true,
