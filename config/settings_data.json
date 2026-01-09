@@ -48,6 +48,7 @@
     "collection_grid_shape": "portrait",
     "collection_grid_image": "product",
     "collection_grid_opacity": 12,
+    "cart_type": "drawer",
     "cart_icon": "bag",
     "social_facebook_link": "https://www.facebook.com/shopify",
     "social_pinterest_link": "https://www.pinterest.com/shopify",
