@@ -12,10 +12,19 @@
     "collection-header": {
       "type": "collection-header",
       "settings": {
-        "enable": false,
+        "enable": true,
         "collection_image_enable": false,
         "parallax": false,
         "parallax_direction": "top"
+      }
+    },
+    "rich_text_HndhEh": {
+      "type": "rich-text",
+      "name": "t:sections.rich-text.presets.rich_text.name",
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
       }
     },
     "main-collection": {
@@ -59,6 +68,7 @@
   },
   "order": [
     "collection-header",
+    "rich_text_HndhEh",
     "main-collection"
   ]
 }
