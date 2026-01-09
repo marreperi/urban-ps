@@ -83,7 +83,7 @@
       "settings": {
         "main_menu_link_list": "primary-menu",
         "hover_menu": true,
-        "mega_menu_images": true,
+        "mega_menu_images": false,
         "main_menu_alignment": "left",
         "header_style": "sticky",
         "sticky_index": false,
