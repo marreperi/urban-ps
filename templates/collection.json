@@ -28,7 +28,7 @@
         "subcollections": {
           "type": "subcollections",
           "settings": {
-            "subcollections_per_row": 5
+            "subcollections_per_row": 4
           }
         },
         "product_grid": {

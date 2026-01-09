@@ -38,7 +38,7 @@
         "icon_image": "shopify://shop_images/phone.svg",
         "icon_alt": "Telefonberatung bei Urban PS",
         "show_price_toggle": true,
-        "show_social": true,
+        "show_social": false,
         "spacer_symbol": "|",
         "desktop_min_width": 1024,
         "price_selectors": "[data-product-price]",
