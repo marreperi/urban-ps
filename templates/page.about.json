@@ -19,8 +19,8 @@
       "name": "t:sections.text-and-image.presets.image_with_text.name",
       "settings": {
         "image": "shopify://shop_images/AdobeStock_299849154.jpg",
-        "image_mask": "none",
-        "image2_mask": "none",
+        "image_mask": "square",
+        "image2_mask": "splat-2",
         "subtitle": "",
         "title": "Warum es uns gibt?",
         "text": "<p>Warum ist Konferenztechnik oft so kompliziert? Und warum zeigen große Displays häufig langweilige Inhalte? Uns ist aufgefallen: Technik wird installiert, Inhalte werden getrennt davon gedacht. Genau da entsteht Reibung.</p><p>URBAN-PS schließt diese Lücke. Die besten <strong>audiovisuellen Erlebnisse</strong> entstehen, wenn <strong>Technik und Inhalt</strong> von Anfang an Hand in Hand gehen. Deshalb sind wir <strong>kein reiner Technik Dienstleister</strong> und <strong>keine reine Kreativagentur</strong>. Wir sind beides.</p>",
@@ -36,26 +36,26 @@
         "lazyload_images": true
       }
     },
-    "text_and_image_NhGPCi": {
+    "text_and_image_w8ik3J": {
       "type": "text-and-image",
-      "custom_css": [],
       "name": "t:sections.text-and-image.presets.image_with_text.name",
       "settings": {
-        "image": "shopify://shop_images/AdobeStock_299849154.jpg",
-        "image_mask": "none",
-        "image2_mask": "none",
+        "image": "shopify://shop_images/computer-cables.jpg",
+        "image_mask": "portrait",
+        "image2": "shopify://shop_images/free-shipping-on-digital-product.jpg",
+        "image2_mask": "portrait",
         "subtitle": "",
         "title": "Technik und Inhalt als Einheit",
         "text": "<p>In der Medientechnik gibt es oft eine Trennung. Techniker auf der einen Seite, Kreative auf der anderen. Wenn beide nicht dieselbe Sprache sprechen, entstehen Installationen ohne kreative Seele. Oder Ideen, die technisch nicht funktionieren.</p><p>Unsere Kernidee ist, diese Welten zu verbinden. Wir begleiten den gesamten Prozess <strong>von der Konzeption bis zur laufenden Wartung</strong> als <strong>End to End Lösung</strong>. Von der ersten Idee bis zur fertigen Installation und darüber hinaus.</p>",
         "button_label": "",
         "button_link": "",
         "button_style": "primary",
-        "align_text": "right",
-        "image_width": "33",
+        "align_text": "left",
+        "image_width": "50",
         "layout": "left",
         "divider": false,
         "top_padding": true,
-        "bottom_padding": false,
+        "bottom_padding": true,
         "lazyload_images": true
       }
     },
@@ -139,7 +139,7 @@
   "order": [
     "main",
     "text_and_image_UmFFXU",
-    "text_and_image_NhGPCi",
+    "text_and_image_w8ik3J",
     "text_and_image_gNBk6N",
     "text_with_icons_CdJ7qn",
     "form"
