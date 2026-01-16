@@ -54,7 +54,7 @@
         "image_width": "50",
         "layout": "left",
         "divider": false,
-        "top_padding": true,
+        "top_padding": false,
         "bottom_padding": true,
         "lazyload_images": true
       }
@@ -77,7 +77,7 @@
         "image_width": "33",
         "layout": "right",
         "divider": false,
-        "top_padding": true,
+        "top_padding": false,
         "bottom_padding": false,
         "lazyload_images": true
       }
