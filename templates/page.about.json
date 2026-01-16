@@ -28,7 +28,7 @@
         "button_label": "",
         "button_link": "",
         "button_style": "primary",
-        "align_text": "center",
+        "align_text": "left",
         "image_width": "50",
         "layout": "right",
         "divider": false,
@@ -51,11 +51,11 @@
         "button_label": "",
         "button_link": "",
         "button_style": "primary",
-        "align_text": "center",
+        "align_text": "right",
         "image_width": "50",
         "layout": "left",
         "divider": false,
-        "top_padding": false,
+        "top_padding": true,
         "bottom_padding": false,
         "lazyload_images": true
       }
@@ -78,176 +78,52 @@
         "image_width": "33",
         "layout": "right",
         "divider": false,
-        "top_padding": false,
+        "top_padding": true,
         "bottom_padding": false,
         "lazyload_images": true
       }
     },
-    "rich-text": {
-      "type": "rich-text",
+    "text_with_icons_CdJ7qn": {
+      "type": "text-with-icons",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "text_block_fwr3DA": {
+          "type": "text_block",
           "settings": {
-            "title": "Digitale Lösungen, die dir nicht mehr Arbeit machen – sondern weniger"
+            "icon": "globe",
+            "title": "Medientechnik für Unternehmen und Bildung: ",
+            "text": "<p>Konferenzräume, die einfach funktionieren. Von KMU und Start ups bis zu komplexen Installationen für große Konzerne. Zusammenarbeit mit Schulen und Universitäten für moderne, zuverlässige Technik in Hörsälen und Klassenzimmern.</p>"
           }
         },
-        "text": {
-          "type": "text",
+        "text_block_TiU9JG": {
+          "type": "text_block",
           "settings": {
-            "enlarge_text": true,
-            "text": "<p>URBAN-PS ist kein klassischer AV-Dienstleister.<br/>Wir sind Möglichmacher, Erlebnisarchitekten und digitale Übersetzer.<br/>Für Marken, Museen, Retail und alle, die mehr wollen als Bild und Ton.Wir denken in Wirkung. In Räumen. In Relevanz.<br/>Technik ist unser Werkzeug. Story unser Treiber.</p>"
+            "icon": "shield",
+            "title": "Digital Signage im öffentlichen Raum:",
+            "text": "<p>Digitale Bildschirme, zum Beispiel LED Wände, plus die Inhalte dazu. Von 3D Visualisierungen bis zu informativen, interaktiven Anwendungen am Point of Sale, POS.</p>"
+          }
+        },
+        "text_block_4LQyEa": {
+          "type": "text_block",
+          "settings": {
+            "icon": "chat",
+            "title": "Audiovisuelle Technik für Kunst und Kultur:",
+            "text": "<p>Technik, um Geschichten zu erzählen. Immersive Installationen oder digitale Bühnenbilder, umgesetzt in enger Zusammenarbeit mit Kreativen.</p>"
           }
         }
       },
       "block_order": [
-        "heading",
-        "text"
+        "text_block_fwr3DA",
+        "text_block_TiU9JG",
+        "text_block_4LQyEa"
       ],
-      "settings": {
-        "align_text": "center",
-        "narrow_column": true,
-        "divider": false
-      }
-    },
-    "background_image_text_ce9gpA": {
-      "type": "background-image-text",
-      "name": "t:sections.background-image-text.presets.large_image_with_text_box.name",
-      "settings": {
-        "subtitle": "",
-        "title": "Der Gründer und die Idee",
-        "text": "",
-        "button_label": "",
-        "button_link": "",
-        "layout": "left",
-        "height": 550,
-        "framed": false,
-        "parallax": true,
-        "parallax_direction": "top",
-        "lazyload_images": true
-      }
-    },
-    "rich_text_teCtzN": {
-      "type": "rich-text",
-      "blocks": {
-        "heading_NrUbye": {
-          "type": "heading",
-          "settings": {
-            "title": "Gegründet, weil Durchschnitt genervt hat"
-          }
-        },
-        "text_QK6MBt": {
-          "type": "text",
-          "settings": {
-            "enlarge_text": true,
-            "text": "<p>URBAN-PS wurde von <strong>Frank Stampa</strong> gegründet – einem, der gelernt hat, genau hinzuhören.</p><p>Als Musiker weiß Frank: <strong>Guter Klang ist kein Zufall</strong>, sondern das Ergebnis von Präzision, technischer Tiefe und kreativem Feingefühl.<br/><br/>Als Vertriebsprofi in der Softwarebranche hat er erlebt, wie wichtig es ist, <strong>echte Kundenbedürfnisse zu verstehen</strong> – und Lösungen zu schaffen, die nicht nur auf dem Papier gut aussehen, sondern <strong>in der Praxis funktionieren.</strong></p><p>Diese beiden Welten – <strong>Technik und Kreativität</strong>, Präzision und Emotion – bringt URBAN-PS heute zusammen.<br/><br/>Wir entwickeln AV-Lösungen, die begeistern, weil sie durchdacht sind.<br/><br/><strong>Für Konferenzräume, Museen, Retail-Flächen oder Opernhäuser.</strong></p><p>Unser Antrieb: <strong>Erlebnisse schaffen, die verbinden.</strong> Und Systeme bauen, die bleiben.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading_NrUbye",
-        "text_QK6MBt"
-      ],
-      "name": "t:sections.rich-text.presets.rich_text.name",
-      "settings": {
-        "align_text": "center",
-        "narrow_column": true,
-        "divider": false
-      }
-    },
-    "text_and_image_jJNzQY": {
-      "type": "text-and-image",
-      "disabled": true,
-      "name": "t:sections.text-and-image.presets.image_with_text.name",
-      "settings": {
-        "image_mask": "none",
-        "image2_mask": "none",
-        "subtitle": "",
-        "title": "Image with text",
-        "text": "<p>Pair large text with an image to tell a story, explain a detail about your product, or describe a new promotion.</p>",
-        "button_label": "",
-        "button_link": "",
-        "button_style": "primary",
-        "align_text": "left",
-        "image_width": "50",
-        "layout": "right",
-        "divider": false,
-        "top_padding": true,
-        "bottom_padding": true,
-        "lazyload_images": true
-      }
-    },
-    "text-columns": {
-      "type": "text-columns",
-      "blocks": {
-        "column1": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image_mask": "none",
-            "image_width": 650,
-            "title": "Example title",
-            "text": "<p>Use this section to explain a set of product features, to link to a series of pages, or to answer common questions about your products. Add images for emphasis.</p>",
-            "button_label": "Optional button",
-            "button_link": ""
-          }
-        },
-        "column2": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image_mask": "none",
-            "image_width": 650,
-            "title": "Example title",
-            "text": "<p>Use this section to explain a set of product features, to link to a series of pages, or to answer common questions about your products. Add images for emphasis.</p>",
-            "button_label": "Optional button",
-            "button_link": ""
-          }
-        },
-        "column3": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image_mask": "none",
-            "image_width": 650,
-            "title": "Example title",
-            "text": "<p>Use this section to explain a set of product features, to link to a series of pages, or to answer common questions about your products. Add images for emphasis.</p>",
-            "button_label": "Optional button",
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "column1",
-        "column2",
-        "column3"
-      ],
+      "name": "t:common.text_with_icons.presets.text_with_icons.name",
       "settings": {
         "title": "",
         "align_text": "center",
-        "divider": false
-      }
-    },
-    "map": {
-      "type": "map",
-      "settings": {
-        "map_title": "Our retail store",
-        "address": "<p>301 Front St W<br>Toronto, Canada</p><p>Mon - Fri, 8:30am - 10:30pm<br>Saturday, 8:30am - 10:30pm<br>Sunday, 8:30am - 10:30pm</p>",
-        "map_address": "301 Front St W, Toronto, ON M5V 2T6",
-        "api_key": "",
-        "show_button": true,
-        "lazyload_images": true
-      }
-    },
-    "featured-collection": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Featured collection",
-        "home_featured_products": "",
-        "per_row": 4,
-        "rows": 1,
-        "mobile_scrollable": true,
-        "view_all": true,
+        "desktop_columns_per_row": 3,
+        "icon_color": "#000",
+        "button_label": "",
+        "button_link": "",
         "divider": false
       }
     },
@@ -266,13 +142,7 @@
     "text_and_image_UmFFXU",
     "text_and_image_NhGPCi",
     "text_and_image_gNBk6N",
-    "rich-text",
-    "background_image_text_ce9gpA",
-    "rich_text_teCtzN",
-    "text_and_image_jJNzQY",
-    "text-columns",
-    "map",
-    "featured-collection",
+    "text_with_icons_CdJ7qn",
     "form"
   ]
 }
