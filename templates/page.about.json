@@ -37,6 +37,52 @@
         "lazyload_images": true
       }
     },
+    "text_and_image_NhGPCi": {
+      "type": "text-and-image",
+      "custom_css": [],
+      "name": "t:sections.text-and-image.presets.image_with_text.name",
+      "settings": {
+        "image": "shopify://shop_images/AdobeStock_299849154.jpg",
+        "image_mask": "none",
+        "image2_mask": "none",
+        "subtitle": "",
+        "title": "Technik und Inhalt als Einheit",
+        "text": "<p>In der Medientechnik gibt es oft eine Trennung. Techniker auf der einen Seite, Kreative auf der anderen. Wenn beide nicht dieselbe Sprache sprechen, entstehen Installationen ohne kreative Seele. Oder Ideen, die technisch nicht funktionieren.</p><p>Unsere Kernidee ist, diese Welten zu verbinden. Wir begleiten den gesamten Prozess <strong>von der Konzeption bis zur laufenden Wartung</strong> als <strong>End to End Lösung</strong>. Von der ersten Idee bis zur fertigen Installation und darüber hinaus.</p>",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "primary",
+        "align_text": "center",
+        "image_width": "50",
+        "layout": "left",
+        "divider": false,
+        "top_padding": false,
+        "bottom_padding": false,
+        "lazyload_images": true
+      }
+    },
+    "text_and_image_gNBk6N": {
+      "type": "text-and-image",
+      "custom_css": [],
+      "name": "t:sections.text-and-image.presets.image_with_text.name",
+      "settings": {
+        "image": "shopify://shop_images/Gruender_Urban-PS_Frank_Stampa.jpg",
+        "image_mask": "square",
+        "image2_mask": "portrait",
+        "subtitle": "",
+        "title": "Der Gründer",
+        "text": "<p>URBAN-PS wurde von <strong>Frank Stampa</strong> gegründet. Als Musiker hat er gelernt, wie sehr Präzision und Technik den Unterschied machen. Im Vertrieb für Software Unternehmen hat er erfahren, wie wichtig praxistaugliche Lösungen sind, die echte Bedürfnisse treffen. Die Verbindung aus kreativer und technischer Welt ist der Kern von URBAN-PS.</p>",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "primary",
+        "align_text": "center",
+        "image_width": "33",
+        "layout": "right",
+        "divider": false,
+        "top_padding": false,
+        "bottom_padding": false,
+        "lazyload_images": true
+      }
+    },
     "rich-text": {
       "type": "rich-text",
       "blocks": {
@@ -218,6 +264,8 @@
   "order": [
     "main",
     "text_and_image_UmFFXU",
+    "text_and_image_NhGPCi",
+    "text_and_image_gNBk6N",
     "rich-text",
     "background_image_text_ce9gpA",
     "rich_text_teCtzN",
