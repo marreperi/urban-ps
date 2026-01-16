@@ -59,29 +59,6 @@
         "lazyload_images": true
       }
     },
-    "text_and_image_gNBk6N": {
-      "type": "text-and-image",
-      "custom_css": [],
-      "name": "t:sections.text-and-image.presets.image_with_text.name",
-      "settings": {
-        "image": "shopify://shop_images/Gruender_Urban-PS_Frank_Stampa.jpg",
-        "image_mask": "square",
-        "image2_mask": "portrait",
-        "subtitle": "",
-        "title": "Der Gründer",
-        "text": "<p>URBAN-PS wurde von <strong>Frank Stampa</strong> gegründet. Als Musiker hat er gelernt, wie sehr Präzision und Technik den Unterschied machen. Im Vertrieb für Software Unternehmen hat er erfahren, wie wichtig praxistaugliche Lösungen sind, die echte Bedürfnisse treffen. Die Verbindung aus kreativer und technischer Welt ist der Kern von URBAN-PS.</p>",
-        "button_label": "",
-        "button_link": "",
-        "button_style": "primary",
-        "align_text": "center",
-        "image_width": "33",
-        "layout": "right",
-        "divider": false,
-        "top_padding": false,
-        "bottom_padding": false,
-        "lazyload_images": true
-      }
-    },
     "text_with_icons_CdJ7qn": {
       "type": "text-with-icons",
       "blocks": {
@@ -96,7 +73,7 @@
         "text_block_TiU9JG": {
           "type": "text_block",
           "settings": {
-            "icon": "shield",
+            "icon": "store",
             "title": "Digital Signage im öffentlichen Raum:",
             "text": "<p>Digitale Bildschirme, zum Beispiel LED Wände, plus die Inhalte dazu. Von 3D Visualisierungen bis zu informativen, interaktiven Anwendungen am Point of Sale, POS.</p>"
           }
@@ -117,13 +94,36 @@
       ],
       "name": "t:common.text_with_icons.presets.text_with_icons.name",
       "settings": {
-        "title": "",
+        "title": "Was wir tun",
         "align_text": "center",
         "desktop_columns_per_row": 3,
-        "icon_color": "#000000",
+        "icon_color": "#537c2e",
         "button_label": "",
         "button_link": "",
-        "divider": false
+        "divider": true
+      }
+    },
+    "text_and_image_gNBk6N": {
+      "type": "text-and-image",
+      "custom_css": [],
+      "name": "t:sections.text-and-image.presets.image_with_text.name",
+      "settings": {
+        "image": "shopify://shop_images/Gruender_Urban-PS_Frank_Stampa.jpg",
+        "image_mask": "none",
+        "image2_mask": "portrait",
+        "subtitle": "",
+        "title": "Der Gründer",
+        "text": "<p>URBAN-PS wurde von <strong>Frank Stampa</strong> gegründet. Als Musiker hat er gelernt, wie sehr Präzision und Technik den Unterschied machen. Im Vertrieb für Software Unternehmen hat er erfahren, wie wichtig praxistaugliche Lösungen sind, die echte Bedürfnisse treffen. Die Verbindung aus kreativer und technischer Welt ist der Kern von URBAN-PS.</p>",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "primary",
+        "align_text": "right",
+        "image_width": "33",
+        "layout": "right",
+        "divider": false,
+        "top_padding": false,
+        "bottom_padding": false,
+        "lazyload_images": true
       }
     },
     "form": {
@@ -140,8 +140,8 @@
     "main",
     "text_and_image_UmFFXU",
     "text_and_image_w8ik3J",
-    "text_and_image_gNBk6N",
     "text_with_icons_CdJ7qn",
+    "text_and_image_gNBk6N",
     "form"
   ]
 }
