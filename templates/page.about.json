@@ -65,7 +65,7 @@
         "text_block_fwr3DA": {
           "type": "text_block",
           "settings": {
-            "icon": "globe",
+            "icon": "sales-tag",
             "title": "Medientechnik für Unternehmen und Bildung: ",
             "text": "<p>Konferenzräume, die einfach funktionieren. Von KMU und Start ups bis zu komplexen Installationen für große Konzerne. Zusammenarbeit mit Schulen und Universitäten für moderne, zuverlässige Technik in Hörsälen und Klassenzimmern.</p>"
           }
@@ -100,6 +100,34 @@
         "icon_color": "#537c2e",
         "button_label": "",
         "button_link": "",
+        "divider": false
+      }
+    },
+    "rich_text_TRGRkX": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_YKe4kQ": {
+          "type": "heading",
+          "settings": {
+            "title": "Unsere Werte: Mensch, Produkt, dann Profit"
+          }
+        },
+        "text_grV3zY": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": false,
+            "text": "<p>An erster Stelle steht für uns der Mensch. Kunden, Publikum und Team. Danach das Produkt. Hoher Anspruch, Lösungen, die technisch, kreativ und ästhetisch überzeugen. Der Profit kommt an dritter Stelle. Wirtschaftlicher Erfolg ist für uns Folge guter Arbeit, nicht oberstes Ziel.<br/><br/>Nachhaltigkeit ist für uns kein Marketing. Wir setzen auf energieeffiziente Technik und ressourcenschonende Prozesse. Ein Beispiel ist der Green Info Point, ein interaktives Digital Signage System, das Informationen zeigt und die Geschichte hinter einem Produkt erzählt. Inklusive Materialien, Herstellung und CO₂ Bilanz. Ab 2026 streben wir die Zertifizierung nach DIN ISO 14001 an.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_YKe4kQ",
+        "text_grV3zY"
+      ],
+      "name": "t:sections.rich-text.presets.rich_text.name",
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
         "divider": false
       }
     },
@@ -141,6 +169,7 @@
     "text_and_image_UmFFXU",
     "text_and_image_w8ik3J",
     "text_with_icons_CdJ7qn",
+    "rich_text_TRGRkX",
     "text_and_image_gNBk6N",
     "form"
   ]
