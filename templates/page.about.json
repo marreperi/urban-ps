@@ -14,39 +14,26 @@
       "disabled": true,
       "settings": {}
     },
-    "slideshow": {
-      "type": "slideshow",
-      "blocks": {
-        "slideshow-0": {
-          "type": "image",
-          "settings": {
-            "top_subheading": "Wer wir sind, in einem Satz",
-            "title": "Technik trifft Inhalt. Wirkung garantiert.",
-            "title_size": 80,
-            "subheading": "Weil deine Kommunikation mehr verdient als ein Bildschirm. Wir schaffen digitale Erlebnisse, die verkaufen, verbinden und Vertrauen schaffen",
-            "link": "",
-            "link_text": "Kontakt",
-            "link_2": "",
-            "link_text_2": "",
-            "color_accent": "rgba(0,0,0,0)",
-            "text_align": "vertical-center horizontal-center",
-            "image": "shopify://shop_images/Bildschirmfoto_2025-07-14_um_14.59.39.png",
-            "parallax_direction": "top",
-            "overlay_opacity": 28
-          }
-        }
-      },
-      "block_order": [
-        "slideshow-0"
-      ],
+    "text_and_image_UmFFXU": {
+      "type": "text-and-image",
       "custom_css": [],
+      "name": "t:sections.text-and-image.presets.image_with_text.name",
       "settings": {
-        "section_height": "650px",
-        "mobile_height": "auto",
-        "parallax": true,
-        "style": "bars",
-        "autoplay": true,
-        "autoplay_speed": 7,
+        "image": "shopify://shop_images/AdobeStock_299849154.jpg",
+        "image_mask": "none",
+        "image2_mask": "none",
+        "subtitle": "",
+        "title": "Warum es uns gibt?",
+        "text": "<p>Warum ist Konferenztechnik oft so kompliziert? Und warum zeigen große Displays häufig langweilige Inhalte? Uns ist aufgefallen: Technik wird installiert, Inhalte werden getrennt davon gedacht. Genau da entsteht Reibung.</p><p>URBAN-PS schließt diese Lücke. Die besten <strong>audiovisuellen Erlebnisse</strong> entstehen, wenn <strong>Technik und Inhalt</strong> von Anfang an Hand in Hand gehen. Deshalb sind wir <strong>kein reiner Technik Dienstleister</strong> und <strong>keine reine Kreativagentur</strong>. Wir sind beides.</p>",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "primary",
+        "align_text": "center",
+        "image_width": "50",
+        "layout": "right",
+        "divider": false,
+        "top_padding": false,
+        "bottom_padding": false,
         "lazyload_images": true
       }
     },
@@ -75,28 +62,6 @@
         "align_text": "center",
         "narrow_column": true,
         "divider": false
-      }
-    },
-    "text_and_image_UmFFXU": {
-      "type": "text-and-image",
-      "name": "t:sections.text-and-image.presets.image_with_text.name",
-      "settings": {
-        "image": "shopify://shop_images/AdobeStock_299849154.jpg",
-        "image_mask": "rounded-top",
-        "image2_mask": "none",
-        "subtitle": "",
-        "title": "Warum es uns gibt?",
-        "text": "<p>Hast du dich auch schon gefragt, warum die Technik im Konferenzraum kompliziert wirkt – oder warum die LED-Wand in der Hotellobby groß, aber inhaltlich leer ist?</p><p>Genau da setzen wir an.</p><p>URBAN-PS vereint das, was oft getrennt gedacht wird: <strong>audiovisuelle Technik und starke Inhalte – in einer durchgängigen Lösung.</strong><br/><br/>Denn nur wenn <strong>Idee und Umsetzung</strong> aufeinander abgestimmt sind, entsteht ein Erlebnis, das wirklich funktioniert.</p><p><strong>Wir liefern End-to-End-Lösungen:</strong> Von der Konzeption über Content Creation bis zur Installation – alles aus einer Hand.<br/><br/>Für dich heißt das: <strong>weniger Abstimmung, weniger Aufwand, mehr Wirkung.</strong></p>",
-        "button_label": "",
-        "button_link": "",
-        "button_style": "primary",
-        "align_text": "left",
-        "image_width": "50",
-        "layout": "right",
-        "divider": true,
-        "top_padding": true,
-        "bottom_padding": true,
-        "lazyload_images": true
       }
     },
     "background_image_text_ce9gpA": {
@@ -252,9 +217,8 @@
   },
   "order": [
     "main",
-    "slideshow",
-    "rich-text",
     "text_and_image_UmFFXU",
+    "rich-text",
     "background_image_text_ce9gpA",
     "rich_text_teCtzN",
     "text_and_image_jJNzQY",
