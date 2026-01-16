@@ -154,13 +154,32 @@
         "lazyload_images": true
       }
     },
-    "form": {
-      "type": "contact-form",
+    "rich_text_zQTynP": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_pbjf7Y": {
+          "type": "heading",
+          "settings": {
+            "title": "Warum bERLIN?"
+          }
+        },
+        "text_rKFMxA": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": false,
+            "text": "<p>URBAN-PS wurde bewusst in Berlin gegründet. Als Umfeld, in dem Kreativität, Technologie und Kultur zusammenkommen. Hier ist der Bedarf an smarter Konferenztechnik, digitalen Installationen im Einzelhandel und Lösungen für die Kultur besonders groß.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_pbjf7Y",
+        "text_rKFMxA"
+      ],
+      "name": "t:sections.rich-text.presets.rich_text.name",
       "settings": {
-        "title": "Contact us",
-        "text": "",
-        "show_phone": false,
-        "narrow_column": true
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
       }
     }
   },
@@ -171,6 +190,6 @@
     "text_with_icons_CdJ7qn",
     "rich_text_TRGRkX",
     "text_and_image_gNBk6N",
-    "form"
+    "rich_text_zQTynP"
   ]
 }
