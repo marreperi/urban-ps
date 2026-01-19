@@ -15,10 +15,10 @@
     },
     "text_and_image_UmFFXU": {
       "type": "text-and-image",
+      "disabled": true,
       "custom_css": [],
       "name": "t:sections.text-and-image.presets.image_with_text.name",
       "settings": {
-        "image": "shopify://shop_images/AdobeStock_299849154.jpg",
         "image_mask": "square",
         "image2_mask": "splat-2",
         "subtitle": "",
@@ -36,12 +36,40 @@
         "lazyload_images": true
       }
     },
+    "rich_text_AAFJzt": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_NMyfcF": {
+          "type": "heading",
+          "settings": {
+            "title": "Warum es uns gibt"
+          }
+        },
+        "text_3xzAGW": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": false,
+            "text": "<p>Warum ist Konferenztechnik oft so kompliziert? Und warum zeigen große Displays häufig langweilige Inhalte? Uns ist aufgefallen: Technik wird installiert, Inhalte werden getrennt davon gedacht. Genau da entsteht Reibung.</p><p>URBAN-PS schließt diese Lücke. Die besten audiovisuellen Erlebnisse entstehen, wenn Technik und Inhalt von Anfang an Hand in Hand gehen. Deshalb sind wir kein reiner Technik Dienstleister und keine reine Kreativagentur. Wir sind beides.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_NMyfcF",
+        "text_3xzAGW"
+      ],
+      "name": "t:sections.rich-text.presets.rich_text.name",
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
+    },
     "text_and_image_w8ik3J": {
       "type": "text-and-image",
       "name": "t:sections.text-and-image.presets.image_with_text.name",
       "settings": {
         "image": "shopify://shop_images/prompt-de-fotorealistische-moderne-szene-in-einem-konferenzraum-studio-links-eine-av-technikerin-mit-laptop-patchpanel-audio-interface-und-kabelmanagement-rechts-eine-creative-directo.png",
-        "image_mask": "landscape",
+        "image_mask": "none",
         "image2_mask": "none",
         "subtitle": "",
         "title": "Technik und Inhalt als Einheit",
@@ -207,6 +235,7 @@
   "order": [
     "main",
     "text_and_image_UmFFXU",
+    "rich_text_AAFJzt",
     "text_and_image_w8ik3J",
     "text_with_icons_CdJ7qn",
     "advanced_content_yeXYUY",
