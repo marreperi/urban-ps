@@ -38,7 +38,7 @@
       "name": "t:sections.rich-text.presets.rich_text.name",
       "settings": {
         "align_text": "center",
-        "narrow_column": false,
+        "narrow_column": true,
         "divider": false
       }
     },
