@@ -38,7 +38,7 @@
       "name": "t:sections.rich-text.presets.rich_text.name",
       "settings": {
         "align_text": "center",
-        "narrow_column": true,
+        "narrow_column": false,
         "divider": false
       }
     },
@@ -163,8 +163,8 @@
       "custom_css": [],
       "name": "t:sections.text-and-image.presets.image_with_text.name",
       "settings": {
-        "image": "shopify://shop_images/Gruender_Urban-PS_Frank_Stampa.jpg",
-        "image_mask": "none",
+        "image": "shopify://shop_images/frank-stampa.jpg",
+        "image_mask": "rounded",
         "image2_mask": "portrait",
         "subtitle": "",
         "title": "Der Gründer",
