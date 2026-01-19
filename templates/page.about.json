@@ -40,10 +40,9 @@
       "type": "text-and-image",
       "name": "t:sections.text-and-image.presets.image_with_text.name",
       "settings": {
-        "image": "shopify://shop_images/computer-cables.jpg",
-        "image_mask": "portrait",
-        "image2": "shopify://shop_images/free-shipping-on-digital-product.jpg",
-        "image2_mask": "portrait",
+        "image": "shopify://shop_images/prompt-de-fotorealistische-moderne-szene-in-einem-konferenzraum-studio-links-eine-av-technikerin-mit-laptop-patchpanel-audio-interface-und-kabelmanagement-rechts-eine-creative-directo.png",
+        "image_mask": "landscape",
+        "image2_mask": "none",
         "subtitle": "",
         "title": "Technik und Inhalt als Einheit",
         "text": "<p>In der Medientechnik gibt es oft eine Trennung. Techniker auf der einen Seite, Kreative auf der anderen. Wenn beide nicht dieselbe Sprache sprechen, entstehen Installationen ohne kreative Seele. Oder Ideen, die technisch nicht funktionieren.</p><p>Unsere Kernidee ist, diese Welten zu verbinden. Wir begleiten den gesamten Prozess von der Konzeption bis zur laufenden Wartung als End to End Lösung. Von der ersten Idee bis zur fertigen Installation und darüber hinaus.</p>",
