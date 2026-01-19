@@ -13,29 +13,6 @@
       "type": "main-page",
       "settings": {}
     },
-    "text_and_image_UmFFXU": {
-      "type": "text-and-image",
-      "disabled": true,
-      "custom_css": [],
-      "name": "t:sections.text-and-image.presets.image_with_text.name",
-      "settings": {
-        "image_mask": "square",
-        "image2_mask": "splat-2",
-        "subtitle": "",
-        "title": "Warum es uns gibt?",
-        "text": "<p>Warum ist Konferenztechnik oft so kompliziert? Und warum zeigen große Displays häufig langweilige Inhalte? Uns ist aufgefallen: Technik wird installiert, Inhalte werden getrennt davon gedacht. Genau da entsteht Reibung.</p><p>URBAN-PS schließt diese Lücke. Die besten audiovisuellen Erlebnisse entstehen, wenn Technik und Inhalt von Anfang an Hand in Hand gehen. Deshalb sind wir kein reiner Technik Dienstleister und keine reine Kreativagentur. Wir sind beides.</p>",
-        "button_label": "",
-        "button_link": "",
-        "button_style": "primary",
-        "align_text": "left",
-        "image_width": "33",
-        "layout": "right",
-        "divider": false,
-        "top_padding": false,
-        "bottom_padding": false,
-        "lazyload_images": true
-      }
-    },
     "rich_text_AAFJzt": {
       "type": "rich-text",
       "blocks": {
@@ -78,7 +55,7 @@
         "button_link": "",
         "button_style": "primary",
         "align_text": "left",
-        "image_width": "50",
+        "image_width": "33",
         "layout": "left",
         "divider": false,
         "top_padding": false,
@@ -234,7 +211,6 @@
   },
   "order": [
     "main",
-    "text_and_image_UmFFXU",
     "rich_text_AAFJzt",
     "text_and_image_w8ik3J",
     "text_with_icons_CdJ7qn",
