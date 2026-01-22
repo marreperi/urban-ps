@@ -163,7 +163,7 @@
       "custom_css": [],
       "name": "t:sections.text-and-image.presets.image_with_text.name",
       "settings": {
-        "image": "shopify://shop_images/frank-stampa.jpg",
+        "image": "shopify://shop_images/frank-stampa.png",
         "image_mask": "rounded",
         "image2_mask": "portrait",
         "subtitle": "",
