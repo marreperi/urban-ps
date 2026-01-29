@@ -17,14 +17,14 @@
           "settings": {
             "top_subheading": "",
             "title": "Two line\ntitle slide.",
-            "title_size": 80,
+            "title_size": 42,
             "subheading": "And optional subtext",
             "link": "",
             "link_text": "Optional button",
             "link_2": "",
             "link_text_2": "",
             "color_accent": "rgba(0,0,0,0)",
-            "text_align": "vertical-center horizontal-center",
+            "text_align": "vertical-center horizontal-left",
             "parallax_direction": "top",
             "overlay_opacity": 0
           }
@@ -56,10 +56,21 @@
         "view_all": false,
         "divider": false
       }
+    },
+    "contact_form_CCmppA": {
+      "type": "contact-form",
+      "name": "t:sections.contact-form.presets.contact_form.name",
+      "settings": {
+        "title": "Contact us",
+        "text": "",
+        "show_phone": false,
+        "narrow_column": true
+      }
     }
   },
   "order": [
     "slideshow_hHiNHc",
-    "featured_collection_YxgwjC"
+    "featured_collection_YxgwjC",
+    "contact_form_CCmppA"
   ]
 }
