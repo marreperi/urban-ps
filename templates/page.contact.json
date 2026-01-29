@@ -27,7 +27,7 @@
           "type": "text",
           "settings": {
             "enlarge_text": false,
-            "text": "<p><strong>Hast du Fragen zu unseren Produkten, benötigst du eine Beratung oder möchtest du ein Projekt besprechen?</strong><br/><br/>Unser Team von Urban-PS unterstützt dich gerne!  </p>"
+            "text": "<p><strong>Hast du Fragen zu unseren Produkten, benötigst du eine Beratung oder möchtest du ein Projekt besprechen?</strong><br/><br/>Unser Team von Urban-PS unterstützt dich gerne!  </p><p></p>"
           }
         }
       },
@@ -47,7 +47,7 @@
         "title": "Jetzt Kontakt aufnehmen",
         "text": "",
         "show_phone": true,
-        "narrow_column": false
+        "narrow_column": true
       }
     }
   },
