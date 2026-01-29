@@ -34,7 +34,7 @@
       "type": "secondary-announcement-bar",
       "name": "Secondary announce bar",
       "settings": {
-        "richtext": "<p>Jetzt anrufen und beraten lassen!     <span style=\"text-decoration:underline\">040 - 999999 - 0</span></p>",
+        "richtext": "<p>Wir sind für dich da, wenn du Hilfe brauchst: +49 30 2061 4488</p>",
         "icon_image": "shopify://shop_images/phone.svg",
         "icon_alt": "Telefonberatung bei Urban PS",
         "show_price_toggle": true,
