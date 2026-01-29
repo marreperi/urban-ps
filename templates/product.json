@@ -55,8 +55,8 @@
           "type": "support_widget",
           "settings": {
             "title": "Fragen zu diesem Produkt?",
-            "text": "Unser Experte Frank Stampa hilft Ihnen gerne weiter!",
-            "phone": "+49 (0)123 456 789",
+            "text": "Unser Experte Frank Stampa ist gerne für dich da!",
+            "phone": "+49 (0)30 2061 4488",
             "image": "shopify://shop_images/frank-stampa.png"
           }
         }
