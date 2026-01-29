@@ -49,11 +49,33 @@
         "show_phone": true,
         "narrow_column": true
       }
+    },
+    "rich_text_eTB3Cr": {
+      "type": "rich-text",
+      "blocks": {
+        "text_xzWtdG": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": false,
+            "text": "<p>Falls du lieber direkt Kontakt mit uns aufnehmen möchtest, erreichst du uns jederzeit per<br/><br/><strong>Telefon:</strong> +49 30 2061 4488 <br/><br/><strong>E-Mail:</strong> info@urban-ps.de </p><p>Wir melden uns schnellstmöglich bei dir zurück.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_xzWtdG"
+      ],
+      "name": "t:sections.rich-text.presets.rich_text.name",
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
     }
   },
   "order": [
     "main",
     "rich-text",
-    "form"
+    "form",
+    "rich_text_eTB3Cr"
   ]
 }
