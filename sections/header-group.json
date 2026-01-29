@@ -17,9 +17,9 @@
         "announcement-0": {
           "type": "announcement",
           "settings": {
-            "text": "Bestelle noch heute",
-            "link_text": "und spare 10% auf deine erste Bestellung",
-            "link": ""
+            "text": "Urban-PS ist Online!",
+            "link_text": "Jetzt 15 % Startbonus sichern mit dem Code: START10 -  Nur für kurze Zeit.",
+            "link": "shopify://collections/all"
           }
         }
       },
