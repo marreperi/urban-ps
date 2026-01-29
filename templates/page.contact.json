@@ -25,18 +25,30 @@
         },
         "text": {
           "type": "text",
-          "settings": {}
+          "settings": {
+            "enlarge_text": false,
+            "text": "<p><strong>Hast du Fragen zu unseren Produkten, benötigst du eine Beratung oder möchtest du ein Projekt besprechen?</strong><br/><br/>Unser Team von Urban-PS unterstützt dich gerne!  </p>"
+          }
         }
       },
       "block_order": [
         "heading",
         "text"
       ],
-      "settings": {}
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
     },
     "form": {
       "type": "contact-form",
-      "settings": {}
+      "settings": {
+        "title": "Jetzt Kontakt aufnehmen",
+        "text": "",
+        "show_phone": false,
+        "narrow_column": true
+      }
     }
   },
   "order": [
