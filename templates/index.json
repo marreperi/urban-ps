@@ -9,20 +9,57 @@
  */
 {
   "sections": {
-    "map": {
-      "type": "map",
-      "disabled": true,
+    "slideshow_hHiNHc": {
+      "type": "slideshow",
+      "blocks": {
+        "image_XWXD7t": {
+          "type": "image",
+          "settings": {
+            "top_subheading": "",
+            "title": "Two line\ntitle slide.",
+            "title_size": 80,
+            "subheading": "And optional subtext",
+            "link": "",
+            "link_text": "Optional button",
+            "link_2": "",
+            "link_text_2": "",
+            "color_accent": "rgba(0,0,0,0)",
+            "text_align": "vertical-center horizontal-center",
+            "parallax_direction": "top",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_XWXD7t"
+      ],
+      "name": "t:sections.slideshow.presets.hero_optional_slideshow.name",
       "settings": {
-        "map_title": "Our retail store",
-        "address": "<p>301 Front St W<br>Toronto, Canada</p><p>Mon - Fri, 8:30am - 10:30pm<br>Saturday, 8:30am - 10:30pm<br>Sunday, 8:30am - 10:30pm</p>",
-        "map_address": "301 Front St W, Toronto, ON M5V 2T6",
-        "api_key": "",
-        "show_button": true,
+        "section_height": "450px",
+        "mobile_height": "auto",
+        "parallax": true,
+        "style": "bars",
+        "autoplay": true,
+        "autoplay_speed": 5,
         "lazyload_images": true
+      }
+    },
+    "featured_collection_YxgwjC": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.featured_collection.name",
+      "settings": {
+        "title": "Unsere Displays",
+        "home_featured_products": "displays",
+        "per_row": 4,
+        "rows": 1,
+        "mobile_scrollable": true,
+        "view_all": false,
+        "divider": false
       }
     }
   },
   "order": [
-    "map"
+    "slideshow_hHiNHc",
+    "featured_collection_YxgwjC"
   ]
 }
