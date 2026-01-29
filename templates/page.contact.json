@@ -20,7 +20,7 @@
         "heading": {
           "type": "heading",
           "settings": {
-            "title": "Get in touch"
+            "title": "Wir sind für dich da"
           }
         },
         "text": {
@@ -46,8 +46,8 @@
       "settings": {
         "title": "Jetzt Kontakt aufnehmen",
         "text": "",
-        "show_phone": false,
-        "narrow_column": true
+        "show_phone": true,
+        "narrow_column": false
       }
     }
   },
