@@ -71,9 +71,7 @@
         "buy_buttons",
         "support_widget_BU6a4k"
       ],
-      "custom_css": [
-        ".product img {max-height: 50px; width: auto; height: auto;}"
-      ],
+      "custom_css": [],
       "settings": {
         "sku_enable": true,
         "image_position": "left",
