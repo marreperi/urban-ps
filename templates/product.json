@@ -71,7 +71,10 @@
         "buy_buttons",
         "support_widget_BU6a4k"
       ],
-      "custom_css": [],
+      "custom_css": [
+        "/* PDP Produktbild: immer quadratisch (1:1) + COVER-Zuschnitt */.product .media,.product__media,.product-media,.product__media-wrapper,.media {aspect-ratio: 1 / 1 !important; overflow: hidden !important; width: 100% !important;}",
+        "/* Bild füllt den Rahmen (cover) */.product .media img,.product__media img,.product-media img,.product__media-wrapper img,.media img {width: 100% !important; height: 100% !important; object-fit: cover !important; /* <- cover */ object-position: center center !important; /* Zuschnitt-Zentrum */ display: block !important;}"
+      ],
       "settings": {
         "sku_enable": true,
         "image_position": "left",
