@@ -77,9 +77,9 @@
         "product_zoom_enable": true,
         "thumbnail_position": "below",
         "thumbnail_height": "flexible",
-        "thumbnail_arrows": false,
+        "thumbnail_arrows": true,
         "mobile_layout": "partial",
-        "enable_video_looping": true,
+        "enable_video_looping": false,
         "product_video_style": "muted"
       }
     },
