@@ -91,7 +91,7 @@
         "nav_label_2": "Technische Daten",
         "nav_label_3": "Downloads",
         "download_button_text": "Datenblatt (PDF) herunterladen",
-        "hide_empty_downloads": false
+        "hide_empty_downloads": true
       }
     },
     "sub": {
