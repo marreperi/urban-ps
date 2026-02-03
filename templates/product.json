@@ -35,6 +35,7 @@
         },
         "addon_product_AHwYgg": {
           "type": "addon_product",
+          "disabled": true,
           "settings": {
             "product": "garantieverlangerung-12-monate",
             "label": "Schütze dein Gerät",
