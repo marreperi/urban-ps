@@ -71,6 +71,9 @@
         "buy_buttons",
         "support_widget_BU6a4k"
       ],
+      "custom_css": [
+        "/* Quadratische Produktbilder (1:1) */.product__media,.product__media img {aspect-ratio: 1 / 1; object-fit: cover;}"
+      ],
       "settings": {
         "sku_enable": true,
         "image_position": "left",
