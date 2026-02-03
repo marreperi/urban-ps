@@ -71,10 +71,7 @@
         "buy_buttons",
         "support_widget_BU6a4k"
       ],
-      "custom_css": [
-        "/* Quadratische Produktbilder (1:1) – robust */.product img,.product__media img,.product-media img,.media img,.product__media-wrapper img {aspect-ratio: 1 / 1 !important; width: 100% !important; height: auto !important; object-fit: cover !important;}",
-        "/* Falls das Bild in einem Container mit fixer Höhe steckt */.product__media,.product-media,.media,.product__media-wrapper {aspect-ratio: 1 / 1 !important; overflow: hidden !important;}"
-      ],
+      "custom_css": [],
       "settings": {
         "sku_enable": true,
         "image_position": "left",
