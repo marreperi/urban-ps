@@ -39,10 +39,10 @@
         "section_height": "450px",
         "mobile_height": "auto",
         "parallax": true,
-        "style": "bars",
+        "style": "dots",
         "autoplay": true,
         "autoplay_speed": 5,
-        "lazyload_images": true
+        "lazyload_images": false
       }
     },
     "featured_collection_YxgwjC": {
