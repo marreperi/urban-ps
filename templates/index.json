@@ -91,8 +91,8 @@
       "name": "t:sections.featured-collection.presets.featured_collection.name",
       "settings": {
         "title": "Entdecke Unsere Displays",
-        "home_featured_products": "displays",
-        "per_row": 4,
+        "home_featured_products": "professional-displays",
+        "per_row": 5,
         "rows": 1,
         "mobile_scrollable": true,
         "view_all": true,
