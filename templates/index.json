@@ -32,10 +32,11 @@
         },
         "image_XWXD7t": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "top_subheading": "",
-            "title": "Medientechnik & digitale Inhalte aus einer Hand",
-            "title_size": 41,
+            "title": "",
+            "title_size": 45,
             "subheading": "",
             "link": "",
             "link_text": "Projekt anfragen",
