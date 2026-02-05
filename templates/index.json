@@ -173,6 +173,28 @@
         "show_phone": true,
         "narrow_column": true
       }
+    },
+    "advanced_content_zimd8B": {
+      "type": "advanced-content",
+      "blocks": {
+        "liquid_cTJ8Vi": {
+          "type": "liquid",
+          "settings": {
+            "code": "<section class=\"ups-process\">\n  <div class=\"ups-process__inner\">\n    <h2 class=\"ups-process__heading\" style=\"text-align:center;\">Unser Prozess</h2>\n\n    <ol class=\"ups-steps\" aria-label=\"Unser Prozess in fünf Schritten\">\n      <li class=\"ups-step\">\n        <div class=\"ups-marker\"><span class=\"ups-num\">1</span></div>\n        <div class=\"ups-content\">\n          <h3 class=\"ups-title\">Konzeption &amp; Beratung</h3>\n          <p class=\"ups-text\">\n            Wir hören zu und wollen verstehen, was du erreichen willst. Dann entwickeln wir gemeinsam eine erste Idee und prüfen, was technisch und kreativ möglich ist.\n          </p>\n        </div>\n      </li>\n\n      <li class=\"ups-step\">\n        <div class=\"ups-marker\"><span class=\"ups-num\">2</span></div>\n        <div class=\"ups-content\">\n          <h3 class=\"ups-title\">Design &amp; Planung</h3>\n          <p class=\"ups-text\">\n            Unsere Planer und Designer erarbeiten die detaillierte technische und gestalterische Lösung. Du bekommst einen klaren Plan, wie alles aussehen und funktionieren wird.\n          </p>\n        </div>\n      </li>\n\n      <li class=\"ups-step\">\n        <div class=\"ups-marker\"><span class=\"ups-num\">3</span></div>\n        <div class=\"ups-content\">\n          <h3 class=\"ups-title\">Digitale Content-Produktion</h3>\n          <p class=\"ups-text\">\n            Parallel zur technischen Planung erstellt unser Kreativteam die Inhalte – ob 3D-Animationen, Videos oder interaktive Anwendungen.\n          </p>\n        </div>\n      </li>\n\n      <li class=\"ups-step\">\n        <div class=\"ups-marker\"><span class=\"ups-num\">4</span></div>\n        <div class=\"ups-content\">\n          <h3 class=\"ups-title\">Inbetriebnahme &amp; Schulung</h3>\n          <p class=\"ups-text\">\n            Unsere Techniker installieren alles vor Ort und sorgen dafür, dass es reibungslos läuft. Danach schulen wir dich und dein Team, damit ihr die neue Technik optimal nutzen könnt.\n          </p>\n        </div>\n      </li>\n\n      <li class=\"ups-step\">\n        <div class=\"ups-marker\"><span class=\"ups-num\">5</span></div>\n        <div class=\"ups-content\">\n          <h3 class=\"ups-title\">Betreuung &amp; Wartung</h3>\n          <p class=\"ups-text\">\n            Auch nach dem Projektabschluss sind wir für dich da. Wir bieten Service, Wartung und Weiterentwicklung, damit deine Installation immer auf dem neuesten Stand bleibt.\n          </p>\n        </div>\n      </li>\n    </ol>\n  </div>\n\n  <style>\n    /* paste-safe für Shopify HTML/Custom Liquid */\n    .ups-process{\n      --accent: #111;\n      --border: rgba(0,0,0,.10);\n      padding: 56px 0;\n    }\n    .ups-process__inner{\n      max-width: 1100px;\n      margin: 0 auto;\n      padding: 0 20px;\n    }\n    .ups-process__heading{\n      margin: 0 0 20px;\n      line-height: 1.15;\n    }\n\n    .ups-steps{\n      list-style:none;\n      margin:0;\n      padding:0;\n      display:grid;\n      gap:16px;\n    }\n\n    /* Cards */\n    .ups-step{\n      display:grid;\n      grid-template-columns: 44px 1fr;\n      gap:14px;\n      align-items:start;\n      padding:14px 14px 14px 10px;\n      border:1px solid var(--border);\n      border-radius:14px;\n      background: rgba(255,255,255,.6);\n    }\n\n    /* Number bubble */\n    .ups-marker{\n      width:36px; height:36px;\n      border-radius:999px;\n      display:grid;\n      place-items:center;\n      background: var(--accent);\n      color:#fff;\n      font-weight:700;\n      margin-left:2px;\n    }\n    .ups-num{ font-size:14px; line-height:1; }\n\n    .ups-title{ margin:0 0 6px; font-size:16px; line-height:1.2; }\n    .ups-text{ margin:0; opacity:.9; }\n\n    /* Desktop: 5 columns */\n    @media (min-width: 900px){\n      .ups-steps{\n        grid-template-columns: repeat(5, minmax(0, 1fr));\n        gap:16px;\n      }\n      .ups-step{\n        grid-template-columns: 1fr;\n        padding:16px;\n      }\n      .ups-marker{ margin:0 0 10px; }\n    }\n  </style>\n</section>",
+            "width": "100%",
+            "alignment": "center"
+          }
+        }
+      },
+      "block_order": [
+        "liquid_cTJ8Vi"
+      ],
+      "name": "t:sections.advanced-content.presets.custom_content.name",
+      "settings": {
+        "full_width": false,
+        "space_around": true,
+        "lazyload_images": true
+      }
     }
   },
   "order": [
@@ -180,6 +202,7 @@
     "featured_collections_BHA6BK",
     "featured_collection_YxgwjC",
     "logo_list_EcehVd",
-    "contact_form_CCmppA"
+    "contact_form_CCmppA",
+    "advanced_content_zimd8B"
   ]
 }
