@@ -17,16 +17,16 @@
           "settings": {
             "top_subheading": "",
             "title": "Medientechnik & digitale Inhalte aus einer Hand",
-            "title_size": 40,
+            "title_size": 41,
             "subheading": "",
-            "link": "shopify://pages/contact",
+            "link": "",
             "link_text": "Projekt anfragen",
-            "link_2": "",
+            "link_2": "shopify://pages/contact",
             "link_text_2": "",
             "color_accent": "#9ac22f",
             "text_align": "vertical-center horizontal-center",
-            "image": "shopify://shop_images/Jouw_alineatekst.png",
-            "parallax_direction": "top",
+            "image": "shopify://shop_images/Lifestylebild_QBB-HQ.jpg",
+            "parallax_direction": "left",
             "overlay_opacity": 6
           }
         }
@@ -39,10 +39,60 @@
         "section_height": "450px",
         "mobile_height": "auto",
         "parallax": true,
-        "style": "dots",
+        "style": "bars",
         "autoplay": true,
         "autoplay_speed": 5,
-        "lazyload_images": false
+        "lazyload_images": true
+      }
+    },
+    "featured_collections_BHA6BK": {
+      "type": "featured-collections",
+      "blocks": {
+        "collection_EgQLVD": {
+          "type": "collection",
+          "settings": {
+            "collection": "professional-displays",
+            "title": "Professional Displays",
+            "focal_point": "center center"
+          }
+        },
+        "collection_9iE7F7": {
+          "type": "collection",
+          "settings": {
+            "collection": "collaboration-touch-displays",
+            "title": "Collaboration / Touch Displays",
+            "focal_point": "center center"
+          }
+        },
+        "collection_UCXtyw": {
+          "type": "collection",
+          "settings": {
+            "collection": "videowall-displays",
+            "title": "Videowall Displays",
+            "focal_point": "center center"
+          }
+        },
+        "collection_TMkkpK": {
+          "type": "collection",
+          "settings": {
+            "collection": "display-zubehor",
+            "title": "Display Zubehör",
+            "focal_point": "center center"
+          }
+        }
+      },
+      "block_order": [
+        "collection_EgQLVD",
+        "collection_9iE7F7",
+        "collection_UCXtyw",
+        "collection_TMkkpK"
+      ],
+      "name": "t:sections.featured-collections.presets.collection_list.name",
+      "settings": {
+        "title": "Collection list",
+        "divider": false,
+        "per_row": 4,
+        "enable_gutter": true
       }
     },
     "featured_collection_YxgwjC": {
@@ -98,8 +148,8 @@
       ],
       "name": "t:sections.logo-list.presets.logo_list.name",
       "settings": {
-        "title": "Marken, auf die wir setzen",
-        "logo_opacity": 70,
+        "title": "Top Marken",
+        "logo_opacity": 86,
         "divider": false
       }
     },
@@ -116,6 +166,7 @@
   },
   "order": [
     "slideshow_hHiNHc",
+    "featured_collections_BHA6BK",
     "featured_collection_YxgwjC",
     "logo_list_EcehVd",
     "contact_form_CCmppA"
