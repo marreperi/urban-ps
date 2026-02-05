@@ -21,13 +21,13 @@
             "subheading": "Alles aus einer Hand. Von der Bühnenbeleuchtung für dein Theater über Multitouch-Screens für dein Geschäft bis zu den digitalen Inhalten, die darauf laufen. Wir sind dein Partner für audiovisuelle Erlebnisse, die im Kopf bleiben.",
             "link": "",
             "link_text": "Kontakt aufnehmen",
-            "link_2": "",
+            "link_2": "shopify://pages/contact",
             "link_text_2": "",
             "color_accent": "#95c11f",
-            "text_align": "vertical-center horizontal-left",
+            "text_align": "vertical-center horizontal-center",
             "image": "shopify://shop_images/Lifestylebild_QBB-HQ.jpg",
-            "parallax_direction": "top",
-            "overlay_opacity": 0
+            "parallax_direction": "left",
+            "overlay_opacity": 6
           }
         }
       },
