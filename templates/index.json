@@ -12,6 +12,24 @@
     "slideshow_hHiNHc": {
       "type": "slideshow",
       "blocks": {
+        "image_TyPtqX": {
+          "type": "image",
+          "settings": {
+            "top_subheading": "",
+            "title": "Two line\ntitle slide.",
+            "title_size": 80,
+            "subheading": "And optional subtext",
+            "link": "",
+            "link_text": "Optional button",
+            "link_2": "",
+            "link_text_2": "",
+            "color_accent": "rgba(0,0,0,0)",
+            "text_align": "vertical-center horizontal-center",
+            "image": "shopify://shop_images/Lifestylebild_QBB-HQ_1.jpg",
+            "parallax_direction": "top",
+            "overlay_opacity": 0
+          }
+        },
         "image_XWXD7t": {
           "type": "image",
           "settings": {
@@ -32,6 +50,7 @@
         }
       },
       "block_order": [
+        "image_TyPtqX",
         "image_XWXD7t"
       ],
       "name": "t:sections.slideshow.presets.hero_optional_slideshow.name",
