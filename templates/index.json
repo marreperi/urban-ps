@@ -61,7 +61,7 @@
       "type": "contact-form",
       "name": "t:sections.contact-form.presets.contact_form.name",
       "settings": {
-        "title": "Contact us",
+        "title": "Kontakt aufnehmen",
         "text": "",
         "show_phone": false,
         "narrow_column": true
