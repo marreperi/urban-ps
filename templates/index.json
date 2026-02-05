@@ -65,28 +65,28 @@
           "type": "logo_image",
           "settings": {
             "image": "shopify://shop_images/samsung-logo-samsung-icon-transparent-free-png.webp",
-            "link": ""
+            "link": "shopify://collections/samsung-1"
           }
         },
         "logo_image_PrXXVz": {
           "type": "logo_image",
           "settings": {
             "image": "shopify://shop_images/Panasonic_logo__Blue__svg.png",
-            "link": ""
+            "link": "shopify://collections/panasonic-1"
           }
         },
         "logo_image_fNnL6a": {
           "type": "logo_image",
           "settings": {
             "image": "shopify://shop_images/LG_logo__2014__svg.png",
-            "link": ""
+            "link": "shopify://collections/lg"
           }
         },
         "logo_image_txyeN3": {
           "type": "logo_image",
           "settings": {
             "image": "shopify://shop_images/swedx-600x.png",
-            "link": ""
+            "link": "shopify://collections/swedx-1"
           }
         }
       },
