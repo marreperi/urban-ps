@@ -17,16 +17,16 @@
           "settings": {
             "top_subheading": "",
             "title": "Medientechnik & digitale Inhalte aus einer Hand",
-            "title_size": 41,
+            "title_size": 40,
             "subheading": "",
-            "link": "",
+            "link": "shopify://pages/contact",
             "link_text": "Projekt anfragen",
-            "link_2": "shopify://pages/contact",
+            "link_2": "",
             "link_text_2": "",
             "color_accent": "#9ac22f",
             "text_align": "vertical-center horizontal-center",
             "image": "shopify://shop_images/00_KV_MO_QPDX5K_21_-HQ.jpg",
-            "parallax_direction": "left",
+            "parallax_direction": "top",
             "overlay_opacity": 6
           }
         }
