@@ -36,7 +36,7 @@
       ],
       "name": "t:sections.slideshow.presets.hero_optional_slideshow.name",
       "settings": {
-        "section_height": "450px",
+        "section_height": "natural",
         "mobile_height": "auto",
         "parallax": true,
         "style": "bars",
