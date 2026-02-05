@@ -54,7 +54,7 @@
         "per_row": 4,
         "rows": 1,
         "mobile_scrollable": true,
-        "view_all": false,
+        "view_all": true,
         "divider": false
       }
     },
