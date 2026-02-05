@@ -82,7 +82,7 @@
       "settings": {
         "title": "Beliebte Kategorien",
         "divider": false,
-        "per_row": 4,
+        "per_row": 3,
         "enable_gutter": true
       }
     },
