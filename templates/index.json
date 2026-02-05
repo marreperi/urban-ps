@@ -16,15 +16,16 @@
           "type": "image",
           "settings": {
             "top_subheading": "",
-            "title": "Two line\ntitle slide.",
-            "title_size": 42,
-            "subheading": "And optional subtext",
+            "title": "DU HAST DIE IDEE\nWIR LIEFERN MEDIENTECHNIK UND DIGITALE INHALT",
+            "title_size": 41,
+            "subheading": "Alles aus einer Hand. Von der Bühnenbeleuchtung für dein Theater über Multitouch-Screens für dein Geschäft bis zu den digitalen Inhalten, die darauf laufen. Wir sind dein Partner für audiovisuelle Erlebnisse, die im Kopf bleiben.",
             "link": "",
-            "link_text": "Optional button",
+            "link_text": "Kontakt aufnehmen",
             "link_2": "",
             "link_text_2": "",
-            "color_accent": "rgba(0,0,0,0)",
+            "color_accent": "#95c11f",
             "text_align": "vertical-center horizontal-left",
+            "image": "shopify://shop_images/Lifestylebild_QBB-HQ.jpg",
             "parallax_direction": "top",
             "overlay_opacity": 0
           }
@@ -48,7 +49,7 @@
       "type": "featured-collection",
       "name": "t:sections.featured-collection.presets.featured_collection.name",
       "settings": {
-        "title": "Unsere Displays",
+        "title": "Entdecke Unsere Displays",
         "home_featured_products": "displays",
         "per_row": 4,
         "rows": 1,
@@ -66,11 +67,53 @@
         "show_phone": false,
         "narrow_column": true
       }
+    },
+    "logo_list_EcehVd": {
+      "type": "logo-list",
+      "blocks": {
+        "logo_image_PrXXVz": {
+          "type": "logo_image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_image_fNnL6a": {
+          "type": "logo_image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_image_txyeN3": {
+          "type": "logo_image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "logo_image_nQMKLA": {
+          "type": "logo_image",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "logo_image_PrXXVz",
+        "logo_image_fNnL6a",
+        "logo_image_txyeN3",
+        "logo_image_nQMKLA"
+      ],
+      "name": "t:sections.logo-list.presets.logo_list.name",
+      "settings": {
+        "title": "",
+        "logo_opacity": 76,
+        "divider": false
+      }
     }
   },
   "order": [
     "slideshow_hHiNHc",
     "featured_collection_YxgwjC",
+    "logo_list_EcehVd",
     "contact_form_CCmppA"
   ]
 }
