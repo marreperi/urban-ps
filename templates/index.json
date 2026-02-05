@@ -98,7 +98,7 @@
       ],
       "name": "t:sections.logo-list.presets.logo_list.name",
       "settings": {
-        "title": "Unsere Marken",
+        "title": "Marken, auf die wir setzen",
         "logo_opacity": 70,
         "divider": false
       }
@@ -107,9 +107,9 @@
       "type": "contact-form",
       "name": "t:sections.contact-form.presets.contact_form.name",
       "settings": {
-        "title": "Kontakt aufnehmen",
+        "title": "Lass uns über dein projekt sprechen",
         "text": "",
-        "show_phone": false,
+        "show_phone": true,
         "narrow_column": true
       }
     }
