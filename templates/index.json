@@ -89,7 +89,7 @@
       ],
       "name": "t:sections.featured-collections.presets.collection_list.name",
       "settings": {
-        "title": "Collection list",
+        "title": "Beliebte Kategorien",
         "divider": false,
         "per_row": 4,
         "enable_gutter": true
