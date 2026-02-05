@@ -71,21 +71,12 @@
             "title": "Videowall Displays",
             "focal_point": "center center"
           }
-        },
-        "collection_TMkkpK": {
-          "type": "collection",
-          "settings": {
-            "collection": "display-zubehor",
-            "title": "Display Zubehör",
-            "focal_point": "center center"
-          }
         }
       },
       "block_order": [
         "collection_EgQLVD",
         "collection_9iE7F7",
-        "collection_UCXtyw",
-        "collection_TMkkpK"
+        "collection_UCXtyw"
       ],
       "name": "t:sections.featured-collections.presets.collection_list.name",
       "settings": {
