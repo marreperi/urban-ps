@@ -44,7 +44,7 @@
     "form": {
       "type": "contact-form",
       "settings": {
-        "title": "Jetzt Kontakt aufnehmen",
+        "title": "",
         "text": "",
         "show_phone": true,
         "narrow_column": true
