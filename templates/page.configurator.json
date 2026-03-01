@@ -13,9 +13,17 @@
       "type": "main-page",
       "disabled": true,
       "settings": {}
+    },
+    "liquid_code_bTxC9q": {
+      "type": "liquid-code",
+      "name": "Liquid Code",
+      "settings": {
+        "liquid_code": "<!-- listening to message events -->\n<script>\n        window.addEventListener('message', (event) => {\n        const data = event.data;\n        console.log('message posted from the embedded page', data);\n\n        const method = data.method;\n        const articlenumber = data.articlenumber;\n\n        switch (method) {\n            case 'addtocart': {\n                console.log('the user clicked the \"add to cart\" button: ' + articlenumber);\n                // do other actions here\n                break;\n            default: {\n                console.log('unhandled or unknown method: ' + method);\n            }\n        }\n    });\n</script>"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "liquid_code_bTxC9q"
   ]
 }
