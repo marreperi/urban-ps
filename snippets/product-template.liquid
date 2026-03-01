@@ -100,22 +100,16 @@
           {%- assign brand = product.metafields.custom.hersteller.value -%}
           {%- if brand -%}
             <div class="product-header-bar__brand">
-              {%- assign vendor_handle = product.vendor | handleize -%}
-              {%- assign brand_link = nil -%}
-              {%- if brand.hersteller_kategorie and brand.hersteller_kategorie.url != blank -%}
-                {%- assign brand_link = brand.hersteller_kategorie.url -%}
-              {%- elsif brand.hersteller_kategorie and brand.hersteller_kategorie != blank -%}
-                {%- assign brand_kategorie = brand.hersteller_kategorie -%}
-                <a href="{{ brand_kategorie.url }}">
-                  {%- if brand.logo -%}
-                    <img src="{{ brand.logo | img_url: '200x' }}" alt="{{ brand.logo.alt | default: product.vendor | escape }}" style="height:50px;width:auto;" />
-                  {%- endif -%}
-                </a>
-              {%- else -%}
-                {%- if brand.logo -%}
-                  <img src="{{ brand.logo | img_url: '200x' }}" alt="{{ brand.logo.alt | default: product.vendor | escape }}" style="height:50px;width:auto;" />
+              {%- assign category = brand.hersteller_kategorie.value | default: brand.hersteller_kategorie -%}
+              {%- assign brand_url = category.url -%}
+              {%- if brand.logo -%}
+                {%- if brand_url != blank -%}
+                  <a href="{{ brand_url }}">
+                    <img src="{{ brand.logo | img_url: '400x' }}" alt="{{ brand.logo.alt | default: product.vendor | escape }}" style="height:100px;width:auto;" />
+                  </a>
+                {%- else -%}
+                  <img src="{{ brand.logo | img_url: '400x' }}" alt="{{ brand.logo.alt | default: product.vendor | escape }}" style="height:100px;width:auto;" />
                 {%- endif -%}
-                <small class="brand-debug">No brand link. hersteller_kategorie may be a GID (cannot link): {{ brand.hersteller_kategorie | json }}. Fallbacks tried: .url, string, vendor collection. brand: {{ brand | json }}</small>
               {%- endif -%}
             </div>
           {%- endif -%}
@@ -426,16 +420,6 @@
                           {%- endfor -%}
                         </nav>
                         </div>
-                      {%- else -%}
-                        <div class="pt-switcher-debug" style="padding: 16px; background: #f5f5f5; border-radius: 8px; font-size: 12px; color: #666;">
-                          <strong>Product Switcher Debug:</strong><br>
-                          Metafield exists: {% if variant_metafield != blank %}Yes{% else %}No{% endif %}<br>
-                          Variant list blank: {% if variant_list == blank %}Yes{% else %}No{% endif %}<br>
-                          Has variants: {% if has_variants %}Yes{% else %}No{% endif %}<br>
-                          Product ID: {{ product.id }}<br>
-                          Metafield namespace: custom.product_variants<br>
-                          First item check: {% if variant_list != blank %}{{ variant_list.first.title }}{% else %}no items{% endif %}
-                        </div>
                       {%- endif -%}
                     </div>
                   {%- when 'addon_product' -%}
@@ -514,7 +498,7 @@
                               {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
                             {%- endif -%}
 
-                            <div class="pt-cta-row">
+                            <div class="pt-cta-row" data-quote-threshold="3" data-quote-button-text="Jetzt Angebot einholen">
                               {%- assign qty_id = section_id | append: product.id -%}
                               <div class="product__quantity pt-qty-input">
                                 <label for="Quantity-{{ qty_id }}" class="visually-hidden">{{ 'products.product.quantity' | t }}</label>
@@ -560,6 +544,38 @@
                               {%- endfor -%}
                             </select>
                           {%- endform -%}
+
+                          {%- comment -%} Quote request modal (quantity > 2) {%- endcomment -%}
+                          <div id="QuoteRequestModal-{{ section_id }}-{{ product.id }}" class="quote-request-modal" aria-hidden="true">
+                            <div class="quote-request-modal__overlay" data-quote-modal-close></div>
+                            <div class="quote-request-modal__content" role="dialog" aria-labelledby="QuoteRequestModalTitle-{{ section_id }}-{{ product.id }}">
+                              <button type="button" class="quote-request-modal__close" data-quote-modal-close aria-label="{{ 'general.accessibility.close_modal' | t }}">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                              <h2 id="QuoteRequestModalTitle-{{ section_id }}-{{ product.id }}" class="quote-request-modal__title">Jetzt Angebot einholen</h2>
+                              {%- form 'contact', id: 'QuoteRequestForm-{{ section_id }}-{{ product.id }}', class: 'quote-request-form' -%}
+                                <input type="hidden" name="contact[product_request]" id="QuoteRequestProduct-{{ section_id }}-{{ product.id }}" value="Angebotsanfrage: {{ product.title | escape }} ({{ product.url }})">
+                                <input type="hidden" name="contact[quantity]" id="QuoteRequestQuantity-{{ section_id }}-{{ product.id }}" value="">
+                                <div class="quote-request-form__row">
+                                  <label for="QuoteRequestName-{{ section_id }}-{{ product.id }}">{{ 'contact.form.name' | t }}</label>
+                                  <input type="text" id="QuoteRequestName-{{ section_id }}-{{ product.id }}" name="contact[name]" required autocapitalize="words" value="{% if customer %}{{ customer.name }}{% endif %}">
+                                </div>
+                                <div class="quote-request-form__row">
+                                  <label for="QuoteRequestEmail-{{ section_id }}-{{ product.id }}">{{ 'contact.form.email' | t }}</label>
+                                  <input type="email" id="QuoteRequestEmail-{{ section_id }}-{{ product.id }}" name="contact[email]" required autocorrect="off" autocapitalize="off" value="{% if customer %}{{ customer.email }}{% endif %}">
+                                </div>
+                                <div class="quote-request-form__row">
+                                  <label for="QuoteRequestMessage-{{ section_id }}-{{ product.id }}">{{ 'contact.form.message' | t }}</label>
+                                  <textarea id="QuoteRequestMessage-{{ section_id }}-{{ product.id }}" name="contact[body]" rows="4" placeholder="Bitte teilen Sie uns mit, für welche Menge Sie ein Angebot wünschen und ob Sie weitere Fragen haben.">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn--full">{{ 'contact.form.send' | t }}</button>
+                                {%- if form.posted_successfully? -%}
+                                  <p class="note note--success">{{ 'contact.form.post_success' | t }}</p>
+                                {%- endif -%}
+                                {{ form.errors | default_errors }}
+                              {%- endform -%}
+                            </div>
+                          </div>
                         {%- else -%}
                           {%- render 'product-form',
                             form_id: form_id,

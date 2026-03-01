@@ -211,6 +211,21 @@
     // ALWAYS intercept form submission to prevent redirect
     form.addEventListener("submit", function (e) {
       console.log("[product-template] Form submit intercepted");
+      const formData = new FormData(form);
+      const quantity = parseInt(formData.get("quantity") || "1", 10);
+      const ctaRow = form.querySelector(".pt-cta-row[data-quote-threshold]");
+      const threshold = ctaRow
+        ? parseInt(ctaRow.getAttribute("data-quote-threshold") || "3", 10)
+        : 3;
+      if (quantity >= threshold) {
+        e.preventDefault();
+        e.stopPropagation();
+        const sectionEl = form.closest("[data-section-id][data-product-id]");
+        if (sectionEl) {
+          openQuoteModal(sectionEl, quantity);
+        }
+        return;
+      }
       e.preventDefault();
       e.stopPropagation();
 
@@ -222,10 +237,8 @@
         addToCartButton.classList.add("btn--loading");
       }
 
-      const formData = new FormData(form);
       const variantId =
         formData.get("id") || form.querySelector('[name="id"]')?.value;
-      const quantity = parseInt(formData.get("quantity") || "1", 10);
       console.log(
         "[product-template] Main product - variantId:",
         variantId,
@@ -457,15 +470,112 @@
     }
   }
 
+  // Open quote request modal and set hidden quantity field
+  function openQuoteModal(sectionEl, quantity) {
+    const sectionId = sectionEl.getAttribute("data-section-id");
+    const productId = sectionEl.getAttribute("data-product-id");
+    if (!sectionId || !productId) return;
+    const modal = document.getElementById(
+      "QuoteRequestModal-" + sectionId + "-" + productId
+    );
+    if (!modal) return;
+    const qtyInput = document.getElementById(
+      "QuoteRequestQuantity-" + sectionId + "-" + productId
+    );
+    if (qtyInput) qtyInput.value = String(quantity);
+    if (!modal._quoteCloseBound) {
+      modal._quoteCloseBound = true;
+      var close = function () {
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      };
+      modal.querySelectorAll("[data-quote-modal-close]").forEach(function (el) {
+        el.addEventListener("click", close);
+      });
+    }
+    modal.setAttribute("aria-hidden", "false");
+    modal.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+  }
+
+  // Quote request: button text by quantity + submit opens modal when qty >= threshold
+  function initQuoteRequest() {
+    var rows = document.querySelectorAll(".pt-cta-row[data-quote-threshold]");
+    rows.forEach(function (ctaRow) {
+      var form = ctaRow.closest("form");
+      if (!form) return;
+      var quantityInput = form.querySelector('input[name="quantity"]');
+      var button = form.querySelector("[data-add-to-cart], .add-to-cart");
+      var buttonSpan = button
+        ? button.querySelector("[data-add-to-cart-text]")
+        : null;
+      var threshold = parseInt(
+        ctaRow.getAttribute("data-quote-threshold") || "3",
+        10
+      );
+      var quoteText =
+        ctaRow.getAttribute("data-quote-button-text") ||
+        "Jetzt Angebot einholen";
+      var defaultText = buttonSpan
+        ? buttonSpan.getAttribute("data-default-text") || "In den Warenkorb"
+        : "In den Warenkorb";
+
+      function updateButtonText() {
+        if (!buttonSpan || !button) return;
+        var qty = parseInt(quantityInput.value || "1", 10);
+        if (qty >= threshold) {
+          buttonSpan.textContent = quoteText;
+          button.setAttribute("data-quote-mode", "true");
+        } else {
+          buttonSpan.textContent = defaultText;
+          button.removeAttribute("data-quote-mode");
+        }
+      }
+
+      if (quantityInput) {
+        quantityInput.addEventListener("input", updateButtonText);
+        quantityInput.addEventListener("change", updateButtonText);
+        quantityInput.addEventListener("keyup", updateButtonText);
+        updateButtonText();
+        var qtyWrapper = quantityInput.closest(".js-qty__wrapper");
+        if (qtyWrapper) {
+          qtyWrapper.addEventListener("click", function () {
+            setTimeout(updateButtonText, 0);
+          });
+        }
+      }
+
+      form.addEventListener(
+        "submit",
+        function (e) {
+          var qty = parseInt(
+            form.querySelector('input[name="quantity"]').value || "1",
+            10
+          );
+          if (qty >= threshold) {
+            e.preventDefault();
+            e.stopPropagation();
+            var sectionEl = form.closest("[data-section-id][data-product-id]");
+            if (sectionEl) openQuoteModal(sectionEl, qty);
+          }
+        },
+        true
+      );
+    });
+  }
+
   // Initialize on DOM ready
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
       initPriceMode();
+      initQuoteRequest();
       initAddOnProduct();
       initCTARow();
     });
   } else {
     initPriceMode();
+    initQuoteRequest();
     initAddOnProduct();
     initCTARow();
   }

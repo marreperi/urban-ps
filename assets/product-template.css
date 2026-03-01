@@ -430,3 +430,81 @@
   height: 1px;
   overflow: hidden;
 }
+
+/* Quote request modal (quantity > 2) */
+.quote-request-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.quote-request-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.quote-request-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+.quote-request-modal__content {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow: auto;
+  background: var(--colorBody, #fff);
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+.quote-request-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+}
+.quote-request-modal__close:hover {
+  opacity: 1;
+}
+.quote-request-modal__title {
+  margin: 0 0 20px;
+  font-size: 1.25rem;
+}
+.quote-request-form__row {
+  margin-bottom: 16px;
+}
+.quote-request-form__row label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.quote-request-form__row input,
+.quote-request-form__row textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  font: inherit;
+}
+.quote-request-form .btn {
+  margin-top: 8px;
+}

@@ -9443,6 +9443,7 @@ html[dir=rtl] .grid-product__content{
     }
 
 .grid-product__title{
+  font-weight:600;
   -webkit-hyphens:auto;
           hyphens:auto;
   word-break:break-word;
@@ -9661,6 +9662,11 @@ html[dir=rtl] .grid-product__content{
     -webkit-overflow-scrolling:touch;
     overflow:hidden;
     overflow-x:scroll;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+  }
+  .grid-overflow-wrapper::-webkit-scrollbar{
+    display:none;
   }
 
     .grid-overflow-wrapper .grid{
