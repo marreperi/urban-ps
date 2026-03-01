@@ -1,0 +1,31 @@
+{% comment %}
+  Liquid Code Section
+  Renders custom Liquid code from the theme editor
+{% endcomment %}
+
+{%- if section.settings.liquid_code != blank -%}
+  <div class="page-width liquid-code-section">
+    {{ section.settings.liquid_code }}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Liquid Code",
+  "tag": "section",
+  "class": "liquid-code-section",
+  "settings": [
+    {
+      "type": "liquid",
+      "id": "liquid_code",
+      "label": "Liquid Code",
+      "info": "Enter Liquid code to render. You can use variables like {{ product }}, {{ collection }}, {{ cart }}, etc. depending on the page context."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Liquid Code"
+    }
+  ]
+}
+{% endschema %}
