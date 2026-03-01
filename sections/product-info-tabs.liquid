@@ -6,8 +6,15 @@
 {{ 'product-info-tabs.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign show_description = true
-  assign show_technical = true
+  assign show_description = false
+  if product.description != blank
+    assign show_description = true
+  endif
+  assign technical_data_raw = product.metafields.custom.technical_data.value | default: product.metafields.custom.technical_data
+  assign show_technical = false
+  if technical_data_raw != blank
+    assign show_technical = true
+  endif
   assign show_downloads = true
 
   comment
@@ -16,6 +23,21 @@
   assign datenblatt = product.metafields.custom.datenblatt
   if section.settings.hide_empty_downloads and datenblatt == blank
     assign show_downloads = false
+  endif
+
+  assign tab_count = 0
+  if show_description
+    assign tab_count = tab_count | plus: 1
+  endif
+  if show_technical
+    assign tab_count = tab_count | plus: 1
+  endif
+  if show_downloads
+    assign tab_count = tab_count | plus: 1
+  endif
+  assign show_tabs = false
+  if tab_count > 1
+    assign show_tabs = true
   endif
 
   assign nav_label_1 = section.settings.nav_label_1 | default: 'Produktinformationen'
@@ -52,35 +74,42 @@
 
   {%- comment -%} Tabs and Content in single container {%- endcomment -%}
   <div class="page-width">
-    {%- comment -%} Classic Tabs Navigation (anchor links) {%- endcomment -%}
+    {%- comment -%} Classic Tabs Navigation (anchor links) - only when multiple tabs {%- endcomment -%}
     <div class="classic-tabs-container">
+      {%- if show_tabs -%}
       <div class="tabs" role="tablist">
+        {%- if show_description -%}
         <a
           class="tab-button active"
           href="#block-produktinformationen1"
           id="nav-block-produktinformationen1">
           {{ nav_label_1 }}
         </a>
+        {%- endif -%}
+        {%- if show_technical -%}
         <a
-          class="tab-button"
+          class="tab-button{% unless show_description %} active{% endunless %}"
           href="#block-technische-daten2"
           id="nav-block-technische-daten2">
           {{ nav_label_2 }}
         </a>
+        {%- endif -%}
         {%- if show_downloads -%}
-          <a
-            class="tab-button"
-            href="#block-downloads3"
-            id="nav-block-downloads3">
-            {{ nav_label_3 }}
-          </a>
+        <a
+          class="tab-button{% unless show_description or show_technical %} active{% endunless %}"
+          href="#block-downloads3"
+          id="nav-block-downloads3">
+          {{ nav_label_3 }}
+        </a>
         {%- endif -%}
       </div>
+      {%- endif -%}
 
       {%- comment -%} All Content Blocks (all visible, scrollable) {%- endcomment -%}
       <div class="tab-contents">
 
         {%- comment -%} Block 1: Produktinformationen (Description) {%- endcomment -%}
+        {%- if show_description -%}
         <div class="cms-block" id="block-produktinformationen1">
           <div class="cms-block-container">
             <div class="cms-block-container-row row cms-row">
@@ -91,13 +120,9 @@
                       <h3>Beschreibung</h3>
                     </div>
                     <div class="card-body">
-                      {%- if product.description != blank -%}
-                        <div class="product-description">
-                          {{ product.description }}
-                        </div>
-                      {%- else -%}
-                        <p>{{ 'products.product.no_description' | t | default: 'Keine Beschreibung verfügbar.' }}</p>
-                      {%- endif -%}
+                      <div class="product-description">
+                        {{ product.description }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -105,8 +130,10 @@
             </div>
           </div>
         </div>
+        {%- endif -%}
 
         {%- comment -%} Block 2: Technische Daten (Technical Data) {%- endcomment -%}
+        {%- if show_technical -%}
         <div class="cms-block" id="block-technische-daten2">
           <div class="cms-block-container">
             <div class="cms-block-container-row row cms-row">
@@ -117,38 +144,27 @@
                       <h3>Technische Daten</h3>
                     </div>
                     <div class="card-body">
-                      {%- liquid
-                        assign technical_data = product.metafields.custom.technical_data.value | default: product.metafields.custom.technical_data
-                        if technical_data == blank or technical_data == empty
-                          assign technical_data = null
-                        endif
-                      -%}
-
-                      {%- if technical_data != blank -%}
-                        <table class="table product-detail-properties-table align-middle">
-                          <tbody>
-                            {%- assign rows = technical_data | split: ';' -%}
-                            {%- for row in rows -%}
-                              {%- assign row = row | strip -%}
-                              {%- if row != blank -%}
-                                {%- assign parts = row | split: '|' -%}
-                                {%- if parts.size >= 2 -%}
-                                  {%- assign label = parts[0] | strip -%}
-                                  {%- assign value = parts[1] | strip -%}
-                                  {%- if label != blank or value != blank -%}
-                                    <tr>
-                                      <th scope="row">{{ label | escape }}</th>
-                                      <td>{{ value | escape }}</td>
-                                    </tr>
-                                  {%- endif -%}
+                      {%- assign rows = technical_data_raw | split: ';' -%}
+                      <table class="table product-detail-properties-table align-middle">
+                        <tbody>
+                          {%- for row in rows -%}
+                            {%- assign row = row | strip -%}
+                            {%- if row != blank -%}
+                              {%- assign parts = row | split: '|' -%}
+                              {%- if parts.size >= 2 -%}
+                                {%- assign label = parts[0] | strip -%}
+                                {%- assign value = parts[1] | strip -%}
+                                {%- if label != blank or value != blank -%}
+                                  <tr>
+                                    <th scope="row">{{ label | escape }}</th>
+                                    <td>{{ value | escape }}</td>
+                                  </tr>
                                 {%- endif -%}
                               {%- endif -%}
-                            {%- endfor -%}
-                          </tbody>
-                        </table>
-                      {%- else -%}
-                        <p>{{ 'products.product.no_technical_data' | t | default: 'Keine technischen Daten verfügbar.' }}</p>
-                      {%- endif -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -156,6 +172,7 @@
             </div>
           </div>
         </div>
+        {%- endif -%}
 
         {%- comment -%} Block 3: Downloads {%- endcomment -%}
         {%- if show_downloads -%}

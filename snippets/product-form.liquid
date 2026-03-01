@@ -18,6 +18,10 @@
     {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
   {%- endif -%}
 
+  {%- if product.metafields.custom.energy_efficiency_class != blank -%}
+    <input type="hidden" name="properties[_energy_efficiency_class]" value="{{ product.metafields.custom.energy_efficiency_class }}">
+  {%- endif -%}
+
   {%- if enable_dynamic_buttons -%}
     <div class="payment-buttons">
   {%- endif -%}

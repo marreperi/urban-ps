@@ -16,6 +16,15 @@
   font-size: 14px;
   opacity: 0.75;
 }
+.product-header-bar__brand {
+  max-width: 100px;
+  height: auto;
+}
+.product-header-bar__brand img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
 .only-desktop {
   display: none;
 }

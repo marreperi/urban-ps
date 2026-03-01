@@ -323,6 +323,9 @@
     },
     "product": {
       "description": "Description",
+      "no_description": "No description available.",
+      "no_technical_data": "No technical data available.",
+      "no_downloads": "No downloads available.",
       "in_stock_label": "In stock, ready to ship",
       "stock_label": {
         "one": "Low stock - {{ count }} item left",

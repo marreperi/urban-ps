@@ -499,17 +499,17 @@
     document.body.style.overflow = "hidden";
   }
 
-  // Quote request: button text by quantity + submit opens modal when qty >= threshold
+  // Quote request: two buttons - add-to-cart (submit) and quote (button). Toggle visibility by quantity.
   function initQuoteRequest() {
     var rows = document.querySelectorAll(".pt-cta-row[data-quote-threshold]");
     rows.forEach(function (ctaRow) {
       var form = ctaRow.closest("form");
       if (!form) return;
       var quantityInput = form.querySelector('input[name="quantity"]');
-      var button = form.querySelector("[data-add-to-cart], .add-to-cart");
-      var buttonSpan = button
-        ? button.querySelector("[data-add-to-cart-text]")
-        : null;
+      var addBtn = ctaRow.querySelector("[data-quote-hide]");
+      var quoteBtn = ctaRow.querySelector("[data-quote-trigger]");
+      var addBtnSpan = addBtn ? addBtn.querySelector("[data-add-to-cart-text]") : null;
+      var quoteBtnSpan = quoteBtn ? quoteBtn.querySelector("[data-quote-button-text]") : null;
       var threshold = parseInt(
         ctaRow.getAttribute("data-quote-threshold") || "3",
         10
@@ -517,51 +517,54 @@
       var quoteText =
         ctaRow.getAttribute("data-quote-button-text") ||
         "Jetzt Angebot einholen";
-      var defaultText = buttonSpan
-        ? buttonSpan.getAttribute("data-default-text") || "In den Warenkorb"
+      var defaultText = addBtnSpan
+        ? addBtnSpan.getAttribute("data-default-text") || "In den Warenkorb"
         : "In den Warenkorb";
 
-      function updateButtonText() {
-        if (!buttonSpan || !button) return;
-        var qty = parseInt(quantityInput.value || "1", 10);
-        if (qty >= threshold) {
-          buttonSpan.textContent = quoteText;
-          button.setAttribute("data-quote-mode", "true");
-        } else {
-          buttonSpan.textContent = defaultText;
-          button.removeAttribute("data-quote-mode");
+      function updateButtonState() {
+        var qty = parseInt(quantityInput ? quantityInput.value || "1" : "1", 10);
+        var isQuoteMode = qty >= threshold;
+        if (addBtn) {
+          addBtn.style.display = isQuoteMode ? "none" : "";
+          addBtn.setAttribute("aria-hidden", isQuoteMode ? "true" : "false");
+          addBtn.tabIndex = isQuoteMode ? -1 : 0;
+          if (addBtnSpan && !isQuoteMode) addBtnSpan.textContent = defaultText;
+        }
+        if (quoteBtn) {
+          quoteBtn.style.display = isQuoteMode ? "" : "none";
+          quoteBtn.setAttribute("aria-hidden", isQuoteMode ? "false" : "true");
+          quoteBtn.tabIndex = isQuoteMode ? 0 : -1;
+          if (quoteBtnSpan) quoteBtnSpan.textContent = quoteText;
         }
       }
 
-      if (quantityInput) {
-        quantityInput.addEventListener("input", updateButtonText);
-        quantityInput.addEventListener("change", updateButtonText);
-        quantityInput.addEventListener("keyup", updateButtonText);
-        updateButtonText();
-        var qtyWrapper = quantityInput.closest(".js-qty__wrapper");
-        if (qtyWrapper) {
-          qtyWrapper.addEventListener("click", function () {
-            setTimeout(updateButtonText, 0);
-          });
-        }
-      }
-
-      form.addEventListener(
-        "submit",
-        function (e) {
+      if (quoteBtn) {
+        quoteBtn.addEventListener("click", function () {
           var qty = parseInt(
             form.querySelector('input[name="quantity"]').value || "1",
             10
           );
-          if (qty >= threshold) {
-            e.preventDefault();
-            e.stopPropagation();
+          var sectionId = quoteBtn.getAttribute("data-section-id");
+          var productId = quoteBtn.getAttribute("data-product-id");
+          if (sectionId && productId) {
             var sectionEl = form.closest("[data-section-id][data-product-id]");
             if (sectionEl) openQuoteModal(sectionEl, qty);
           }
-        },
-        true
-      );
+        });
+      }
+
+      if (quantityInput) {
+        quantityInput.addEventListener("input", updateButtonState);
+        quantityInput.addEventListener("change", updateButtonState);
+        quantityInput.addEventListener("keyup", updateButtonState);
+        var qtyWrapper = quantityInput.closest(".js-qty__wrapper");
+        if (qtyWrapper) {
+          qtyWrapper.addEventListener("click", function () {
+            setTimeout(updateButtonState, 0);
+          });
+        }
+      }
+      updateButtonState();
     });
   }
 

@@ -100,7 +100,7 @@
 
     { "type": "number", "id": "desktop_min_width", "label": "Desktop min width (px)", "default": 1024 },
 
-    { "type": "text", "id": "price_selectors", "label": "Price selectors (comma-separated)", "default": ".price,.product-card__price,[data-price]" },
+    { "type": "text", "id": "price_selectors", "label": "Price selectors (comma-separated)", "default": "[data-product-price],[data-price]", "info": "Use [data-product-price] for product page, [data-price] for collection grid. Include both for full coverage." },
     { "type": "text", "id": "gross_suffix_text", "label": "Gross suffix text", "default": "inkl. MwSt." },
     { "type": "text", "id": "net_suffix_text", "label": "Net suffix text", "default": "zzgl. MwSt." },
     { "type": "number", "id": "vat_rate_percent", "label": "VAT rate percent", "default": 19 },
@@ -122,7 +122,7 @@
       {"value":"none","label":"none"}
     ] },
     { "type": "number", "id": "decimals", "label": "Decimals", "default": 2 },
-    { "type": "text", "id": "persist_key", "label": "Persist key", "default": "urbanps_price_mode" },
+    { "type": "text", "id": "persist_key", "label": "Persist key", "default": "price_mode" },
 
     { "type": "color", "id": "bg_color", "label": "Background color", "default": "#ffffff" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#222222" },

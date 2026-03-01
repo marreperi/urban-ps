@@ -1,0 +1,30 @@
+{%- comment -%}
+  Energy Efficiency Badge snippet
+  Renders badge image when product has energy_efficiency_class metafield.
+  Arguments: product (required), class_override (optional), wrapper_class (optional)
+  Asset naming: eek_A.png through eek_G.png
+{%- endcomment -%}
+{%- liquid
+  assign eek_class = class_override | default: product.metafields.custom.energy_efficiency_class
+  assign valid_classes = 'A,B,C,D,E,F,G' | split: ','
+  assign eek_class_up = eek_class | upcase | strip
+  assign is_valid = false
+  for c in valid_classes
+    if eek_class_up == c
+      assign is_valid = true
+      break
+    endif
+  endfor
+-%}
+{%- if product != blank and eek_class != blank and is_valid -%}
+  {%- assign asset_name = 'eek_' | append: eek_class_up | append: '.png' -%}
+  <div class="energy-efficiency-badge {{ wrapper_class }}">
+    <img
+      class="energy-efficiency-badge__img"
+      src="{{ asset_name | asset_url }}"
+      alt="Energieeffizienzklasse {{ eek_class_up }}"
+      width="60"
+      height="60"
+      loading="lazy">
+  </div>
+{%- endif -%}

@@ -219,6 +219,15 @@
                   <div class="price-{{ si }}">
                     <span v-html="this.formatMoney(item.line_price)"></span>
                   </div>
+                  <div v-if="item.energyEfficiencyClass && energyBadgeUrls[item.energyEfficiencyClass]" class="energy-efficiency-badge">
+                    <img
+                      :src="energyBadgeUrls[item.energyEfficiencyClass]"
+                      :alt="'Energieeffizienzklasse ' + item.energyEfficiencyClass"
+                      class="energy-efficiency-badge__img"
+                      width="60"
+                      height="60"
+                      loading="lazy">
+                  </div>
                 </template>
                 <template v-else>
                   <a :href="item.url">
@@ -232,7 +241,6 @@
                         v-if="item.hasDiscount"
                         v-html="item.formattedOriginalLinePrice"></span>
                       <span v-html="item.formattedLinePrice"></span>
-                      <!-- Show discount if applied -->
                       <small  
                         class="cart__discount-{{ si }}"
                         v-if="appliedDiscountCode">
@@ -256,6 +264,15 @@
                           v-html="appliedDiscountCode">
                         </span>
                       </small>
+                    </div>
+                    <div v-if="item.energyEfficiencyClass && energyBadgeUrls[item.energyEfficiencyClass]" class="energy-efficiency-badge">
+                      <img
+                        :src="energyBadgeUrls[item.energyEfficiencyClass]"
+                        :alt="'Energieeffizienzklasse ' + item.energyEfficiencyClass"
+                        class="energy-efficiency-badge__img"
+                        width="60"
+                        height="60"
+                        loading="lazy">
                     </div>
                   </a>
                 </template>
@@ -716,6 +733,16 @@
         discountSuccess: false,
         // Bulk shipment functionality
         bulkShipmentMap: {},
+        // Energy efficiency badge asset URLs (A–G)
+        energyBadgeUrls: {
+          A: {{ 'eek_A.png' | asset_url | json }},
+          B: {{ 'eek_B.png' | asset_url | json }},
+          C: {{ 'eek_C.png' | asset_url | json }},
+          D: {{ 'eek_D.png' | asset_url | json }},
+          E: {{ 'eek_E.png' | asset_url | json }},
+          F: {{ 'eek_F.png' | asset_url | json }},
+          G: {{ 'eek_G.png' | asset_url | json }}
+        },
         // Track manually removed free gifts to prevent re-adding
         manuallyRemovedGifts: {
           free_gift: false,
@@ -1842,6 +1869,9 @@
             }
           }
     
+          // Preserve energy efficiency class for badge (hidden property)
+          const energyClass = item.properties && item.properties._energy_efficiency_class ? String(item.properties._energy_efficiency_class).toUpperCase() : null;
+
           // Return a new item object with filtered properties and the flag
           return {
             ...item,
@@ -1849,6 +1879,7 @@
             // Add the flag to the item
             hasHiddenProperties, 
             isGiftProduct,
+            energyEfficiencyClass: energyClass,
             // Add formatted prices for better reactivity (will update when priceMode changes)
             formattedLinePrice: this.formatMoney(item.line_price),
             formattedOriginalLinePrice: this.formatMoney(item.original_line_price),
@@ -2452,7 +2483,7 @@ height: fit-content;
 
 .item-container-{{ si }} {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 20px;
   margin-bottom: 15px;
   background: {{ ss.background_product_card }};
@@ -2503,6 +2534,10 @@ height: fit-content;
     text-overflow: ellipsis;
     white-space: normal;
   }
+}
+
+.item-container-{{ si }} .energy-efficiency-badge {
+  justify-content: flex-start;
 }
 
 /* Special styling for free gift items */

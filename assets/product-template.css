@@ -38,6 +38,22 @@
   gap: 16px;
 }
 
+.pt-price-with-badge {
+  flex: 1;
+  min-width: 0;
+}
+
+.pt-price-row__right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.pt-price-row__right .energy-efficiency-badge {
+  margin-top: 0;
+}
+
 @media (max-width: 749px) {
   .pt-price-row > div:first-child {
     text-align: left;

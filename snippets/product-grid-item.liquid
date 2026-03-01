@@ -199,10 +199,16 @@ Arguments
               <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
             {%- endif -%}
             {%- if product.price_varies -%}
-              {%- assign price = product.price_min | money -%}
-              {{ 'products.general.from_text_html' | t: price: price }}
+              {%- assign from_prefix = 'products.general.from_text_html' | t: price: '|||' | split: '|||' | first | strip -%}
+              <span data-price data-price-value="{{ product.price_min | divided_by: 100.0 }}" data-price-prefix="{{ from_prefix }}">
+                <span data-price-amount>{{ product.price_min | money }}</span>
+                <span class="price-suffix" style="margin-inline-start: 4px;"></span>
+              </span>
             {%- else -%}
-              {{ product.price | money }}
+              <span data-price data-price-value="{{ product.price | divided_by: 100.0 }}">
+                <span data-price-amount>{{ product.price | money }}</span>
+                <span class="price-suffix" style="margin-inline-start: 4px;"></span>
+              </span>
             {%- endif -%}
             {%- if on_sale -%}
               {%- if settings.product_save_amount -%}
@@ -233,6 +239,8 @@ Arguments
               </div>
             {%- endif -%}
           </div>
+
+          {%- render 'energy-efficiency-badge', product: product -%}
 
           {%- if settings.enable_swatches and type == 'horizontal' -%}
             {%- liquid

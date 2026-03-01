@@ -105,10 +105,10 @@
               {%- if brand.logo -%}
                 {%- if brand_url != blank -%}
                   <a href="{{ brand_url }}">
-                    <img src="{{ brand.logo | img_url: '400x' }}" alt="{{ brand.logo.alt | default: product.vendor | escape }}" style="height:100px;width:auto;" />
+                    <img src="{{ brand.logo | img_url: '400x' }}" alt="{{ brand.logo.alt | default: product.vendor | escape }}" />
                   </a>
                 {%- else -%}
-                  <img src="{{ brand.logo | img_url: '400x' }}" alt="{{ brand.logo.alt | default: product.vendor | escape }}" style="height:100px;width:auto;" />
+                  <img src="{{ brand.logo | img_url: '400x' }}" alt="{{ brand.logo.alt | default: product.vendor | escape }}" />
                 {%- endif -%}
               {%- endif -%}
             </div>
@@ -220,7 +220,8 @@
                         endif
                       -%}
                       <div class="pt-price-row">
-                        <div>
+                        <div class="pt-price-with-badge">
+                          <div>
                           {%- if product.compare_at_price_max > product.price -%}
                             <span data-a11y-price class="visually-hidden" aria-hidden="{{ hide_sale_price }}">
                               {{ 'products.general.regular_price' | t }}
@@ -243,8 +244,12 @@
                           <div class="pt-price-mode">
                             {%- render 'price-toggle', toggle_label_on: 'Ja', toggle_label_off: 'Nein', toggle_text_prefix: 'Preise inkl. MwSt.' -%}
                           </div>
+                          </div>
                         </div>
-                        <button class="st-wishlist-button" data-type="details" data-handle="{{ product.handle }}" aria-label="{{ 'products.product.add_to_wishlist' | t }}"></button>
+                        <div class="pt-price-row__right">
+                          {%- render 'energy-efficiency-badge', product: product -%}
+                          <button class="st-wishlist-button" data-type="details" data-handle="{{ product.handle }}" aria-label="{{ 'products.product.add_to_wishlist' | t }}"></button>
+                        </div>
                       </div>
 
                       {%- if settings.product_save_amount -%}
@@ -498,6 +503,10 @@
                               {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
                             {%- endif -%}
 
+                            {%- if product.metafields.custom.energy_efficiency_class != blank -%}
+                              <input type="hidden" name="properties[_energy_efficiency_class]" value="{{ product.metafields.custom.energy_efficiency_class }}">
+                            {%- endif -%}
+
                             <div class="pt-cta-row" data-quote-threshold="3" data-quote-button-text="Jetzt Angebot einholen">
                               {%- assign qty_id = section_id | append: product.id -%}
                               <div class="product__quantity pt-qty-input">
@@ -506,14 +515,26 @@
                               </div>
                               <div class="product-block pt-cta-button">
                                 <button
-                                  {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
+                                  type="submit"
                                   name="add"
                                   data-add-to-cart
-                                  class="btn btn--full add-to-cart"
+                                  class="btn btn--full add-to-cart pt-cta-add-to-cart"
+                                  data-quote-hide
                                   {% unless current_variant.available %} disabled="disabled"{% endunless %}>
                                   <span data-add-to-cart-text data-default-text="{{ default_text }}">
                                     {{ button_text }}
                                   </span>
+                                </button>
+                                <button
+                                  type="button"
+                                  class="btn btn--full pt-cta-quote-request"
+                                  data-quote-trigger
+                                  data-section-id="{{ section_id }}"
+                                  data-product-id="{{ product.id }}"
+                                  aria-hidden="true"
+                                  tabindex="-1"
+                                  style="display:none;">
+                                  <span data-quote-button-text>Jetzt Angebot einholen</span>
                                 </button>
                               </div>
                             </div>

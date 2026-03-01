@@ -323,6 +323,9 @@
     },
     "product": {
       "description": "Beschreibung",
+      "no_description": "Keine Beschreibung verfügbar.",
+      "no_technical_data": "Keine technischen Daten verfügbar.",
+      "no_downloads": "Keine Downloads verfügbar.",
       "in_stock_label": "Auf Lager",
       "stock_label": "{{ count }} auf Lager",
       "sold_out": "Ausverkauft",

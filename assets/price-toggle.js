@@ -142,6 +142,9 @@
 
     var updates = [];
     nodes.forEach(function (node) {
+      if (node.querySelector(".pt-price-gross") && node.querySelector(".pt-price-net")) {
+        return;
+      }
       if (!node.__priceOriginalGross) {
         var gross = readGrossFromNode(node, cfg);
         if (!isFinite(gross)) return;
@@ -165,8 +168,12 @@
           ? computeNet(node.__priceOriginalGross, cfg)
           : node.__priceOriginalGross;
       var formatted = formatNumber(value, cfg);
-      var prefix = cfg.currency_prefix || "";
-      amountEl.textContent = (prefix ? prefix + " " : "") + formatted;
+      var nodePrefix = node.getAttribute("data-price-prefix") || "";
+      var currencyPrefix = cfg.currency_prefix || "";
+      var parts = [];
+      if (nodePrefix) parts.push(nodePrefix);
+      parts.push((currencyPrefix ? currencyPrefix + " " : "") + formatted);
+      amountEl.textContent = parts.join(" ");
       var suffixEl = node.querySelector(".price-suffix");
       if (suffixEl)
         suffixEl.textContent =
@@ -197,7 +204,7 @@
   function main() {
     var cfg = readConfig();
     if (!cfg) return; // graceful no-op
-    var key = cfg.persist_key || "urbanps_price_mode";
+    var key = cfg.persist_key || "price_mode";
     var mode = getMode(key);
     initUI(mode);
     renderAll(mode, cfg);
@@ -216,8 +223,16 @@
     });
 
     window.addEventListener("storage", function (e) {
-      if (e.key === key) {
+      if (e.key === key || e.key === "price_mode") {
         var next = e.newValue === "net" ? "net" : "gross";
+        syncToggles(next);
+        renderAll(next, cfg);
+      }
+    });
+
+    window.addEventListener("price:mode", function (e) {
+      if (e && e.detail && e.detail.mode) {
+        var next = e.detail.mode;
         syncToggles(next);
         renderAll(next, cfg);
       }
