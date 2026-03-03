@@ -105,7 +105,7 @@
     "product-recommendations": {
       "type": "product-recommendations",
       "settings": {
-        "product_recommendations_heading": "Das könnte Sie auch interessieren",
+        "product_recommendations_heading": "Das könnte dich auch interessieren",
         "related_count": 4,
         "products_per_row": 4
       }
