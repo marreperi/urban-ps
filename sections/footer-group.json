@@ -89,10 +89,10 @@
           "type": "newsletter",
           "settings": {
             "show_footer_title": true,
-            "title": "",
+            "title": "Nichts mehr verpassen",
             "text": "",
             "container_width": 25,
-            "newsletter_full_width": false,
+            "newsletter_full_width": true,
             "disable_newsletter_form": false,
             "image": "shopify://shop_images/logo.svg",
             "image_link": ""
