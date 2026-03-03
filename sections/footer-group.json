@@ -89,7 +89,7 @@
           "type": "newsletter",
           "settings": {
             "show_footer_title": true,
-            "title": "Wo sie uns noch finden",
+            "title": "",
             "text": "",
             "container_width": 25,
             "newsletter_full_width": false,
