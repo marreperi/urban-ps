@@ -93,7 +93,7 @@
             "text": "",
             "container_width": 25,
             "newsletter_full_width": false,
-            "disable_newsletter_form": true,
+            "disable_newsletter_form": false,
             "image": "shopify://shop_images/logo.svg",
             "image_link": ""
           }
