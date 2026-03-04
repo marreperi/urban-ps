@@ -10,6 +10,11 @@
 {%- liquid
   assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
   assign first_3d_model = product.media | where: 'media_type', 'model' | first
+  assign first_media = product.media | first
+  assign gallery_aspect_ratio = 1
+  if first_media and first_media.preview_image
+    assign gallery_aspect_ratio = first_media.preview_image.aspect_ratio
+  endif
 
   # Product images and thumbnails on the main product template should load early
   if context == 'main-product'
@@ -24,7 +29,7 @@
     data-has-slideshow="{% if product.media.size > 1 %}true{% else %}false{% endif %}">
     <div class="product__photos product__photos-{{ section_id }} product__photos--{{ thumbnail_position }}">
 
-      <div class="product__main-photos" data-aos data-product-single-media-group>
+      <div class="product__main-photos product__main-photos--fixed-aspect" data-aos data-product-single-media-group style="--product-gallery-aspect: {{ gallery_aspect_ratio }};">
         <div
           data-product-photos
           data-zoom="{{ product_zoom_enable }}"

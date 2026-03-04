@@ -501,6 +501,7 @@
         </div>
 
           <!-- Subtotal -->
+          {% unless ss.show_only_total %}
           <div class="cart__item-sub cart__item-row cart__item--subtotal">
             <div>{{ ss.subtotal }}</div>
             <div data-subtotal v-html="this.formatMoney(cart.total_price)"></div>
@@ -569,6 +570,7 @@
               <span v-else v-html="formatMoney(selectedShippingCountry.price * 100)"></span>
             </div>
           </div>
+          {% endunless %}
 
           <!-- Total -->
           <div class="cart__item-row cart__item--total">
@@ -4154,6 +4156,11 @@ font-size: small;
         "id": "shipping_is_free",
         "label": "Versand ist kostenlos Text im Warenkorb-Footer",
         "default": "Kostenlos"
+      }, {
+        "type": "checkbox",
+        "id": "show_only_total",
+        "label": "Nur Gesamtbetrag anzeigen (Zwischensumme und Versandkosten ausblenden)",
+        "default": true
       }, {
         "type": "header",
         "content": "Express-Versand (als Produkt)"
