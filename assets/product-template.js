@@ -55,6 +55,11 @@
             wrapper.classList.remove("animate");
           }, 200);
         }
+        const priceToggleWrapper = toggle.closest(".price-toggle-wrapper");
+        if (priceToggleWrapper) {
+          const infoBtn = priceToggleWrapper.querySelector("[data-price-toggle-info]");
+          if (infoBtn) infoBtn.setAttribute("tabindex", isGross ? "-1" : "0");
+        }
       }
     }
 

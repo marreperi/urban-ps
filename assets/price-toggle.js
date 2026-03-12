@@ -190,6 +190,11 @@
       var checked = mode === "gross";
       if (input) input.checked = checked;
       wrap.setAttribute("aria-checked", String(checked));
+      var wrapper = wrap.closest(".price-toggle-wrapper");
+      if (wrapper) {
+        var infoBtn = wrapper.querySelector("[data-price-toggle-info]");
+        if (infoBtn) infoBtn.setAttribute("tabindex", checked ? "-1" : "0");
+      }
       wrap.classList.add("animate");
       window.setTimeout(function () {
         wrap.classList.remove("animate");

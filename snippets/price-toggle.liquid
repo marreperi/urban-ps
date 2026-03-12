@@ -7,10 +7,16 @@
   assign border = toggle_border_color | default: '#d9d9d9'
 -%}
 
-<div class="gross-net-switch" data-price-toggle role="group" aria-label="Preisumschalter" style="--toggle-primary: {{ primary }}; --toggle-border: {{ border }}; font-size: .75rem;">
-  <span class="gross-net-switch__prefix">{{ prefix_text }}</span>
-  <input id="price-toggle-{{ unique_id }}" type="checkbox" class="gross-net-switch__input" data-price-toggle-input role="switch" aria-checked="true" data-role="price-toggle" />
-  <label for="price-toggle-{{ unique_id }}" class="gross-net-switch__label" data-on-label="{{ on_label }}" data-off-label="{{ off_label }}"></label>
+<div class="price-toggle-wrapper">
+  <div class="gross-net-switch" data-price-toggle role="group" aria-label="Preisumschalter" style="--toggle-primary: {{ primary }}; --toggle-border: {{ border }}; font-size: .75rem;">
+    <span class="gross-net-switch__prefix">{{ prefix_text }}</span>
+    <input id="price-toggle-{{ unique_id }}" type="checkbox" class="gross-net-switch__input" data-price-toggle-input role="switch" aria-checked="true" data-role="price-toggle" />
+    <label for="price-toggle-{{ unique_id }}" class="gross-net-switch__label" data-on-label="{{ on_label }}" data-off-label="{{ off_label }}"></label>
+  </div>
+  <button type="button" class="price-toggle-info" data-price-toggle-info aria-label="Info zur Preisberechnung" tabindex="-1">
+    <span class="price-toggle-info__icon" aria-hidden="true">i</span>
+    <span class="price-toggle-tooltip">Die Anzeige ohne MwSt. dient nur zur Preisorientierung. Der endgültige Preis inkl. MwSt. wird im Checkout berechnet.</span>
+  </button>
 </div>
 <script>
 (function() {
@@ -36,8 +42,11 @@
     const isGross = mode === 'gross';
     toggle.checked = isGross;
     toggle.setAttribute('aria-checked', String(isGross));
-    const wrapper = toggle.closest('[data-price-toggle]');
-    if (wrapper) wrapper.setAttribute('aria-checked', String(isGross));
+    const wrap = toggle.closest('[data-price-toggle]');
+    if (wrap) wrap.setAttribute('aria-checked', String(isGross));
+    const wrapper = toggle.closest('.price-toggle-wrapper');
+    const infoBtn = wrapper ? wrapper.querySelector('[data-price-toggle-info]') : null;
+    if (infoBtn) infoBtn.setAttribute('tabindex', isGross ? '-1' : '0');
   }
   
   toggle.addEventListener('change', function(e) {
@@ -60,11 +69,82 @@
   });
   
   syncFromStorage();
+  var wrapper = toggle.closest('.price-toggle-wrapper');
+  var infoBtn = wrapper ? wrapper.querySelector('[data-price-toggle-info]') : null;
+  if (infoBtn) {
+    infoBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      infoBtn.classList.toggle('is-tooltip-visible');
+    });
+    document.addEventListener('click', function closeTooltip(e) {
+      if (!infoBtn.contains(e.target) && !e.target.closest('[data-price-toggle]')) {
+        infoBtn.classList.remove('is-tooltip-visible');
+      }
+    });
+  }
 })();
 </script>
 
 <style>
+  .price-toggle-wrapper { display: inline-flex; align-items: center; gap: .5rem; }
   .gross-net-switch { display: inline-flex; align-items: center; gap: .5rem; }
+  .price-toggle-info {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid var(--toggle-border, #d9d9d9);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--toggle-primary, #222222);
+    font-size: 11px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: help;
+    position: relative;
+  }
+  .gross-net-switch[aria-checked="false"] ~ .price-toggle-info { display: inline-flex; }
+  .price-toggle-tooltip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 8px);
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 260px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #fff;
+    background: #222;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .15s ease, visibility .15s ease;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .price-toggle-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #222;
+  }
+  .price-toggle-info:hover .price-toggle-tooltip,
+  .price-toggle-info:focus .price-toggle-tooltip,
+  .price-toggle-info:focus-visible .price-toggle-tooltip,
+  .price-toggle-info.is-tooltip-visible .price-toggle-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+  .price-toggle-info:focus { outline: 2px solid var(--toggle-primary, #222); outline-offset: 2px; }
   .gross-net-switch__prefix { opacity: .9; }
   .gross-net-switch__input[role="switch"] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; clip-path: inset(50%); }
   .gross-net-switch__label {
