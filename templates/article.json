@@ -24,15 +24,15 @@
     "blog-posts": {
       "type": "blog-posts",
       "settings": {
-        "title": "You may also like",
-        "blog": "",
+        "title": "Mehr lesen",
+        "blog": "wissen",
         "post_limit": 3,
         "blog_show_tags": false,
         "blog_show_date": true,
         "blog_show_comments": false,
         "blog_show_author": false,
         "view_all": true,
-        "blog_image_size": "wide",
+        "blog_image_size": "portrait",
         "divider": false
       }
     }
