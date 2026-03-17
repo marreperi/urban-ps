@@ -34,7 +34,7 @@
     "main": {
       "type": "main-page",
       "custom_css": [
-        ".rte.rte--nomargin {max-width: 768px;}"
+        ".rte.rte--nomargin {max-width: 768px; margin: 0 auto;}"
       ],
       "settings": {}
     }
