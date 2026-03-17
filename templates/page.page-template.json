@@ -33,6 +33,9 @@
     },
     "main": {
       "type": "main-page",
+      "custom_css": [
+        ".rte.rte--nomargin {max-width: 768px;}"
+      ],
       "settings": {}
     }
   },
