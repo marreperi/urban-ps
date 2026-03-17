@@ -9,10 +9,6 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "settings": {}
-    },
     "advanced_content_wf7X8E": {
       "type": "advanced-content",
       "blocks": {
@@ -34,10 +30,14 @@
         "space_around": true,
         "lazyload_images": true
       }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {}
     }
   },
   "order": [
-    "main",
-    "advanced_content_wf7X8E"
+    "advanced_content_wf7X8E",
+    "main"
   ]
 }
