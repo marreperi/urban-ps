@@ -12,7 +12,7 @@
     "main": {
       "type": "article-template",
       "custom_css": [
-        ".article__body {max-width: 768px; margin: 0 auto;}"
+        ".article__body {max-width: 768px; margin: 0 auto; font-size: 20px;}"
       ],
       "settings": {
         "image_hero": true,
