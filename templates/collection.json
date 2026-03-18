@@ -29,6 +29,29 @@
         "divider": false
       }
     },
+    "advanced_content_LrCyNk": {
+      "type": "advanced-content",
+      "blocks": {
+        "image_nWGLBc": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Alles_fuer_dein_Projekt_-_Aus_einer_hand_1.png",
+            "link": "",
+            "width": "100%",
+            "alignment": "center"
+          }
+        }
+      },
+      "block_order": [
+        "image_nWGLBc"
+      ],
+      "name": "t:sections.advanced-content.presets.custom_content.name",
+      "settings": {
+        "full_width": true,
+        "space_around": false,
+        "lazyload_images": false
+      }
+    },
     "main-collection": {
       "type": "main-collection",
       "blocks": {
@@ -64,6 +87,7 @@
   "order": [
     "collection-header",
     "rich_text_HndhEh",
+    "advanced_content_LrCyNk",
     "main-collection"
   ]
 }
