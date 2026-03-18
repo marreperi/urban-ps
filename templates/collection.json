@@ -29,26 +29,39 @@
         "divider": false
       }
     },
-    "advanced_content_LrCyNk": {
-      "type": "advanced-content",
+    "slideshow_kpjNqc": {
+      "type": "slideshow",
       "blocks": {
-        "image_nWGLBc": {
+        "image_rRP3JK": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Alles_fuer_dein_Projekt_-_Aus_einer_hand_1.png",
+            "top_subheading": "",
+            "title": "Alles für dein Projekt - Aus einer Hand",
+            "title_size": 40,
+            "subheading": "",
             "link": "",
-            "width": "75%",
-            "alignment": "center"
+            "link_text": "Jetzt Projekt anfragen",
+            "link_2": "",
+            "link_text_2": "",
+            "color_accent": "#95c11f",
+            "text_align": "vertical-center horizontal-center",
+            "image": "shopify://shop_images/Alles_fuer_dein_Projekt_-_Aus_einer_hand_2.png",
+            "parallax_direction": "top",
+            "overlay_opacity": 0
           }
         }
       },
       "block_order": [
-        "image_nWGLBc"
+        "image_rRP3JK"
       ],
-      "name": "t:sections.advanced-content.presets.custom_content.name",
+      "name": "t:sections.slideshow.presets.hero_optional_slideshow.name",
       "settings": {
-        "full_width": false,
-        "space_around": false,
+        "section_height": "natural",
+        "mobile_height": "auto",
+        "parallax": false,
+        "style": "bars",
+        "autoplay": true,
+        "autoplay_speed": 5,
         "lazyload_images": false
       }
     },
@@ -87,7 +100,7 @@
   "order": [
     "collection-header",
     "rich_text_HndhEh",
-    "advanced_content_LrCyNk",
+    "slideshow_kpjNqc",
     "main-collection"
   ]
 }
