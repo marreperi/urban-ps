@@ -55,7 +55,7 @@
         "image_rRP3JK"
       ],
       "custom_css": [
-        ".hero-banner {max-width: 1200px; margin: 40px auto; background: #95C11F; padding: 60px 20px; border-radius: 6px;}"
+        ".cms-element-image,.cms-element-image-slider {max-width: 200px; margin: 40px auto; border-radius: 6px; overflow: hidden;}"
       ],
       "name": "t:sections.slideshow.presets.hero_optional_slideshow.name",
       "settings": {
