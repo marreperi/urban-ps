@@ -37,7 +37,7 @@
           "settings": {
             "image": "shopify://shop_images/Alles_fuer_dein_Projekt_-_Aus_einer_hand_1.png",
             "link": "",
-            "width": "100%",
+            "width": "75%",
             "alignment": "center"
           }
         }
@@ -47,7 +47,7 @@
       ],
       "name": "t:sections.advanced-content.presets.custom_content.name",
       "settings": {
-        "full_width": true,
+        "full_width": false,
         "space_around": false,
         "lazyload_images": false
       }
