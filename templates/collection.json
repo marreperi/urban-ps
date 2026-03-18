@@ -54,9 +54,7 @@
       "block_order": [
         "image_rRP3JK"
       ],
-      "custom_css": [
-        ".cms-element-image,.cms-element-image-slider {max-width: 200px; margin: 40px auto; border-radius: 6px; overflow: hidden;}"
-      ],
+      "custom_css": [],
       "name": "t:sections.slideshow.presets.hero_optional_slideshow.name",
       "settings": {
         "section_height": "natural",
