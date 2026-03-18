@@ -36,9 +36,9 @@
           "type": "image",
           "settings": {
             "top_subheading": "",
-            "title": "Alles für dein Projekt - Aus einer Hand",
-            "title_size": 40,
-            "subheading": "",
+            "title": "",
+            "title_size": 100,
+            "subheading": "Alles für dein Projekt - Aus einer Hand",
             "link": "",
             "link_text": "Jetzt Projekt anfragen",
             "link_2": "",
