@@ -1,0 +1,169 @@
+{% comment %}
+  Project inquiry banner - matches collection slideshow hero design exactly.
+  Block settings: image, subheading, link, link_text, color_accent, text_align
+{% endcomment %}
+
+{%- liquid
+  assign banner_link = block.settings.link
+  if banner_link == blank
+    assign banner_link = '/pages/contact'
+  endif
+  assign has_text = false
+  if block.settings.subheading != blank or block.settings.link_text != blank
+    assign has_text = true
+  endif
+  if block.settings.image != blank
+    assign natural_ratio = 100 | divided_by: block.settings.image.aspect_ratio
+    if natural_ratio == 0
+      assign natural_ratio = 40
+    endif
+  else
+    assign natural_ratio = 40
+  endif
+  assign aspect_num = 1000 | divided_by: natural_ratio
+  if aspect_num < 10
+    assign aspect_num = 25
+  endif
+  if block.settings.image != blank
+    assign banner_bg_url = block.settings.image | image_url: width: 2400
+  endif
+-%}
+{%- style -%}
+  .pt-project-banner--{{ block.id }}.hero-natural--project {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-height: 200px;
+    aspect-ratio: {{ aspect_num }} / 10;
+    overflow: hidden;
+  }
+  @media screen and (max-width: 768px) {
+    .pt-project-banner--{{ block.id }}.hero-natural--project {
+      min-height: 180px;
+      aspect-ratio: 25 / 10;
+    }
+  }
+  /* Fill wrapper exactly; no hero--natural / hero--mobile--* (theme forces 250px–500px on mobile) */
+  .pt-project-banner--{{ block.id }} .pt-project-banner__hero {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100% !important;
+    max-height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    background: {{ block.settings.background_color | default: '#2d3a2a' }};
+  }
+  .pt-project-banner--{{ block.id }} .hero__image-wrapper {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: {{ block.settings.background_color | default: '#2d3a2a' }};
+  }
+  .pt-project-banner--{{ block.id }} .hero__text-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    color: #fff;
+  }
+  {%- if block.settings.image != blank -%}
+  .pt-project-banner--{{ block.id }} .hero__image-wrapper--bg-cover {
+    background-image: url({{ banner_bg_url | json }});
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  {%- endif -%}
+  .pt-project-banner--{{ block.id }} .animation-cropper {
+    overflow: visible;
+  }
+  .pt-project-banner--{{ block.id }} .pt-project-banner__text-inner {
+    display: table;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+  @media (min-width: 769px) {
+    .pt-project-banner--{{ block.id }} .pt-project-banner__text-inner {
+      padding: 0 24px;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .pt-project-banner--{{ block.id }} .hero__text-content {
+      padding: 12px 0;
+    }
+  }
+  .pt-project-banner--{{ block.id }} .hero__subtitle {
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  {%- assign button_alpha = block.settings.color_accent | default: '#537c2e' | color_extract: 'alpha' -%}
+    {%- assign accent = block.settings.color_accent | default: '#537c2e' -%}
+    {%- unless button_alpha == 0.0 -%}
+      .pt-project-banner--{{ block.id }} .btn {
+        background: {{ accent }} !important;
+      border: none;
+    }
+      {%- assign accent_brightness = accent | color_extract: 'lightness' -%}
+    {%- if accent_brightness > 40 -%}
+      .pt-project-banner--{{ block.id }} .btn { color: #000 !important; }
+    {%- endif -%}
+  {%- endunless -%}
+{%- endstyle -%}
+
+<div class="pt-project-banner--{{ block.id }} hero-natural--project" {{ block.shopify_attributes }}>
+  <div class="hero pt-project-banner__hero">
+    <div
+      class="hero__image-wrapper{% if block.settings.image != blank %} hero__image-wrapper--bg-cover{% endif %}{% unless has_text %} hero__image-wrapper--no-overlay{% endunless %}"
+      {% if block.settings.image != blank %}
+        role="img"
+        aria-label="{{ block.settings.image.alt | default: block.settings.subheading | default: 'Banner' | escape }}"
+      {% endif %}
+    >
+      {%- if block.settings.image == blank -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg hero__image' }}
+      {%- endif -%}
+    </div>
+
+    <a href="{{ banner_link }}" class="hero__slide-link" aria-hidden="true"></a>
+
+    {%- if has_text -%}
+      <div class="hero__text-wrap">
+        <div class="hero__text-inner pt-project-banner__text-inner">
+          <div class="hero__text-content {{ block.settings.text_align | default: 'vertical-center horizontal-center' }}">
+            <div class="hero__text-shadow">
+              {%- if block.settings.subheading != blank -%}
+                <div class="hero__subtitle">
+                  <div class="animation-cropper"><div class="animation-contents">
+                    {{ block.settings.subheading | escape }}
+                  </div></div>
+                </div>
+              {%- endif -%}
+              {%- if block.settings.link_text != blank -%}
+                <div class="hero__link">
+                  <span class="btn{% if accent contains 'rgba(0,0,0,0)' %} btn--inverse{% endif %}">
+                    {{ block.settings.link_text }}
+                  </span>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>

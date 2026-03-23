@@ -1,10 +1,11 @@
 <div
   data-section-id="{{ section.id }}"
   data-section-type="slideshow-section"
+  class="{% if section.settings.constrain_to_page_width %}slideshow-section--constrained{% endif %}"
   {% if section.settings.parallax %}data-parallax="true"{% endif %}>
 
   {%- if section.blocks.size > 0 -%}
-    <div class="slideshow-wrapper">
+    <div class="slideshow-wrapper{% if section.settings.constrain_to_page_width %} page-width{% endif %}">
       {%- if section.settings.autoplay and section.settings.style == 'bars' and section.blocks.size > 1 -%}
         {%- style -%}
           [data-bars][data-autoplay="true"] .flickity-page-dots .dot:after {
@@ -285,6 +286,15 @@
   {%- endif -%}
 </div>
 
+{%- if section.settings.constrain_to_page_width -%}
+<style>
+  .slideshow-section--constrained .slideshow-wrapper .hero__image-wrapper,
+  .slideshow-section--constrained .slideshow-wrapper .hero__image {
+    border-radius: 4px;
+  }
+</style>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "t:sections.slideshow.name",
@@ -407,6 +417,13 @@
       "label": "t:common.lazyload_images.label",
       "info": "t:common.lazyload_images.info",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "constrain_to_page_width",
+      "label": "Constrain to page width",
+      "default": false,
+      "info": "Limit banner width to match page content (e.g. on collection pages)"
     }
   ],
   "blocks": [

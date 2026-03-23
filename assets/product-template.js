@@ -213,24 +213,11 @@
       }, 1000);
     }
 
-    // ALWAYS intercept form submission to prevent redirect
+    // ALWAYS intercept form submission to prevent redirect (Add to Cart always adds to cart)
     form.addEventListener("submit", function (e) {
       console.log("[product-template] Form submit intercepted");
       const formData = new FormData(form);
       const quantity = parseInt(formData.get("quantity") || "1", 10);
-      const ctaRow = form.querySelector(".pt-cta-row[data-quote-threshold]");
-      const threshold = ctaRow
-        ? parseInt(ctaRow.getAttribute("data-quote-threshold") || "3", 10)
-        : 3;
-      if (quantity >= threshold) {
-        e.preventDefault();
-        e.stopPropagation();
-        const sectionEl = form.closest("[data-section-id][data-product-id]");
-        if (sectionEl) {
-          openQuoteModal(sectionEl, quantity);
-        }
-        return;
-      }
       e.preventDefault();
       e.stopPropagation();
 
@@ -504,72 +491,19 @@
     document.body.style.overflow = "hidden";
   }
 
-  // Quote request: two buttons - add-to-cart (submit) and quote (button). Toggle visibility by quantity.
+  // Quote request: both Add to Cart and Quote buttons always visible. Quote opens modal.
   function initQuoteRequest() {
-    var rows = document.querySelectorAll(".pt-cta-row[data-quote-threshold]");
-    rows.forEach(function (ctaRow) {
-      var form = ctaRow.closest("form");
+    document.querySelectorAll(".pt-cta-row [data-quote-trigger]").forEach(function (quoteBtn) {
+      var form = quoteBtn.closest("form");
       if (!form) return;
-      var quantityInput = form.querySelector('input[name="quantity"]');
-      var addBtn = ctaRow.querySelector("[data-quote-hide]");
-      var quoteBtn = ctaRow.querySelector("[data-quote-trigger]");
-      var addBtnSpan = addBtn ? addBtn.querySelector("[data-add-to-cart-text]") : null;
-      var quoteBtnSpan = quoteBtn ? quoteBtn.querySelector("[data-quote-button-text]") : null;
-      var threshold = parseInt(
-        ctaRow.getAttribute("data-quote-threshold") || "3",
-        10
-      );
-      var quoteText =
-        ctaRow.getAttribute("data-quote-button-text") ||
-        "Jetzt Angebot einholen";
-      var defaultText = addBtnSpan
-        ? addBtnSpan.getAttribute("data-default-text") || "In den Warenkorb"
-        : "In den Warenkorb";
-
-      function updateButtonState() {
-        var qty = parseInt(quantityInput ? quantityInput.value || "1" : "1", 10);
-        var isQuoteMode = qty >= threshold;
-        if (addBtn) {
-          addBtn.style.display = isQuoteMode ? "none" : "";
-          addBtn.setAttribute("aria-hidden", isQuoteMode ? "true" : "false");
-          addBtn.tabIndex = isQuoteMode ? -1 : 0;
-          if (addBtnSpan && !isQuoteMode) addBtnSpan.textContent = defaultText;
-        }
-        if (quoteBtn) {
-          quoteBtn.style.display = isQuoteMode ? "" : "none";
-          quoteBtn.setAttribute("aria-hidden", isQuoteMode ? "false" : "true");
-          quoteBtn.tabIndex = isQuoteMode ? 0 : -1;
-          if (quoteBtnSpan) quoteBtnSpan.textContent = quoteText;
-        }
-      }
-
-      if (quoteBtn) {
-        quoteBtn.addEventListener("click", function () {
-          var qty = parseInt(
-            form.querySelector('input[name="quantity"]').value || "1",
-            10
-          );
-          var sectionId = quoteBtn.getAttribute("data-section-id");
-          var productId = quoteBtn.getAttribute("data-product-id");
-          if (sectionId && productId) {
-            var sectionEl = form.closest("[data-section-id][data-product-id]");
-            if (sectionEl) openQuoteModal(sectionEl, qty);
-          }
-        });
-      }
-
-      if (quantityInput) {
-        quantityInput.addEventListener("input", updateButtonState);
-        quantityInput.addEventListener("change", updateButtonState);
-        quantityInput.addEventListener("keyup", updateButtonState);
-        var qtyWrapper = quantityInput.closest(".js-qty__wrapper");
-        if (qtyWrapper) {
-          qtyWrapper.addEventListener("click", function () {
-            setTimeout(updateButtonState, 0);
-          });
-        }
-      }
-      updateButtonState();
+      quoteBtn.addEventListener("click", function () {
+        var qty = parseInt(
+          (form.querySelector('input[name="quantity"]') || {}).value || "1",
+          10
+        );
+        var sectionEl = form.closest("[data-section-id][data-product-id]");
+        if (sectionEl) openQuoteModal(sectionEl, qty);
+      });
     });
   }
 

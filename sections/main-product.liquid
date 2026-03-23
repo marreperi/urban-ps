@@ -364,6 +364,64 @@
   ]
 },
 {
+  "type": "project_inquiry_banner",
+  "name": "Project inquiry banner",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#2d3a2a",
+      "info": "Used when no image or as fallback behind image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Same image as collection banner for consistent look"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Alles für dein Projekt - Aus einer Hand"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link",
+      "info": "Links to contact/quote form (e.g. /pages/contact)"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Button text",
+      "default": "Jetzt Projekt anfragen"
+    },
+    {
+      "type": "color",
+      "id": "color_accent",
+      "label": "Button color",
+      "default": "#537c2e"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "vertical-center horizontal-center",
+      "options": [
+        { "value": "vertical-center horizontal-left", "label": "Center left" },
+        { "value": "vertical-center horizontal-center", "label": "Center" },
+        { "value": "vertical-center horizontal-right", "label": "Center right" },
+        { "value": "vertical-bottom horizontal-left", "label": "Bottom left" },
+        { "value": "vertical-bottom horizontal-center", "label": "Bottom center" },
+        { "value": "vertical-bottom horizontal-right", "label": "Bottom right" }
+      ]
+    }
+  ]
+},
+{
   "type": "support_widget",
   "name": "Support widget",
   "limit": 1,

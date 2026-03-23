@@ -456,6 +456,10 @@
                         </div>
                       {%- endif -%}
                     {%- endif -%}
+                  {%- when 'project_inquiry_banner' -%}
+                    <div class="product-block product-block--project-banner">
+                      {%- render 'product-project-banner', block: block -%}
+                    </div>
                   {%- when 'support_widget' -%}
                     <div class="product-block pt-support-widget" {{ block.shopify_attributes }}>
                       <div class="pt-support-content">
@@ -507,34 +511,34 @@
                               <input type="hidden" name="properties[_energy_efficiency_class]" value="{{ product.metafields.custom.energy_efficiency_class }}">
                             {%- endif -%}
 
-                            <div class="pt-cta-row" data-quote-threshold="3" data-quote-button-text="Jetzt Angebot einholen">
+                            <div class="pt-cta-row pt-cta-row--dual" data-quote-threshold="3" data-quote-button-text="Projekt anfragen">
                               {%- assign qty_id = section_id | append: product.id -%}
-                              <div class="product__quantity pt-qty-input">
-                                <label for="Quantity-{{ qty_id }}" class="visually-hidden">{{ 'products.product.quantity' | t }}</label>
-                                {%- render 'quantity-input', form_id: form_id, id: qty_id, qty: 1, min: 1 -%}
+                              <div class="pt-cta-row__top">
+                                <div class="product__quantity pt-qty-input">
+                                  <label for="Quantity-{{ qty_id }}" class="visually-hidden">{{ 'products.product.quantity' | t }}</label>
+                                  {%- render 'quantity-input', form_id: form_id, id: qty_id, qty: 1, min: 1 -%}
+                                </div>
+                                <div class="product-block pt-cta-button pt-cta-button--add">
+                                  <button
+                                    type="submit"
+                                    name="add"
+                                    data-add-to-cart
+                                    class="btn btn--full add-to-cart pt-cta-add-to-cart"
+                                    {% unless current_variant.available %} disabled="disabled"{% endunless %}>
+                                    <span data-add-to-cart-text data-default-text="{{ default_text }}">
+                                      {{ button_text }}
+                                    </span>
+                                  </button>
+                                </div>
                               </div>
-                              <div class="product-block pt-cta-button">
-                                <button
-                                  type="submit"
-                                  name="add"
-                                  data-add-to-cart
-                                  class="btn btn--full add-to-cart pt-cta-add-to-cart"
-                                  data-quote-hide
-                                  {% unless current_variant.available %} disabled="disabled"{% endunless %}>
-                                  <span data-add-to-cart-text data-default-text="{{ default_text }}">
-                                    {{ button_text }}
-                                  </span>
-                                </button>
+                              <div class="pt-cta-row__quote">
                                 <button
                                   type="button"
-                                  class="btn btn--full pt-cta-quote-request"
+                                  class="btn btn--secondary btn--full pt-cta-quote-request"
                                   data-quote-trigger
                                   data-section-id="{{ section_id }}"
-                                  data-product-id="{{ product.id }}"
-                                  aria-hidden="true"
-                                  tabindex="-1"
-                                  style="display:none;">
-                                  <span data-quote-button-text>Jetzt Angebot einholen</span>
+                                  data-product-id="{{ product.id }}">
+                                  <span data-quote-button-text>Projekt anfragen</span>
                                 </button>
                               </div>
                             </div>

@@ -63,7 +63,8 @@
         "style": "bars",
         "autoplay": true,
         "autoplay_speed": 5,
-        "lazyload_images": false
+        "lazyload_images": false,
+        "constrain_to_page_width": true
       }
     },
     "main-collection": {
