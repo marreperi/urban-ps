@@ -94,7 +94,7 @@
             "container_width": 25,
             "newsletter_full_width": true,
             "disable_newsletter_form": false,
-            "image": "shopify://shop_images/Logo_ohne_Shop_1.png",
+            "image": "shopify://shop_images/logo.svg",
             "image_link": "https://urban-ps.de"
           }
         }
