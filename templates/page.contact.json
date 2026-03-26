@@ -20,14 +20,14 @@
         "heading": {
           "type": "heading",
           "settings": {
-            "title": "Wir sind für dich da"
+            "title": "Teile uns kurz dein Vorhaben oder deine Frage mit, wir melden uns zeitnah mit einer individuellen Lösung oder Antwort."
           }
         },
         "text": {
           "type": "text",
           "settings": {
             "enlarge_text": false,
-            "text": "<p>Hast du Fragen zu unseren Produkten, benötigst du eine Beratung oder möchtest du ein Projekt besprechen?<br/><br/>Unser Team von Urban-PS unterstützt dich gerne!  </p>"
+            "text": "<p>Beschreib uns kurz dein Anliegen, wir melden uns schnell mit einer passenden Lösung oder konkreten Empfehlung.</p><p></p><p>Hast du eine Projektanfrage, Fragen zu unseren Produkten, benötigst du eine Beratung oder möchtest du ein Projekt besprechen?<br/><br/>Unser Team von Urban-PS unterstützt dich gerne!  </p>"
           }
         }
       },
