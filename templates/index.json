@@ -82,7 +82,8 @@
         "style": "bars",
         "autoplay": true,
         "autoplay_speed": 5,
-        "lazyload_images": false
+        "lazyload_images": false,
+        "constrain_to_page_width": false
       }
     },
     "featured_collections_BHA6BK": {
@@ -111,18 +112,27 @@
             "title": "Videowall Displays",
             "focal_point": "center center"
           }
+        },
+        "collection_VmbJmF": {
+          "type": "collection",
+          "settings": {
+            "collection": "digital-signage",
+            "title": "Digital Signage",
+            "focal_point": "center center"
+          }
         }
       },
       "block_order": [
         "collection_EgQLVD",
         "collection_9iE7F7",
-        "collection_UCXtyw"
+        "collection_UCXtyw",
+        "collection_VmbJmF"
       ],
       "name": "t:sections.featured-collections.presets.collection_list.name",
       "settings": {
         "title": "Beliebte Kategorien",
         "divider": false,
-        "per_row": 3,
+        "per_row": 4,
         "enable_gutter": true
       }
     },
