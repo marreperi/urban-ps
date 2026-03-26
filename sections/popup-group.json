@@ -25,6 +25,7 @@
       "block_order": [
         "reminder-block"
       ],
+      "disabled": true,
       "settings": {
         "disable_for_account_holders": true,
         "popup_seconds": 5,
