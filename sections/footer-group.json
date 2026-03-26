@@ -61,14 +61,6 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "footer-1": {
-          "type": "menu",
-          "settings": {
-            "show_footer_title": true,
-            "menu": "rund-um-ihre-bestellung",
-            "container_width": 25
-          }
-        },
         "menu_DY8JCj": {
           "type": "menu",
           "settings": {
@@ -82,6 +74,23 @@
           "settings": {
             "show_footer_title": true,
             "menu": "das-unternehmen",
+            "container_width": 25
+          }
+        },
+        "footer-1": {
+          "type": "menu",
+          "disabled": true,
+          "settings": {
+            "show_footer_title": true,
+            "menu": "rund-um-ihre-bestellung",
+            "container_width": 25
+          }
+        },
+        "menu_WQnAdq": {
+          "type": "menu",
+          "settings": {
+            "show_footer_title": true,
+            "menu": "",
             "container_width": 25
           }
         },
@@ -100,9 +109,10 @@
         }
       },
       "block_order": [
-        "footer-1",
         "menu_DY8JCj",
         "menu_tMVt7D",
+        "footer-1",
+        "menu_WQnAdq",
         "newsletter_hbqhha"
       ],
       "settings": {
