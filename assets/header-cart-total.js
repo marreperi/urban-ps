@@ -109,6 +109,7 @@
   });
 
   window.addEventListener("cart:updated", refresh);
+  document.addEventListener("cart:updated", refresh);
   document.addEventListener("product:added", refresh);
   document.addEventListener("cart-drawer:closed", refresh);
 
