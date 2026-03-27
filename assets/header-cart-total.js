@@ -39,14 +39,17 @@
 
   function getPriceMode() {
     try {
-      // Check for price-toggle.js mode (urbanps_price_mode)
-      var priceToggleMode = localStorage.getItem("urbanps_price_mode");
-      if (priceToggleMode) {
-        return priceToggleMode === "net" ? "net" : "gross";
-      }
-      // Fallback to price-toggle.liquid mode (price_mode)
+      // price-toggle.liquid and product-template use price_mode; prefer it so the
+      // header matches the visible toggle. urbanps_price_mode (e.g. mr-vue-cart) is fallback only.
       var priceMode = localStorage.getItem("price_mode");
-      return priceMode === "net" ? "net" : "gross";
+      if (priceMode === "net" || priceMode === "gross") {
+        return priceMode === "net" ? "net" : "gross";
+      }
+      var urban = localStorage.getItem("urbanps_price_mode");
+      if (urban === "net" || urban === "gross") {
+        return urban === "net" ? "net" : "gross";
+      }
+      return "gross";
     } catch (_) {
       return "gross";
     }
