@@ -63,11 +63,12 @@
   <nav class="glass-nav">
     <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
       <div class="flex flex-col">
-        <span class="text-2xl font-extrabold tracking-tighter text-white uppercase">URBAN-PS <span class="text-ups-blue-500">GmbH</span></span>
+        <span class="text-2xl font-extrabold tracking-tighter text-white uppercase tracking-tighter">URBAN-PS <span class="text-ups-blue-500">GmbH</span></span>
         <span class="text-[10px] uppercase tracking-[0.2em] text-ups-cyan font-bold">Innovation Center</span>
       </div>
       <div class="hidden md:flex items-center gap-8 text-sm font-bold tracking-widest uppercase text-white">
-        <a href="#technologien" class="hover:text-ups-cyan transition">Portfolio</a>
+        <a href="#portfolio" class="hover:text-ups-cyan transition">Portfolio</a>
+        <a href="#ansprechpartner" class="hover:text-ups-cyan transition">Expertise</a>
         <a href="#booking" class="btn-primary">Besuch anfragen</a>
       </div>
     </div>
@@ -75,12 +76,11 @@
 
   <header class="relative min-h-[85vh] flex items-center justify-center pt-20 overflow-hidden text-center">
     <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-ups-blue-600/10 rounded-full blur-[120px]"></div>
-    
     <div class="relative z-10 max-w-6xl mx-auto px-6">
       <h1 class="text-5xl md:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
         High-End Technik.<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-ups-blue-400 to-ups-cyan">Live & Haptisch.</span>
       </h1>
-      <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto mb-12">
+      <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed">
         Validieren Sie Ihre Investition in Medientechnik im URBAN-PS Showroom. 
         Vom interaktiven Kiosk bis zur 138" LED-Wall.
       </p>
@@ -88,67 +88,101 @@
     </div>
   </header>
 
-  <section id="technologien" class="py-32">
-    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-      <div class="card-glow">
-        <h3 class="text-2xl font-bold text-white mb-4 italic">LED Performance</h3>
-        <p class="text-slate-400 text-sm">Vergleichen Sie Pixel-Pitch und Helligkeit unter realen Lichtverhältnissen.</p>
+  <section id="portfolio" class="py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-end justify-between mb-16 gap-4">
+        <div>
+          <h2 class="text-4xl md:text-6xl font-extrabold tracking-tighter text-white uppercase">Hardware Erleben</h2>
+          <p class="text-ups-cyan font-bold tracking-[0.2em] uppercase text-xs mt-4">Aktuell im Showroom verfügbar</p>
+        </div>
+        <a href="/collections/all" class="text-slate-500 hover:text-white transition text-xs font-bold uppercase tracking-widest border-b border-slate-800 pb-1">Zum Gesamtsortiment</a>
       </div>
-      <div class="card-glow">
-        <h3 class="text-2xl font-bold text-white mb-4 italic">Future Office</h3>
-        <p class="text-slate-400 text-sm">Testen Sie BYOD und Akustik-Systeme für Ihre hybride Arbeitswelt.</p>
-      </div>
-      <div class="card-glow">
-        <h3 class="text-2xl font-bold text-white mb-4 italic">Digital Signage</h3>
-        <p class="text-slate-400 text-sm">Interaktive Kiosksysteme und Outdoor-Stehlen im haptischen Test.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {% assign showroom_collection = collections['showroom'] %}
+        {% for product in showroom_collection.products limit: 8 %}
+          <div class="card-glow group flex flex-col">
+            <div class="relative aspect-square mb-8 overflow-hidden rounded-2xl bg-slate-800">
+              <img src="{{ product.featured_image | img_url: '600x600', crop: 'center' }}" 
+                   alt="{{ product.title }}" 
+                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3 leading-tight">{{ product.title }}</h3>
+            <p class="text-slate-500 text-sm mb-8 flex-grow">
+              {{ product.description | strip_html | truncate: 100 }}
+            </p>
+            <div class="flex items-center justify-between mt-auto pt-6 border-t border-white/5">
+              <span class="text-ups-cyan font-bold tracking-tighter">{{ product.price | money }}</span>
+              <a href="{{ product.url }}" class="text-[10px] font-bold uppercase tracking-widest text-white hover:text-ups-cyan transition">Details</a>
+            </div>
+          </div>
+        {% else %}
+          <div class="col-span-full py-20 text-center border-2 border-dashed border-white/5 rounded-[2rem]">
+            <p class="text-slate-500 italic">Kollektion "Showroom" wird geladen oder ist derzeit leer.</p>
+          </div>
+        {% endfor %}
       </div>
     </div>
   </section>
 
-  <section class="py-24 bg-ups-surface/50 border-y border-white/5">
+  <section id="ansprechpartner" class="py-24 bg-ups-surface/50 border-y border-white/5">
     <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
       <div class="w-64 h-64 bg-slate-800 rounded-full border-4 border-ups-blue-600 overflow-hidden shadow-2xl flex-shrink-0">
           <img src="{{ 'frank-stampa.png' | file_img_url: '600x600' }}" alt="Frank Stampa - Geschäftsführer URBAN-PS GmbH" class="w-full h-full object-cover">
       </div>
       <div>
-        <blockquote class="text-3xl font-bold text-white leading-tight mb-6">
+        <blockquote class="text-3xl font-bold text-white leading-tight mb-8">
           "Wir schaffen Sicherheit für Ihre Investitionen. In unserem Showroom wird Technik erlebbar und funktional begreifbar."
         </blockquote>
-        <p class="text-lg font-bold text-ups-cyan uppercase tracking-wider">Frank Stampa</p>
-        <p class="text-slate-500 font-medium">Geschäftsführer, URBAN-PS GmbH</p>
+        <div class="flex flex-col">
+          <p class="text-xl font-extrabold text-ups-cyan uppercase tracking-wider">Frank Stampa</p>
+          <p class="text-slate-500 font-medium">Geschäftsführer, URBAN-PS GmbH</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="booking" class="py-32 bg-white text-ups-dark rounded-[4rem]">
+  <section id="booking" class="py-32 bg-white text-ups-dark rounded-[4rem] mx-4 my-8">
     <div class="max-w-4xl mx-auto px-6 text-center">
-      <h2 class="text-5xl font-extrabold tracking-tighter mb-6">Reality-Check anfragen</h2>
-      <p class="text-xl text-slate-600 mb-12 text-center">Sichern Sie sich Ihren exklusiven Demo-Slot im URBAN-PS Headquarter oder Experience Center.</p>
+      <h2 class="text-5xl md:text-7xl font-extrabold tracking-tighter mb-8 uppercase">Reality-Check</h2>
+      <p class="text-xl text-slate-600 mb-16 leading-relaxed">
+        Sichern Sie sich Ihren exklusiven Demo-Slot im URBAN-PS Headquarter oder Innovation Center. 
+        Wir bereiten das Setup nach Ihren Anforderungen vor.
+      </p>
       
-      <div class="bg-slate-100 p-12 rounded-[3rem] border-2 border-slate-200">
-          <p class="font-mono text-sm text-slate-400">[ Integration: Shopify Booking Widget / Calendly ]</p>
+      <div class="bg-slate-100 p-12 rounded-[3rem] border-2 border-slate-200 relative overflow-hidden">
+          <div class="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:20px_20px]"></div>
+          <p class="font-mono text-xs text-slate-400 mb-4 tracking-widest uppercase">Integration: Booking Widget</p>
+          <div class="py-12 border-4 border-dashed border-slate-300 rounded-2xl flex flex-col items-center justify-center">
+            <p class="text-slate-400 italic">Hier erscheint Ihr Calendly / Sesami Widget</p>
+          </div>
       </div>
     </div>
   </section>
 
   <footer class="py-20 bg-ups-dark text-slate-500 text-sm border-t border-white/5">
-    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-start">
-      <div>
-        <p class="font-bold text-white mb-4 text-lg tracking-tight">URBAN-PS GmbH</p>
-        <div class="space-y-1 not-italic">
-          <p>Hertzstraße 71</p>
-          <p>13158 Berlin</p>
-          <p class="pt-4 text-slate-400">Geschäftsführer: Frank Stampa</p>
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-start">
+      <div class="space-y-6">
+        <div>
+          <p class="font-extrabold text-white text-xl tracking-tighter uppercase mb-4">URBAN-PS <span class="text-ups-blue-500">GmbH</span></p>
+          <div class="space-y-1 not-italic text-slate-400">
+            <p>Hertzstraße 71</p>
+            <p>13158 Berlin</p>
+          </div>
         </div>
+        <p class="text-xs tracking-wide">Vertreten durch: <span class="text-slate-300">Frank Stampa</span></p>
       </div>
+      
       <div class="md:text-right flex flex-col md:items-end justify-between h-full">
-        <div class="flex flex-wrap md:justify-end gap-x-6 gap-y-2 uppercase tracking-[0.15em] text-[10px] font-bold text-slate-400">
+        <nav class="flex flex-wrap md:justify-end gap-x-8 gap-y-4 uppercase tracking-[0.2em] text-[10px] font-extrabold text-slate-400">
           <a href="https://urban-ps.de/policies/terms-of-service" class="footer-link">AGB</a>
           <a href="https://urban-ps.de/policies/legal-notice" class="footer-link">Impressum</a>
           <a href="https://urban-ps.de/policies/privacy-policy" class="footer-link">Datenschutz</a>
           <a href="/policies/refund-policy" class="footer-link">Widerruf</a>
-        </div>
-        <p class="mt-8 md:mt-0 opacity-50 italic">© {{ 'now' | date: "%Y" }} URBAN-PS GmbH. Alle Rechte vorbehalten.</p>
+        </nav>
+        <p class="mt-12 md:mt-0 opacity-30 text-[10px] uppercase tracking-widest">
+          &copy; {{ 'now' | date: "%Y" }} URBAN-PS GmbH. Engineering Experience.
+        </p>
       </div>
     </div>
   </footer>
