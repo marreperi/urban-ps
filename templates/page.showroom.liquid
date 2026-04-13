@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Showroom Erleben | URBAN-PS GmbH - Medientechnik & Digital Signage</title>
+  <title>Showroom Erleben | URBAN-PS GmbH - Medientechnik</title>
   
   <meta name="robots" content="noindex, nofollow">
 
@@ -15,50 +15,28 @@
       theme: {
         extend: {
           colors: {
-            'ups-blue': {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              400: '#60a5fa',
-              500: '#3b82f6', 
-              600: '#2563eb',
-              900: '#1e3a8a',
-            },
+            'ups-blue': { 500: '#3b82f6', 600: '#2563eb' },
             'ups-cyan': '#06b6d4',
             'ups-dark': '#020617', 
             'ups-surface': '#0f172a',
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-          },
+          }
         }
       }
     }
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
-
   <style type="text/tailwindcss">
     @layer components {
-      .glass-nav {
-        @apply bg-ups-dark/80 backdrop-blur-xl border-b border-white/10 sticky top-0 z-[100];
-      }
-      .btn-primary {
-        @apply bg-ups-cyan text-ups-dark px-8 py-4 rounded-full font-extrabold tracking-tight 
-               hover:bg-white hover:scale-105 transition-all duration-300 
-               shadow-[0_0_20px_rgba(6,182,212,0.4)];
-      }
-      .card-glow {
-        @apply bg-ups-surface border border-white/5 rounded-[2rem] p-8 transition-all duration-500 
-               hover:border-ups-blue-500/50 hover:shadow-[0_0_40px_rgba(37,99,235,0.15)];
-      }
+      .glass-nav { @apply bg-ups-dark/80 backdrop-blur-xl border-b border-white/10 sticky top-0 z-[100]; }
+      .btn-primary { @apply bg-ups-cyan text-ups-dark px-8 py-4 rounded-full font-extrabold tracking-tight hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.4)]; }
+      .card-glow { @apply bg-ups-surface border border-white/5 rounded-[2rem] p-8 transition-all hover:border-ups-blue-500/50 hover:shadow-[0_0_40px_rgba(37,99,235,0.15)]; }
+      .footer-link { @apply hover:text-ups-cyan transition-colors duration-200; }
     }
   </style>
 
   {{ content_for_header }}
 </head>
-<body class="bg-ups-dark text-slate-200 font-sans antialiased selection:bg-ups-cyan selection:text-ups-dark">
+<body class="bg-ups-dark text-slate-200 font-sans antialiased">
 
   <nav class="glass-nav">
     <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
@@ -66,91 +44,45 @@
         <span class="text-2xl font-extrabold tracking-tighter text-white uppercase">URBAN-PS <span class="text-ups-blue-500">GmbH</span></span>
         <span class="text-[10px] uppercase tracking-[0.2em] text-ups-cyan font-bold">Innovation Center</span>
       </div>
-      <div class="hidden md:flex items-center gap-8 text-sm font-bold tracking-widest uppercase text-white">
-        <a href="#technologien" class="hover:text-ups-cyan transition">Portfolio</a>
-        <a href="#booking" class="btn-primary">Besuch anfragen</a>
-      </div>
+      <a href="#booking" class="btn-primary hidden md:block">Besuch anfragen</a>
     </div>
   </nav>
 
-  <header class="relative min-h-[85vh] flex items-center justify-center pt-20 overflow-hidden">
-    <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-ups-blue-600/10 rounded-full blur-[120px]"></div>
-    
-    <div class="relative z-10 max-w-6xl mx-auto px-6 text-center">
-      <h1 class="text-5xl md:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
-        High-End Technik.<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-ups-blue-400 to-ups-cyan">Live & Haptisch.</span>
-      </h1>
-      <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto mb-12">
-        Validieren Sie Ihre Investition in Medientechnik im URBAN-PS Showroom. 
-        Vom interaktiven Kiosk bis zur 138" LED-Wall.
-      </p>
-      <div class="flex flex-col md:flex-row items-center justify-center gap-6">
-        <a href="#booking" class="btn-primary w-full md:w-auto text-center">Termin mit Frank Stampa buchen</a>
-      </div>
-    </div>
-  </header>
-
-  <section id="technologien" class="py-32">
-    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-      <div class="card-glow">
-        <h3 class="text-2xl font-bold text-white mb-4 italic">LED Performance</h3>
-        <p class="text-slate-400 text-sm">Vergleichen Sie Pixel-Pitch und Helligkeit unter realen Lichtverhältnissen.</p>
-      </div>
-      <div class="card-glow">
-        <h3 class="text-2xl font-bold text-white mb-4 italic">Future Office</h3>
-        <p class="text-slate-400 text-sm">Testen Sie BYOD und Akustik-Systeme für Ihre hybride Arbeitswelt.</p>
-      </div>
-      <div class="card-glow">
-        <h3 class="text-2xl font-bold text-white mb-4 italic">Digital Signage</h3>
-        <p class="text-slate-400 text-sm">Interaktive Kiosksysteme und Outdoor-Stehlen im haptischen Test.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="py-24 bg-ups-surface/50 border-y border-white/5">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
-      <div class="w-64 h-64 bg-slate-800 rounded-full border-4 border-ups-blue-600 overflow-hidden shadow-2xl flex-shrink-0">
-          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
-      </div>
-      <div>
-        <blockquote class="text-3xl font-bold text-white leading-tight mb-6">
-          "Wir schaffen Sicherheit für Ihre Investitionen. In unserem Showroom wird Technik erlebbar und funktional begreifbar."
-        </blockquote>
-        <p class="text-lg font-bold text-ups-cyan uppercase tracking-wider">Frank Stampa</p>
-        <p class="text-slate-500 font-medium">Geschäftsführer, URBAN-PS GmbH</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="booking" class="py-32 bg-white text-ups-dark rounded-[4rem]">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-      <h2 class="text-5xl font-extrabold tracking-tighter mb-6">Reality-Check anfragen</h2>
-      <p class="text-xl text-slate-600 mb-12">Sichern Sie sich Ihren exklusiven Demo-Slot im URBAN-PS Headquarter oder Experience Center.</p>
-      
-      <div class="bg-slate-100 p-12 rounded-[3rem] border-2 border-slate-200">
-          <p class="font-mono text-sm text-slate-400">[ Integration: Shopify Booking Widget / Calendly ]</p>
-      </div>
-    </div>
-  </section>
+  <main>
+    <section class="py-32 text-center">
+      <h1 class="text-6xl font-extrabold text-white">Showroom Erleben.</h1>
+      </section>
+  </main>
 
   <footer class="py-20 bg-ups-dark text-slate-500 text-sm border-t border-white/5">
     <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-start">
       <div>
-        <p class="font-bold text-white mb-4 text-lg">URBAN-PS GmbH</p>
-        <p>Hertzstraße 71</p>
-        <p>13158 Berlin</p>
-        <p class="mt-4">Vertreten durch: Frank Stampa</p>
-      </div>
-      <div class="md:text-right">
-        <p class="mb-2">© {{ 'now' | date: "%Y" }} URBAN-PS GmbH</p>
-        <div class="flex md:justify-end gap-6 mt-4 uppercase tracking-widest text-[10px] font-bold">
-          <a href="/policies/impressum" class="hover:text-ups-cyan transition">Impressum</a>
-          <a href="/policies/datenschutz" class="hover:text-ups-cyan transition">Datenschutz</a>
+        <p class="font-bold text-white mb-4 text-lg tracking-tight">URBAN-PS GmbH</p>
+        <div class="space-y-1 not-italic">
+          <p>Hertzstraße 71</p>
+          <p>13158 Berlin</p>
+          <p class="pt-4 text-slate-400">Geschäftsführer: Frank Stampa</p>
         </div>
+      </div>
+      <div class="md:text-right flex flex-col md:items-end justify-between h-full">
+        <div class="flex flex-wrap md:justify-end gap-x-6 gap-y-2 uppercase tracking-[0.15em] text-[10px] font-bold text-slate-400">
+          <a href="https://urban-ps.de/policies/terms-of-service" class="footer-link">AGB</a>
+          <a href="https://urban-ps.de/policies/legal-notice" class="footer-link">Impressum</a>
+          <a href="https://urban-ps.de/policies/privacy-policy" class="footer-link">Datenschutz</a>
+          <a href="/policies/refund-policy" class="footer-link">Widerruf</a>
+        </div>
+        <p class="mt-8 md:mt-0 opacity-50 italic">© {{ 'now' | date: "%Y" }} URBAN-PS GmbH. Alle Rechte vorbehalten.</p>
       </div>
     </div>
   </footer>
 
-  {{ content_for_footer }}
+  {% comment %}
+    In einem layout none template ist content_for_footer essentiell für Apps.
+    Sollte "undefined" sichtbar sein, prüfen Sie installierte Apps auf Skripte, 
+    die ein Standard-Layout erwarten.
+  {% endcomment %}
+  <div class="hidden">
+    {{ content_for_footer }}
+  </div>
 </body>
 </html>
