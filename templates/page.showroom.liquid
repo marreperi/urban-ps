@@ -1,1 +1,130 @@
-{"sections":{"main":{"type":"main-page","disabled":true,"settings":{}},"configurator_iframe_AR6nFh":{"type":"configurator-iframe","name":"Configurator iframe","settings":{"configurator_url":"https:\/\/urban-ps.app.configuratorware.de\/identifier:meetingraum?_language=de_DE&_hide_prices=1","iframe_title":"Konfigurator","iframe_height":800,"min_height":800}}},"order":["main","configurator_iframe_AR6nFh"]}
+{% layout none %}
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Immersive Media Center Lübeck | urban-ps.de - Technik erleben.</title>
+  
+  <link href="{{ 'showroom-tailwind.min.css' | asset_url }}" rel="stylesheet">
+  
+  {{ content_for_header }}
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased overflow-x-hidden">
+
+  <nav class="sticky top-0 z-50 bg-slate-950/70 backdrop-blur-lg border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="/" class="font-extrabold text-2xl tracking-tighter text-white">URBAN <span class="text-blue-500">PS</span></a>
+      <a href="#booking" class="bg-cyan-500 text-slate-950 px-8 py-3.5 rounded-full font-bold text-sm tracking-tight hover:bg-cyan-400 transition all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+        JETZT TERMIN SICHERN
+      </a>
+    </div>
+  </nav>
+
+  <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <div class="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/80 to-slate-950 z-10"></div>
+      <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1920&q=80" class="w-full h-full object-cover scale-105 blur-[2px]" alt="Showroom Medientechnik">
+    </div>
+    <div class="relative z-20 max-w-5xl mx-auto px-6 text-center">
+      <span class="inline-block bg-blue-600/20 text-blue-300 border border-blue-500/30 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase mb-6">
+        Exklusives Erlebnis-Zentrum Lübeck
+      </span>
+      <h1 class="text-6xl md:text-8xl font-extrabold leading-none tracking-tighter mb-8 bg-gradient-to-br from-white via-slate-200 to-slate-500 bg-clip-text text-transparent">
+        Investitionen validieren.<br>Technik performen sehen.
+      </h1>
+      <p class="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto mb-12 leading-relaxed">
+        Beenden Sie das Risiko von Fehlkäufen. Testen Sie LED-Walls, Konferenzsysteme und Digital Signage live unter realen Bedingungen.
+      </p>
+      <a href="#explore" class="group text-cyan-400 font-semibold text-lg flex items-center justify-center gap-2 hover:text-cyan-300 transition">
+        Showroom-Highlights entdecken
+        <span class="group-hover:translate-y-1 transition-transform">↓</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="explore" class="py-32 max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      
+      <div class="group bg-slate-900 border border-slate-800 p-4 rounded-3xl transition all duration-500 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] overflow-hidden">
+        <div class="aspect-[16/10] bg-slate-800 rounded-2xl mb-8 overflow-hidden relative">
+          <img src="https://images.unsplash.com/photo-1601053163359-00100a0e23a3?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
+        </div>
+        <div class="px-4 pb-4">
+          <h3 class="text-3xl font-extrabold tracking-tight mb-3 text-white">LED Wall Arena</h3>
+          <p class="text-slate-400 mb-6 leading-relaxed">Erleben Sie die Helligkeit und Pixelpitch-Performance von 138" bis hin zu Custom LED-Wänden für Foyers.</p>
+          <span class="text-sm font-semibold text-cyan-400">Live-Simulation möglich →</span>
+        </div>
+      </div>
+      
+      <div class="group bg-slate-900 border border-slate-800 p-4 rounded-3xl transition all duration-500 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] overflow-hidden">
+        <div class="aspect-[16/10] bg-slate-800 rounded-2xl mb-8 overflow-hidden relative">
+          <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
+        </div>
+        <div class="px-4 pb-4">
+          <h3 class="text-3xl font-extrabold tracking-tight mb-3 text-white">Future Workplace</h3>
+          <p class="text-slate-400 mb-6 leading-relaxed">Testen Sie BYOD-Systeme, Kameras und Akustik-Lösungen für hybride Meetings in Echtzeit.</p>
+          <span class="text-sm font-semibold text-cyan-400">Software-Kompatibilität prüfen →</span>
+        </div>
+      </div>
+      
+      <div class="group bg-slate-900 border border-slate-800 p-4 rounded-3xl transition all duration-500 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] overflow-hidden">
+        <div class="aspect-[16/10] bg-slate-800 rounded-2xl mb-8 overflow-hidden relative">
+          <img src="https://images.unsplash.com/photo-1549497538-303791108f94?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
+        </div>
+        <div class="px-4 pb-4">
+          <h3 class="text-3xl font-extrabold tracking-tight mb-3 text-white">Kiosk Hub</h3>
+          <p class="text-slate-400 mb-6 leading-relaxed">Vergleichen Sie Touch-Terminals und CMS-Ansteuerungen für Wegeleitsysteme und POS.</p>
+          <span class="text-sm font-semibold text-cyan-400">Haptik & Response-Time Test →</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="py-24 bg-slate-900 border-y border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-5 gap-16 items-center">
+      <div class="md:col-span-2 relative aspect-square bg-slate-800 rounded-full overflow-hidden border-4 border-slate-700 shadow-xl">
+          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+      </div>
+      <div class="md:col-span-3">
+        <blockquote class="text-4xl font-semibold tracking-tight leading-snug mb-8 text-white">
+          "Wir simulieren Ihre Anforderung, bevor Sie investieren. Der Showroom ist der Ort, an dem Technik-Entscheidungen sicher werden."
+        </blockquote>
+        <p class="text-xl font-bold text-cyan-400">Frank Stampa</p>
+        <p class="text-slate-500">Inhaber, urban-ps.de Medientechnik</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="booking" class="relative py-32 bg-slate-950 overflow-hidden">
+     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-cyan-950/40 rounded-full blur-[120px] z-0"></div>
+     
+     <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-5xl md:text-7xl font-extrabold tracking-tighter mb-8 bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">
+        Ihre Demo-Session.<br>Perfekt vorbereitet.
+      </h2>
+      <p class="text-xl text-slate-300 mb-16 max-w-2xl mx-auto">
+        Wählen Sie Ihren Slot. Wir konfigurieren die Exponate exakt nach Ihrem Use-Case. Keine Wartezeit, reine Expertise.
+      </p>
+      
+      <div class="bg-slate-900 p-6 md:p-12 rounded-[40px] border border-slate-800 shadow-2xl relative">
+        <div class="py-20 border-4 border-dashed border-slate-700 rounded-3xl text-slate-600 flex flex-col items-center gap-6">
+            <span class="text-6xl">🗓️</span>
+            <span class="text-lg font-mono">[ Shopify Booking Widget: SESAMI / CALENDLY ]</span>
+            <p class="text-sm text-slate-700">Operational Excellence: Daten fließen direkt ins CRM.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-12 border-t border-slate-800 text-center text-slate-600">
+    <p>&copy; {{ 'now' | date: "%Y" }} urban-ps.de | Medientechnik Frank Stampa | Lübeck & Hamburg</p>
+  </footer>
+
+  {{ content_for_footer }}
+</body>
+</html>
