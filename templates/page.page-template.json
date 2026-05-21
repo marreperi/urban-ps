@@ -9,29 +9,6 @@
  */
 {
   "sections": {
-    "advanced_content_wf7X8E": {
-      "type": "advanced-content",
-      "blocks": {
-        "liquid_bN9Bgp": {
-          "type": "liquid",
-          "disabled": true,
-          "settings": {
-            "code": "<div class=\"wp-block-uagb-container uagb-block-77851045 alignfull uagb-is-root-container\"><div class=\"uagb-container-inner-blocks-wrap\"><style>.vp-teaser-wrapper {\n        font-family: 'Inter', system-ui, -apple-system, sans-serif;\n        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);\n        border: 1px solid #334155;\n        border-radius: 16px;\n        padding: 2.5rem;\n        position: relative;\n        overflow: hidden;\n        display: flex;\n        flex-direction: column;\n        color: #f8fafc;\n        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);\n        transition: border-color 0.3s ease, transform 0.3s ease;\n        margin: 2rem 0;\n    }\n\n    @media (min-width: 768px) {\n        .vp-teaser-wrapper {\n            flex-direction: row;\n            align-items: center;\n            justify-content: space-between;\n            padding: 3rem 4rem;\n        }\n    }\n\n    .vp-teaser-wrapper:hover {\n        border-color: #38bdf8;\n        transform: translateY(-2px);\n    }\n\n    /* Ambient Glow Effect */\n    .vp-teaser-glow {\n        position: absolute;\n        top: -50px;\n        right: -50px;\n        width: 300px;\n        height: 300px;\n        background: #38bdf8;\n        filter: blur(100px);\n        opacity: 0.15;\n        pointer-events: none;\n        z-index: 0;\n        transition: opacity 0.5s ease;\n    }\n\n    .vp-teaser-wrapper:hover .vp-teaser-glow {\n        opacity: 0.25;\n    }\n\n    .vp-teaser-content {\n        position: relative;\n        z-index: 1;\n        max-w-2xl;\n    }\n\n    .vp-teaser-badge {\n        display: inline-flex;\n        align-items: center;\n        background: rgba(56, 189, 248, 0.1);\n        color: #38bdf8;\n        border: 1px solid rgba(56, 189, 248, 0.3);\n        padding: 4px 12px;\n        border-radius: 20px;\n        font-size: 12px;\n        font-weight: 700;\n        text-transform: uppercase;\n        letter-spacing: 1px;\n        margin-bottom: 1rem;\n    }\n\n    .vp-teaser-badge span {\n        display: inline-block;\n        width: 6px;\n        height: 6px;\n        background-color: #38bdf8;\n        border-radius: 50%;\n        margin-right: 8px;\n        animation: vp-pulse 2s infinite;\n    }\n\n    .vp-teaser-title {\n        font-size: 1.75rem;\n        font-weight: 800;\n        margin: 0 0 0.75rem 0;\n        line-height: 1.2;\n        color: #ffffff;\n    }\n\n    @media (min-width: 768px) {\n        .vp-teaser-title {\n            font-size: 2.25rem;\n        }\n    }\n\n    .vp-teaser-title span {\n        background: linear-gradient(to right, #38bdf8, #818cf8);\n        -webkit-background-clip: text;\n        -webkit-text-fill-color: transparent;\n    }\n\n    .vp-teaser-desc {\n        font-size: 1rem;\n        color: #94a3b8;\n        margin: 0;\n        line-height: 1.6;\n        max-width: 600px;\n    }\n\n    .vp-teaser-action {\n        position: relative;\n        z-index: 1;\n        margin-top: 2rem;\n        flex-shrink: 0;\n    }\n\n    @media (min-width: 768px) {\n        .vp-teaser-action {\n            margin-top: 0;\n            margin-left: 2rem;\n        }\n    }\n\n    .vp-teaser-btn {\n        display: inline-flex;\n        align-items: center;\n        justify-content: center;\n        background-color: #38bdf8;\n        color: #0f172a;\n        font-weight: 700;\n        font-size: 1.125rem;\n        padding: 1rem 2rem;\n        border-radius: 8px;\n        text-decoration: none;\n        transition: all 0.2s ease;\n        box-shadow: 0 4px 14px rgba(56, 189, 248, 0.25);\n        white-space: nowrap;\n    }\n\n    .vp-teaser-btn:hover {\n        background-color: #7dd3fc;\n        transform: scale(1.05);\n        box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);\n    }\n\n    .vp-teaser-btn svg {\n        width: 20px;\n        height: 20px;\n        margin-left: 8px;\n        transition: transform 0.2s ease;\n    }\n\n    .vp-teaser-btn:hover svg {\n        transform: translateX(4px);\n    }\n\n    @keyframes vp-pulse {\n        0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); }\n        70% { box-shadow: 0 0 0 6px rgba(56, 189, 248, 0); }\n        100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }\n    }\n</style>\n<div class=\"vp-teaser-wrapper\"><div class=\"vp-teaser-glow\"></div><div class=\"vp-teaser-content\"><div class=\"vp-teaser-badge\">\n<span></span> New in Berlin</div><h3 class=\"vp-title vp-teaser-title\">Virtual Production <span>Studio</span></h3><p class=\"vp-teaser-desc\">\nGreenscreen war gestern. Entdecke unsere In-Camera 2D-Workflows für beeindruckende Ergebnisse ohne langes Post-Processing. Planbare Budgets, schnelle Abläufe.</p></div><div class=\"vp-teaser-action\">\n<a href=\"https://lp.urban-ps.de/virtual-production\" class=\"vp-teaser-btn\">\nStudio entdecken\n<svg fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\">\n<path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M14 5l7 7m0 0l-7 7m7-7H3\"></path>\n</svg>\n</a></div></div></div></div>",
-            "width": "100%",
-            "alignment": "center"
-          }
-        }
-      },
-      "block_order": [
-        "liquid_bN9Bgp"
-      ],
-      "name": "t:sections.advanced-content.presets.custom_content.name",
-      "settings": {
-        "full_width": false,
-        "space_around": true,
-        "lazyload_images": true
-      }
-    },
     "main": {
       "type": "main-page",
       "custom_css": [
@@ -41,7 +18,6 @@
     }
   },
   "order": [
-    "advanced_content_wf7X8E",
     "main"
   ]
 }
