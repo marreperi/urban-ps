@@ -199,7 +199,7 @@
           "type": "logo_image",
           "settings": {
             "image": "shopify://shop_images/swedx-600x.png",
-            "link": "shopify://collections/swedx-1"
+            "link": "shopify://collections/swedx"
           }
         }
       },
